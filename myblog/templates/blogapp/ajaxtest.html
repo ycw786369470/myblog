@@ -1,0 +1,42 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax测试</title>
+    <script src="{% static 'myblog/jquery.js' %}"></script>
+</head>
+<body>
+    {% csrf_token %}
+    <input type="text" id="ipt1">+
+    <input type="text" id="ipt2">=
+    <span id="ipt3"></span>
+    <input type="submit" value="ajax提交" id="ipt_sub">
+    <script>
+        {# 提交按钮 #}
+        $('#ipt_sub').click(function () {
+            {# 进入ajax #}
+            $.ajax({
+                {# 设置跳转的页面 #}
+                url: '/main/calc/',
+                type: 'post',
+                data: {
+                    'i1': $('#ipt1').val(),
+                    'i2': $('#ipt2').val(),
+                    'csrfmiddlewaretoken': $('[name="csrfmiddlewaretoken"]').val()
+                },
+                {# 成功返回 #}
+                success:function (res) {
+                    console.log(res);
+                    {# 改变span内容 #}
+                    $('#ipt3').text(res);
+                },
+                {# 失败处理 #}
+                error:function (error) {
+                    console.log(error)
+                }
+            })
+        })
+    </script>
+</body>
+</html>

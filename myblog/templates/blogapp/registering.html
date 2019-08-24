@@ -1,0 +1,28 @@
+{% extends 'blogapp/base.html' %}
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            注册中...
+        {% endblock %}
+    </title>
+    {% block head %}
+    <link rel="stylesheet" href="{% static 'myblog/css/login.css' %}">
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <div class="container">
+        <div id="login_box_out">
+            <div id="login_box_in" style="text-align: center">
+                <h1>创建账号成功！</h1>
+                <h2><a href="/main/blog/1">点这里回到主页~</a></h2>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>

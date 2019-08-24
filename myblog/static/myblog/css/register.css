@@ -1,0 +1,48 @@
+#login_box_out{
+    background: url("../imgs/wood.png");
+    background-size: contain;
+    background-position: 44px;
+    height: 600px;
+    width: 480px;
+    margin:0 auto;
+    padding: 15px;
+    opacity: 0.9;
+}
+#login_box_in{
+    height: 550px;
+    width: 450px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#login_box_in li{
+    list-style: none;
+    width: 300px;
+    display: block;
+    margin-bottom: 20px;
+}
+#login_box_in ul{
+    margin: 0 auto;
+    width: 300px;
+    position: relative;
+    top: 30px;
+}
+.less{
+    margin-left: 28px;
+}
+#login_box_in ul li input{
+    display: inline-block;
+    width: 200px;
+}
+#login_box_in ul li select{
+    display: inline-block;
+    width: 200px;
+}
+#submit_li{
+    text-align: center;
+}
+#submit{
+    transition: 0.5s;
+}
+#submit:hover{
+    background-color: aliceblue;
+}

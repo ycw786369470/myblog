@@ -1,0 +1,91 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>博客</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'myblog/css/blog.css' %}">
+    <link rel="stylesheet" href="{% static 'myblog/bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'myblog/bootstrap/css/bootstrap-theme.css' %}">
+    <script src="{% static 'myblog/bootstrap/js/bootstrap.js' %}"></script>
+</head>
+<body>
+    <div id="top">
+        <a class="menu" href="/main/">主页</a>
+        <a class="menu" href="/main/blog/1">博客</a>
+        <a class="menu" href="/intro/">简介</a>
+        {% if name|length == 0 %}
+        <a href="/main/login/" class="menu">登录</a>
+        {% else %}
+        <span class="menu">欢迎您回来~{{ name }}</span>
+        <a class="menu" href="/main/person/username={{ name }}/">个人中心</a>
+        <a class="menu" href="/main/logout/">注销</a>
+        {% endif %}
+        <a id="logo" href="/main/">上课钓鱼人博客</a>
+        <div id="top_menu">
+            {# 查询 #}
+            <form action="/select/" method="post" >
+                <input id="select_text" type="text" name="select" placeholder="在这搜索博客、用户">
+                <input id="select_sub" type="submit" value="点击查询">
+            </form>
+        </div>
+    </div>
+    <div id="content">
+        <div id="c_top">
+            <span id="span1">上课钓鱼人主题博客</span><span id="span2">BestBlog</span>
+        </div>
+
+        <div class="blogs" >
+            {% for blog in blogs %}
+            <div class="blog">
+                {# |divisibleby:2 表示是否被2整除，|add:num 为自加num #}
+                {# |floatformat:3 表示小数保留三位 #}
+                {# |join:'/' 用join来拼接 #}
+                {# |length 取得长度 #}
+                {# |linebreakbr 将换行符转换成html中的换行符 #}
+                {# |title 每个单词首字母变为大写|capfirst 最开始的英文大写 #}
+                {# |truncatechars:num 截断字符，如果过多便超过num个字省略 #}
+                {# |slice:num 与truncatechars相同，但是后面没有省略号 #}
+                {# |cut:xxx 移除内容中的xxx #}
+                {# autoescape off -- endautoscape  关闭内容自动转义 #}
+                {{ forloop.counter }}-   {# 模板标签的使用 #}
+                {# 过滤器的使用 #}
+                <span id="user_time">{{ blog.time}}</span>
+                <br/>
+                <a href="#">用户:  <span id="user_name">{{ blog.name.name }}</span> 发表博客:     </a>
+                <span class="tag">{{ blog.tag }}</span>
+                <br/>
+                &emsp;&emsp;标题:{{ blog.title }}
+                <br>
+                <span id="user_comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{ blog.content|truncatechars:150 }}
+                </span>
+                <a href="/main/comment/{{ blog.id }}/username={{ username }}">[点击查看评论]</a>
+            </div>
+            {% empty %}
+            <div class="blog">
+                <p>该页暂无数据哦</p>
+            </div>
+            {% endfor %}
+            {# 判断是否是第一页 #}
+            {% if page == 1 %}
+            {# 别名调用路由,游客会被禁止发表博客文章 #}
+                {% if name|length == 0 %}
+                    <a ><input type="submit" class="btn btn-lg btn-bottom" value="登陆发表" style="margin-top: 30px" disabled></a>
+                {% else %}
+                    <a href="/main/addblog/username={{ username }}"><input type="submit" class="btn btn-lg btn-bottom" value="添加文章" style="margin-top: 30px"></a>
+                {% endif %}
+                <a href="/main/blog/{{ pagenext }}"><input type="submit" class="btn btn-lg btn-bottom" value="下一页" style="margin: 30px 0 0 30px"></a>
+            {# 非第一页 #}
+            {% else %}
+                {% if name|length == 0 %}
+                    <a><input type="submit" class="btn btn-lg btn-bottom" value="登陆发表" style="margin-top: 30px" disabled></a>
+                {% else %}
+                    <a href="/main/addblog/username={{ username }}"><input type="submit" class="btn btn-lg btn-bottom" value="添加文章" style="margin-top: 30px"></a>
+                {% endif %}
+            <a href="/main/blog/{{ pageback }}/"><input type="submit" class="btn btn-lg btn-bottom" value="上一页" style="margin: 30px 0 0 30px"></a>
+            <a href="/main/blog/{{ pagenext }}/"><input type="submit" class="btn btn-lg btn-bottom" value="下一页" style="margin: 30px 0 0 30px"></a>
+            <a href="/main/blog/1/"><input type="submit" class="btn btn-lg btn-bottom" value="回到首页" style="margin: 30px 0 0 30px"></a>
+            {% endif %}
+        </div>
+    </div>

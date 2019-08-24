@@ -1,0 +1,140 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+}
+html,body{
+    height: 100%;
+    width: 100%;
+    background: url("../imgs/oneline.png");
+    background-size: 20%;
+}
+#top{
+    height: 75px;
+    width: 100%;
+    background-color: rgb(25,63,69);
+}
+#top a{
+    text-decoration: none;
+}
+#top_menu{
+    height: 75px;
+    width: 300px;
+    float: right;
+    position: relative;
+}
+.menu{
+    font-family: 黑体;
+    font-size: 18px;
+    line-height: 75px;
+    height: 75px;
+    color: aliceblue;
+    position: relative;
+    left: 50px;
+    transition: 0.5s;
+    margin-left: 10px;
+}
+.menu:hover{
+    color: deepskyblue;
+}
+#logo{
+    height: 75px;
+    width: 500px;
+    position: absolute;
+    left: 850px;
+    line-height: 75px;
+    font-size: 50px;
+    color: white;
+    font-family: 华文隶书;
+    display: inline-block;
+    transition: 0.5s;
+}
+#logo:hover{
+    color: deepskyblue;
+}
+#select_text{
+    width: 200px;
+    height: 30px;
+    position: relative;
+    top: 20px;
+    color: darkgray;
+}
+#select_sub{
+    width: 70px;
+    height: 30px;
+    position: relative;
+    top: 20px;
+}
+#content{
+    width: 900px;
+    margin: 0 auto;
+    background-color: white;
+    opacity: 0.99;
+}
+#c_top{
+    width: 900px;
+    height: 50px;
+    border-bottom: 2px solid black;
+}
+#span1{
+    font-family: 黑体;
+    font-size: 30px;
+    line-height: 50px;
+    color: black;
+}
+#span2{
+    color: white;
+}
+.blog{
+    width: 900px;
+    height: 150px;
+    background-color: skyblue;
+    transition: 0.5s;
+    margin-top: 20px;
+    /*opacity: 0.8;*/
+    border-radius: 2%;
+    padding: 5px 8px;
+}
+.blog:hover{
+    padding: 8px;
+    background-color: palegoldenrod;
+    box-shadow: #5e5e5e 3px 3px 3px;
+    border: 5px dashed aliceblue;
+}
+.blogs{
+    height: 100%;
+}
+.blogs a{
+    color: black;
+    font-family: 幼圆;
+}
+.blogs a:hover{
+    color:red;
+}
+.btn-bottom{
+    transition: 0.7s;
+}
+.btn-bottom:hover{
+    background-color: deepskyblue;
+}
+.tag{
+    background-color: dodgerblue;
+    display: inline-block;
+    height: 20px;
+    width: 50px;
+    text-align: center;
+    margin-left: 50px;
+    color: white;
+    border-radius: 10%;
+}
+
+
+
+
+
+
+
+
+

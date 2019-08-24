@@ -1,0 +1,187 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>主页</title>
+	<link rel="stylesheet" href="{% static 'myblog/bootstrap/css/bootstrap.css' %}">
+	<link rel="stylesheet" href="{% static 'myblog/css/bootstrap-aoqian.css' %}">
+	<link rel="stylesheet" href="{% static 'myblog/bootstrap/css/bootstrap-theme.css' %}">
+	<script src="{% static 'myblog/jquery.js' %}"></script>
+	<script src="{% static 'myblog/bootstrap/js/bootstrap.js' %}"></script>
+</head>
+<body>
+<!--navbar为导航模块  navbar-fixed-top固定导航在上方-->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <!-- 小屏幕自适应的菜单栏按钮            data-toggle、data-target绑定事件          -->
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- Logo -->
+            <a href="#" class="navbar-brand">奥嵌科技</a>
+        </div>
+
+		<!-- 导航栏 -->
+        <div class="navbar-collapse collapse">
+        	<!-- 		导航栏样式	    居右显示	 -->
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#home">首页</a></li>
+				<li><a href="/main/blog/1">博客</a></li>
+				<li><a href="#html">前端开发</a></li>
+				<li><a href="#python">移动APP</a></li>
+				<li><a href="#contact">注册</a></li>
+			</ul>
+        </div>
+    </div>
+</nav>
+
+<!-- home -->
+<section id="home" class="home">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<h1>Bootstrap实践测试</h1>
+				<h2>对于Bootsrap的研究</h2>
+				<h3>革命尚未成功，继续努力</h3>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+		<img src="{% static 'myblog/imgs/com.png' %}" class="img-responsive">
+	</div>
+</section>
+
+<!-- bbs论坛 -->
+<section id="bbs">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<a href="#">
+					<img src="{% static 'myblog/imgs/play.png' %}" class="img-responsive">
+	                <h3>点击播放视频</h3>
+	                <p>观看、支持你喜欢的视频吧！</p>
+				</a>
+			</div>
+			<div class="col-md-4">
+				<a href="#">
+	                <img src="{% static 'myblog/imgs/heart.png' %}" class="img-responsive">
+	                <h3>收藏奥嵌</h3>
+	                <p>奥嵌Bootstrap实训</p>
+				</a>
+            </div>
+			<div class="col-md-4">
+				<a href="#">
+	                <img src="{% static 'myblog/imgs/head.png' %}" class="img-responsive">
+	                <h3>下载Bootstrap文件</h3>
+	                <p>享受编程的快乐吧！</p>
+				</a>
+            </div>
+		</div>
+	</div>
+</section>
+
+<!-- html -->
+<section id="html5">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-1"></div>
+			<div class="col-md-5">
+				<h2>HTML/Bootstrap开发</h2>
+				<p><span class="glyphicon glyphicon-ice-lolly ice-icon"></span>中国共青团青年大学习必备选项</p>
+				<p><span class="glyphicon glyphicon-ice-lolly ice-icon"></span>湖南城市学院优秀Blacky团员必备技能</p>
+				<p><span class="glyphicon glyphicon-ice-lolly ice-icon"></span>超能锅盖头协会Blacky会长必备技能</p>
+			</div>
+			<div class="col-md-1"></div>
+			<div class="col-md-5">
+				<img src="{% static 'myblog/imgs/many.png' %}" >
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- python -->
+<section id="python">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-1"></div>
+			<div class="col-md-5">
+				<img src="{% static 'myblog/imgs/windows.png' %}" >
+			</div>
+			<div class="col-md-1"></div>
+			<div class="col-md-5">
+				<h2>Python/Internet互联网开发</h2>
+				<p><span class="glyphicon glyphicon-ice-lolly ice-icon"></span>我秃了，也变强了英雄技能学习培训中心，每天规律的锻炼也是变强的关键哦！</p>
+				<p><span class="glyphicon glyphicon-ice-lolly ice-icon"></span>不胜传说杰诺斯培训实习中心--让你变得无法战胜任何人！</p>
+				<p><span class="glyphicon glyphicon-ice-lolly ice-icon"></span>英雄协会地狱吹雪欧派粉丝团，我们只有一个宗旨————吹雪大人欧派万岁！</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- 联系方式 -->
+<section id="contact">
+	<div class="lvjing">
+		<div class="container">
+			<div class="row">
+				<!-- 左栏标题 -->
+				<div class="col-md-6">
+					<h2>
+					<span class="glyphicon glyphicon-send"></span>
+					&nbsp;联系奥嵌</h2>
+					<p>奥嵌科技是澳大利亚的一个科技公司，专注奉献于为英雄事业，金属球棒、闪光的Flash、原子武士以及黑豹等英雄的装备武器都是由该公司提供，瓦坎达之王blacky就是奥嵌公司的忠实粉丝。</p>
+					<address>
+					<p>
+					<span class="glyphicon glyphicon-home"></span>
+					&nbsp;
+					地址:湖南省长沙市岳麓区达嘉维康医药公司奥嵌大楼11楼</p>
+					<p>
+					<span class="glyphicon glyphicon-phone-alt"></span>
+					&nbsp;
+					联系电话:0731-7777777</p>
+					<p>
+					<span class="glyphicon glyphicon-envelope"></span>
+					&nbsp;
+					邮箱:blackpanther@999.com</p>
+					</address>
+				</div>
+				<!-- 右边输入框 -->
+				<div class="col-md-6">
+					<form action="#" method="post">
+						<div class="col-md-6">
+							<input type="text" class="form-control" name="uname" placeholder="输入您的姓名">
+						</div>
+						<div class="col-md-6">
+							<input type="text" class="form-control" name="email" placeholder="输入您的邮箱">
+						</div>
+						<div class="col-md-12">
+							<input type="text" class="form-control" name="email" placeholder="标题">
+						</div>
+						<div class="col-md-12">
+							<textarea class="form-control" placeholder="留言内容"></textarea>
+						</div>
+						<div class="col-md-8">
+							<input type="submit" name="submit" class="form-control" value="提交">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- 尾部 -->
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<p>Copyright&nbsp;©&nbsp;2018-2019&nbsp;&nbsp;www.blackpanther.com&nbsp;茯苓路达嘉维康医药公司11楼-CS1910<p>
+			</div>
+		</div>
+	</div>
+</footer>
+</body>
+</html>

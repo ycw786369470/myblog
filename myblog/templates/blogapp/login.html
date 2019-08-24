@@ -1,0 +1,44 @@
+{% extends 'blogapp/base.html' %}
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            登录
+        {% endblock %}
+    </title>
+    {% block head %}
+    <link rel="stylesheet" href="{% static 'myblog/css/login.css' %}">
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <div class="container">
+        <div id="login_box_out">
+            <div id="login_box_in">
+                <form action="/main/blog/1" method="post">
+                    <div id="inputs">
+                        <div class="row" id="username">
+                            <span>账号:</span>
+                            <input type="text" class="form-control" name="username" placeholder="输入9-16位账号" value="{{ username }}">
+                        </div>
+                        <div class="row" id="password">
+                            <span>密码:</span>
+                            <input type="password" class="form-control" name="password" placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <input type="submit" value="登录" class="form-control" id="login_btn">
+                    <p style="color: orangered; position:relative; top: 60px; left: 170px;">{{ warming }}</p>
+                    <div id="register">
+                        <a href="/main/register">注册账号</a>|
+                        <a href="#">忘记密码</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>

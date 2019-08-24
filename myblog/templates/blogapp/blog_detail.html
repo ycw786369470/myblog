@@ -1,0 +1,115 @@
+ {% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>博客</title>
+    <script src="{% static 'myblog/jquery.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'myblog/css/blog.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'myblog/css/blog_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'myblog/bootstrap/css/bootstrap.css' %}">
+    <link rel="shortcut icon" href="{% static 'myblog/imgs/flower_Cat.jpg' %}" type="image/x-icon">
+    <script src="{% static 'myblog/bootstrap/js/bootstrap.js' %}"></script>
+    <style>
+        form{
+            text-align: center;
+        }
+        #title{
+            margin: 30px auto;
+            width: 50%;
+        }
+        #content{
+            width: 50%;
+            height: 300px;
+        }
+        #sub{
+            margin: 20px auto;
+            width: 30%;
+        }
+        #blog_comment{
+            margin-top: 20px;
+            display: inline-block;
+        }
+        #com_form{
+            display: inline-block;
+            width: 800px;
+            position: relative;
+            top: -5px;
+        }
+        #com_text{
+            background-color: white;
+            display: inline-block;
+            width: 650px;
+        }
+        #com_sub{
+            display: inline-block;
+            width: 100px;
+            background-color: skyblue;
+            transition: 0.5s;
+        }
+        #com_sub:hover{
+            background-color: royalblue;
+            color: white;
+        }
+        #blog_content{
+            display: inline-block;
+        }
+        #form_mark{
+        }
+    </style>
+</head>
+
+<body>
+    <div id="top">
+        <a class="menu" href="/main/">主页</a>
+        <a class="menu" href="/main/blog/1">博客</a>
+        <a class="menu" href="/intro/">简介</a>
+        {% if name|length == 0 %}
+            <a href="/main/login/" class="menu">登录使用更多功能~</a>
+        {% elif name|length == 1 %}
+            <a href="/main/login/" class="menu">登录使用更多功能~</a>
+        {% else %}
+            <a href="#" class="menu">欢迎回来~{{ name }}</a>
+            <a class="menu" href="/main/person/username={{ name }}">个人中心</a>
+            <a class="menu" href="/main/logout/">注销</a>
+        {% endif %}
+        <a id="logo" href="/main/">上课钓鱼人博客</a>
+        <div id="top_menu">
+            {# 查询 #}
+            <form action="#" method="post" >
+                <input id="select_text" type="text" name="select" placeholder="在这搜索博客、用户">
+                <input id="select_sub" type="submit" value="点击查询">
+            </form>
+        </div>
+    </div>
+    <div id="content">
+        <div id="c_top">
+            <span id="span1">上课钓鱼人主题博客</span><span id="span2">BestBlog</span>
+        </div>
+        <div id="detail">
+            <div id="blog_name"><div id="blog_photo" style="background-image:url('/static/media/{{ blog.name.photo }}');"></div>
+                <span class="span_blog_name">博主:  </span><a href="#" id="a_name">{{ blog.name.name }}</a>
+            </div>
+            <div id="blog_content">
+                <span class="span_blog_name">内容:  </span>{{ blog.content }}<br/>
+                {# 点赞、踩、收藏功能 #}
+                {% csrf_token %}
+                <a id="star" href="#"><span class="glyphicon glyphicon-star-empty">收藏(<span class="num" id="star_num">{{ mark.star_num }}</span>)</span></a>
+                <a id="down" href="#"><span class="glyphicon glyphicon-thumbs-down">踩(<span class="num" id="down_num">{{ mark.down_num }}</span>)</span></a>
+                <a id="up" href="#"><span class="glyphicon glyphicon-thumbs-up">赞(<span class="num" id="up_num">{{ mark.up_num }}</span>)</span></a><br/>
+            </div>
+
+            <p id="blog_comment"><span class="span_blog_name">评论:  </span>
+            <form action="#" method="post" id="com_form">
+                <input type="text" class="form-control" name="com_text" id="com_text">
+                <input type="submit" class="form-control" id="com_sub">
+            </form><br/>
+            {% for com in comment %}
+                <p style="color: #9d9d9d"><a id="com_name" href="#">&nbsp;&nbsp;&nbsp;&nbsp;{{com.name.name}}</a><span id="com_content">:&nbsp;&nbsp;&nbsp;&nbsp;{{ com.content }}</span></p>
+            {% endfor %}
+            </p>
+        </div>
+    </div>
+    <script src="{% static 'myblog/js/blog_detail.js' %}"></script>
+</body>
+</html>

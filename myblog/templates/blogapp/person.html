@@ -1,0 +1,65 @@
+{% extends 'blogapp/base.html' %}
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            个人界面
+        {% endblock %}
+    </title>
+    {% block head %}
+    <link rel="stylesheet" href="{% static 'myblog/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'myblog/css/person.css' %}">
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+<div class="container">
+    <div id="left_block">
+        <div id="self_picture">
+            <div id="photo" style="background-image: url('/static/media/{{ user.photo }}'); background-size: contain;">
+            </div>
+        </div>
+        <a href="/main/img/username={{ user.username }}/">上传头像</a>
+        <div id="self_name">
+            <p><span class="key">昵称:&emsp;</span><span class="value">{{ user.name }}</span></p>
+        </div>
+        <div id="self_gender">
+            {% if user.gender == True %}
+            <p><span class="key">性别:&emsp;</span><span class="value">男</span></p>
+            {% else %}
+            <p><span class="key">性别:&emsp;</span><span class="value">女</span></p>
+            {% endif %}
+        </div>
+        <div id="self_username">
+            <p><span class="key">账号:&emsp;</span><span class="value">{{ user.username }}</span></p>
+        </div>
+        <div id="self_password">
+            <p><span class="key">密码:&emsp;</span><span class="value">{{ user.password }}</span>
+                &emsp;</p>
+        </div>
+        <a href="/main/changepsw/">修改密码</a>
+    </div>
+
+    <div id="right_block">
+        <div id="right_main">
+            <a href="#"><button class="btn form-control btn-primary">赞过文章
+                <span>({{ up_index }})</span>
+            </button></a>
+            <a href="#"><button class="btn form-control btn-primary">踩过文章
+                <span>({{ down_index }})</span>
+            </button></a>
+            <a href="#"><button class="btn form-control btn-primary">收藏
+                <span>({{ star_index }})</span>
+            </button></a>
+            <a href="#"><button class="btn form-control btn-primary">关注
+                <span>(0)</span>
+            </button></a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

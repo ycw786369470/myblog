@@ -1,0 +1,62 @@
+#detail a{
+    text-decoration: none;
+}
+#detail{
+    background-color: #ffffff;
+    height: 500px;
+    width: 900px;
+    opacity: 0.9;
+    padding: 20px;
+    box-shadow: #9d9d9d 5px 5px 10px;
+}
+/*博主名*/
+#blog_name a{
+    color: black;
+}
+#blog_name a:hover{
+    color: #31708f;
+}
+#detail p{
+    font-size: 16px;
+}
+#blog_name{
+    border-bottom: #9d9d9d 2px solid;
+    display: block;
+}
+.span_blog_name{
+    font-size: 26px;
+    position: relative;
+}
+#blog_content{
+    width: 860px;
+    border-bottom: #9d9d9d 2px solid;
+    display: inline-block;
+}
+#blog_content a{
+    float: right;
+    margin-right: 20px;
+    color: #122b40;
+}
+#star:hover{
+    color: gold;
+}
+#up:hover{
+    color: #28a4c9;
+}
+#down:hover{
+    color: orangered;
+}
+#com_name{
+    color: gray;
+}
+#com_name:hover{
+    color: black;
+}
+#blog_photo{
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    background-size: contain;
+    position: relative;
+    top: 8px;
+}

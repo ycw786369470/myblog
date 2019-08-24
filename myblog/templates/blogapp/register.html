@@ -1,0 +1,74 @@
+{% extends 'blogapp/base.html' %}
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            注册
+        {% endblock %}
+    </title>
+    {% block head %}
+    <link rel="stylesheet" href="{% static 'myblog/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'myblog/css/register.css' %}">
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <div class="container">
+        <div id="login_box_out">
+            <div id="login_box_in">
+                <form action="/main/registering/" method="post">
+                    <ul>
+                        {% csrf_token %}
+                        <li>
+                            <span>昵称</span>
+                            <input type="text" class="form-control less" name="name" value="{{ name }}" placeholder="请输入您的昵称">
+                        </li>
+                        <li>
+                            <span>账号</span>
+                            <input type="text" class="form-control less" name="username" value="{{ username }}" placeholder="由英文或数字组成">
+                        </li>
+                        <li>
+                            <span>密码</span>
+                            <input type="text" class="form-control less" name="password" placeholder="由英文或数字组成">
+                        </li>
+                        <li>
+                            <span>确认密码</span>
+                            <input type="text" class="form-control" name="password2" placeholder="重复密码">
+                        </li>
+                        <li>
+                            <span>性别</span>
+                            <select name="gender" id="gender" class="form-control less">
+                                <option value="1">男</option>
+                                <option value="2">女</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span>爱好</span>
+                            <select name="habits" id="habits" class="form-control less">
+                                <option value="1">音乐</option>
+                                <option value="2">电影</option>
+                                <option value="3">游戏</option>
+                                <option value="4">美食</option>
+                                <option value="5">计算机</option>
+                                <option value="6">生活</option>
+                                <option value="7">读书</option>
+                                <option value="8">工作</option>
+                            </select>
+                        </li>
+                        <li id="submit_li">
+                            <input type="submit" class="form-control" value="注册" id="submit">
+                        </li>
+                    </ul>
+                    <li>
+                        <p style="color: red; position: relative; left: 150px; top: 20px;">{{ warming }}</p>
+                    </li>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>

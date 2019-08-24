@@ -1,0 +1,38 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        博客基础模板
+        {% endblock %}
+    </title>
+    {# 设置logo图片 #}
+    <link rel="shortcut icon" href="{% static 'myblog/imgs/flower_Cat.jpg' %}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{% static 'myblog/css/blog.css' %}">
+    <link rel="stylesheet" href="{% static 'myblog/bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'myblog/bootstrap/css/bootstrap-theme.css' %}">
+    <script src="{% static 'myblog/bootstrap/js/bootstrap.js' %}"></script>
+    {% block head %}
+    {% endblock head %}
+</head>
+<body>
+<div id="top">
+    <a class="menu" href="/main/">主页</a>
+    <a class="menu" href="/main/blog/1">博客</a>
+    <a class="menu" href="/intro/">简介</a>
+    <a id="logo" href="/main/">上课钓鱼人博客</a>
+    <div id="top_menu">
+        {# 查询 #}
+        <form action="/select/" method="post" >
+            <input id="select_text" type="text" name="select" placeholder="在这搜索博客、用户">
+            <input id="select_sub" type="submit" value="点击查询">
+        </form>
+    </div>
+</div>
+{% block body %}
+    <div>夫模板</div>
+{% endblock %}
+</body>
+</html>

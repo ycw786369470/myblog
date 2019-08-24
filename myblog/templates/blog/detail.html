@@ -1,0 +1,156 @@
+{% extends 'blog/base.html' %}
+{#index部分忽略#}
+{% block index %}
+{% endblock %}
+
+{#每日一句时间#}
+{% block time %}
+    {{ now_time }}&emsp;星期{{ this_week }}
+{% endblock %}
+
+{#热门推荐#}
+{% block hot2 %}
+    {% for new in new_blog %}
+        <li><a target="_blank" href=""> <span class="thumb"><img src="/static/media/{{ new.name.photo }}" alt=""></span> <span class="text">{{ new.content|truncatechars:40 }}</span> <span class="text-muted">阅读(2165)</span></a></li>
+            {% endfor %}
+{% endblock %}
+
+{#最新评论#}
+{% block comment %}
+    {% for c in comment %}
+        <li data-toggle="tooltip" data-placement="top" title="{{ c.name.name }}的评论"><a target="_blank" href=""><span class="face"><img src="/static/media/{{ c.name.photo }}" alt=""></span> <span class="text"><strong>{{ c.name.name }}</strong> ({{ c.time }}) 说：<br />
+          {{ c.content }}</span></a></li>
+            {% endfor %}
+{% endblock %}
+
+
+{% block detail %}
+<div class="content-wrap"><!--内容-->
+        <div class="content">
+          <header class="news_header">
+            <h2>
+                {% block detail_title %}
+                {{ pre_blog.title }}
+                    {% endblock %}
+                    </h2>
+            <ul>
+              <li>
+                  {% block detail_imform %}
+                    {{ pre_blog.name.name }} 发布于 {{ pre_blog.time }}
+                    {% endblock %}
+              </li>
+              <li>标签：<a href="" title="" target="_blank">{% block detail_tag %}
+                  {{ pre_blog.tag }}
+              {% endblock %}</a></li>
+              <li>来源：<a href="" title="" target="_blank">本站</a></li>
+              <li>共 <strong>2345</strong> 人围观 </li>
+              <li><strong>123</strong> 个不明物体</li>
+            </ul>
+          </header>
+          <article class="news_content">
+              {% block detail_post %}
+                    {# 当前文章内容 #}
+                  {{ pre_blog.content }}
+              {% endblock %}
+          </article>
+          <div class="reprint">转载请说明出处：<a href="" title="" target="_blank">个人技术博客</a> » <a href="" title="" target="_blank">{{ pre_blog.title }}</a></div>
+          <div class="zambia" id="up"><a href="javascript:;" name="zambia" rel=""><span class="glyphicon glyphicon-thumbs-up"></span> 赞（0）</a></div>
+          <div class="zambia" id="down"><a href="javascript:;" name="zambia" rel=""><span class="glyphicon glyphicon-thumbs-down"></span> 踩（0）</a></div>
+          <div class="tags news_tags">标签： <span data-toggle="tooltip" data-placement="bottom" title="查看关于 {{ pre_blog.tag }} 的文章"><a href="">{% block tag2 %}{{ pre_blog.tag }}{% endblock %}</a></span> <span data-toggle="tooltip" data-placement="bottom" title="查看关于 技术博客 的文章"><a href="">技术博客</a></span> </div>
+          <nav class="page-nav"> <span class="page-nav-prev">上一篇<br />
+            <a href="/blog/detail/{{ previous_blog.0.id }}" rel="prev">{{ previous_blog.0.title }}</a></span> <span class="page-nav-next">下一篇<br />
+            <a href="/blog/detail/{{ next_blog.0.id }}" rel="next">{{ next_blog.0.title }}</a></span> </nav>
+          <div class="content-block related-content visible-lg visible-md">
+            <h2 class="title"><strong>相关推荐</strong></h2>
+            <ul>
+                {% block same_tag %}
+                    {% for same in same_tag_blogs %}
+                    <li><a target="_blank" href=""><img src="/static/media/{{ same.name.photo }}" alt="">
+                    <h3> {{ same.content }} </h3>
+                    </a></li>
+                    {% endfor %}
+                {% endblock %}
+            </ul>
+          </div>
+          <div class="content-block comment">
+            <h2 class="title"><strong>评论</strong></h2>
+            <form action="comment.php" method="post" class="form-inline" id="comment-form">
+              <div class="comment-title">
+                <div class="form-group">
+                  <label for="commentName">昵称：</label>
+                  <input type="text" name="commentName" class="form-control" id="commentName" placeholder="技术博客">
+                </div>
+                <div class="form-group">
+                  <label for="commentEmail">邮箱：</label>
+                  <input type="email" name="commentEmail" class="form-control" id="commentEmail" placeholder="admin@xxxx.com">
+                </div>
+              </div>
+              <div class="comment-form">
+                <textarea placeholder="你的评论可以一针见血" name="commentContent"></textarea>
+                <div class="comment-form-footer">
+                  <div class="comment-form-text">请先 <a href="javascript:;">登录</a> 或 <a href="javascript:;">注册</a>，也可匿名评论 </div>
+                  <div class="comment-form-btn">
+                    <button type="submit" class="btn btn-default btn-comment">提交评论</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="comment-content">
+              <ul>
+                  {% block comment-content %}
+                      {% for c in pre_comment %}
+                       <li><span class="face"><img src="/static/media/{{ c.name.photo }}" alt=""></span> <span class="text"><strong>{{ c.name.name }}</strong> ({{ c.time }}) 说：<br />
+                        {{ c.content }}</span></li>
+                      {% endfor %}
+                  {% endblock %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+<script>
+console.log('123');
+$('#up').click(function () {
+    console.log('123');
+    $.ajax({
+        url: '/blog/calc/',
+        type: 'post',
+        data: {
+            'mark': 'up',
+            // 博主名字
+            'blog_name': '{{ pre_blog.name.name }}',
+            // 点击者名字
+            'mark_name': $('#mark_name').text(),
+            'csrfmiddlewaretoken': $('[name="csrfmiddlewaretoken"]').val()
+        },
+        success:function (res) {
+            console.log(res);
+            $('#up_num').text(res)
+        },
+        error:function (error) {
+            console.log('访问失败')
+        },
+    })
+});
+//点击踩按钮
+$('#down').click(function () {
+    $.ajax({
+        url: '/main/calc/',
+        type: 'post',
+        data: {
+            'mark': 'down',
+            'blog_name': $('#blog_name #a_name').text(),
+            'mark_name': $('#mark_name').text(),
+            'csrfmiddlewaretoken': $('[name="csrfmiddlewaretoken"]').val()
+        },
+        success:function (res) {
+            console.log(res);
+            $('#down_num').text(res)
+        },
+        error:function (error) {
+            console.log('访问失败')
+        },
+    })
+});
+</script>
+{% endblock %}

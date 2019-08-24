@@ -1,0 +1,77 @@
+ {% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>博客</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'myblog/css/blog.css' %}">
+    <link rel="stylesheet" href="{% static 'myblog/bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'myblog/bootstrap/css/bootstrap-theme.css' %}">
+    <script src="{% static 'myblog/bootstrap/js/bootstrap.js' %}"></script>
+    <style>
+        form{
+            text-align: center;
+        }
+        #title{
+            margin: 30px auto;
+            width: 50%;
+        }
+        #content{
+            width: 50%;
+            height: 300px;
+        }
+        #sub{
+            margin: 20px auto;
+            width: 30%;
+        }
+        #tags{
+            width: 50%;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="top">
+        <a class="menu" href="/main/">主页</a>
+        <a class="menu" href="/main/blog/1">博客</a>
+        <a class="menu" href="/intro/">简介</a>
+        {% if name|length == 0 %}
+        <a href="/main/login/" class="menu">登录</a>
+        {% else %}
+        <span style="color: white; margin-left: 60px">|欢迎您回来~{{ name }}</span>
+        {% endif %}
+        <a id="logo" href="/main/">上课钓鱼人博客</a>
+        <div id="top_menu">
+            {# 查询 #}
+            <form action="#" method="post" >
+                <input id="select_text" type="text" name="select" placeholder="在这搜索博客、用户">
+                <input id="select_sub" type="submit" value="点击查询">
+            </form>
+        </div>
+    </div>
+    <div id="content">
+        <div id="c_top">
+            <span id="span1">上课钓鱼人主题博客</span><span id="span2">BestBlog</span>
+        </div>
+        <div class="addblogs">
+            <div class="contain">
+                <form action="#" method="post">
+                    <input name="title" id="title" type="text" class="form-control" placeholder="博客文章标题">
+                    <textarea name="content" id="content" class="form-control" placeholder="文章内容"></textarea>
+                    {# 下拉框选择标签 #}
+                    <select name="tag" id="tags" class="form-control">
+                        <option value="1">音乐</option>
+                        <option value="2">电影</option>
+                        <option value="3">游戏</option>
+                        <option value="4">美食</option>
+                        <option value="5">计算机</option>
+                        <option value="6">生活</option>
+                        <option value="7">读书</option>
+                        <option value="8">工作</option>
+                    </select>
+                    <input id="sub" type="submit" class="btn btn-lg">
+                </form>
+            </div>
+        </div>
+    </div>
