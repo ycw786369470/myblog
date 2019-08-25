@@ -23,6 +23,14 @@
             {% endfor %}
 {% endblock %}
 
+{% block login %}
+                {% if username|length == 1 %}
+                    <li><a href="/main/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
+                {% else %}
+                    <li><a href=""><span class="glyphicon glyphicon-inbox"></span>欢迎你:{{ username }}</a></li>
+                    <li><a href="/main/logout/"><span class="glyphicon glyphicon-remove"></span>注销</a></li>
+                {% endif %}
+{% endblock %}
 
 {% block detail %}
 <div class="content-wrap"><!--内容-->
@@ -54,8 +62,8 @@
               {% endblock %}
           </article>
           <div class="reprint">转载请说明出处：<a href="" title="" target="_blank">个人技术博客</a> » <a href="" title="" target="_blank">{{ pre_blog.title }}</a></div>
-          <div class="zambia" id="up"><a href="javascript:;" name="zambia" rel=""><span class="glyphicon glyphicon-thumbs-up"></span> 赞（0）</a></div>
-          <div class="zambia" id="down"><a href="javascript:;" name="zambia" rel=""><span class="glyphicon glyphicon-thumbs-down"></span> 踩（0）</a></div>
+          <div class="zambia" id="up"><a href="javascript:;" name="zambia" rel=""><span class="glyphicon glyphicon-thumbs-up"></span> 赞（<span id="up_num">{{ mark.up_num }}</span>）</a></div>
+          <div class="zambia" id="down"><a href="javascript:;" name="zambia" rel=""><span class="glyphicon glyphicon-thumbs-down"></span> 踩（<span id="down_num">{{ mark.down_num }}</span>）</a></div>
           <div class="tags news_tags">标签： <span data-toggle="tooltip" data-placement="bottom" title="查看关于 {{ pre_blog.tag }} 的文章"><a href="">{% block tag2 %}{{ pre_blog.tag }}{% endblock %}</a></span> <span data-toggle="tooltip" data-placement="bottom" title="查看关于 技术博客 的文章"><a href="">技术博客</a></span> </div>
           <nav class="page-nav"> <span class="page-nav-prev">上一篇<br />
             <a href="/blog/detail/{{ previous_blog.0.id }}" rel="prev">{{ previous_blog.0.title }}</a></span> <span class="page-nav-next">下一篇<br />
@@ -75,22 +83,16 @@
           <div class="content-block comment">
             <h2 class="title"><strong>评论</strong></h2>
             <form action="comment.php" method="post" class="form-inline" id="comment-form">
-              <div class="comment-title">
-                <div class="form-group">
-                  <label for="commentName">昵称：</label>
-                  <input type="text" name="commentName" class="form-control" id="commentName" placeholder="技术博客">
-                </div>
-                <div class="form-group">
-                  <label for="commentEmail">邮箱：</label>
-                  <input type="email" name="commentEmail" class="form-control" id="commentEmail" placeholder="admin@xxxx.com">
-                </div>
-              </div>
               <div class="comment-form">
                 <textarea placeholder="你的评论可以一针见血" name="commentContent"></textarea>
                 <div class="comment-form-footer">
-                  <div class="comment-form-text">请先 <a href="javascript:;">登录</a> 或 <a href="javascript:;">注册</a>，也可匿名评论 </div>
+                  <div class="comment-form-text">仅限登录才能评论哦~ </div>
                   <div class="comment-form-btn">
-                    <button type="submit" class="btn btn-default btn-comment">提交评论</button>
+                    {% if username|length == 1 %}
+                        <button type="submit" class="btn btn-default btn-comment" disabled>提交评论</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-default btn-comment">提交评论</button>
+                    {% endif %}
                   </div>
                 </div>
               </div>
@@ -108,6 +110,7 @@
           </div>
         </div>
       </div>
+<script src="/static/blog/js/jquery-2.1.4.min.js"></script>
 <script>
 console.log('123');
 $('#up').click(function () {
@@ -116,11 +119,12 @@ $('#up').click(function () {
         url: '/blog/calc/',
         type: 'post',
         data: {
+            'num': {{ num }},
             'mark': 'up',
             // 博主名字
-            'blog_name': '{{ pre_blog.name.name }}',
+            'blog_name': '{{ pre_blog.name.username }}',
             // 点击者名字
-            'mark_name': $('#mark_name').text(),
+            'mark_name': '{{ username }}',
             'csrfmiddlewaretoken': $('[name="csrfmiddlewaretoken"]').val()
         },
         success:function (res) {
@@ -135,12 +139,15 @@ $('#up').click(function () {
 //点击踩按钮
 $('#down').click(function () {
     $.ajax({
-        url: '/main/calc/',
+        url: '/blog/calc/',
         type: 'post',
         data: {
+            'num': {{ num }},
             'mark': 'down',
-            'blog_name': $('#blog_name #a_name').text(),
-            'mark_name': $('#mark_name').text(),
+            // 博主名字
+            'blog_name': '{{ pre_blog.name.name }}',
+            // 点击者名字
+            'mark_name': '{{ username }}',
             'csrfmiddlewaretoken': $('[name="csrfmiddlewaretoken"]').val()
         },
         success:function (res) {

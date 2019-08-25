@@ -38,7 +38,6 @@ class Index(ListView):
 
 
 def index(request, *args):
-    username = request
     now_time = datetime.date.today()
     this_week = now_time.isoweekday()
     # 博客主页
@@ -94,6 +93,12 @@ def index(request, *args):
 
 
 def detail(request, *args):
+    # 观看博客者的username
+    username = request.session.get('username')
+    if username == None:
+        username = ' '
+    mark_user = Users.objects.get(username=username)
+    # 获取当前时间
     now_time = datetime.date.today()
     this_week = now_time.isoweekday()
     all_blogs = BlogUser.objects.all()
@@ -101,8 +106,10 @@ def detail(request, *args):
     new_blogs = all_blogs[0:5]
     # 热门评论
     comment = all_comment[0:5]
-    # 上一篇/下一篇
+    # 当前博客文章
     num = args[0]
+    blog = BlogUser.objects.get(id=num)
+    # 上一篇/下一篇
     previous_blog = all_blogs.filter(id__lt=num).order_by('-id')[:1]
     next_blog = all_blogs.filter(id__gt=num)[:1]
     pre_blog = all_blogs.get(id=num)    # 当前博客
@@ -110,6 +117,47 @@ def detail(request, *args):
     pre_comment = all_comment.filter(user_id=num)
     # 相关推荐
     same_tag_blogs = all_blogs.filter(tag=pre_blog.tag)
+    # 赞、踩
+    try:
+        marks = Mark.objects.get(name_id=num)
+    except Exception as e:
+        new_mark = Mark()
+        new_mark.mark_name_id = mark_user.id
+        new_mark.name_id = blog.id
+        new_mark.save()
+        print('当前文章无点赞实例,新建实例成功！')
+    try:
+        # 尝试获取UserUp的外键BlogUser即name, 若抛出错误则表示没有该用户数据
+        # 则需添加该用户对博主mark的数据
+        mark_up = UserUp.objects.filter(mark_name=mark_user)
+        # 确认可以取到关联mark者和文章的关系，取不到任然会抛出错误
+        up = mark_up.get(name=blog)
+        # print('取到了不要添加！')
+    except:
+        new_up = UserUp()
+        new_up.name = blog
+        new_up.mark_name = mark_user
+        new_up.save()
+        new_down = UserDown()
+        new_down.name = blog
+        new_down.mark_name = mark_user
+        new_down.save()
+        new_star = UserStar()
+        new_star.name = blog
+        new_star.mark_name = mark_user
+        new_star.save()
+        print('添加mark数据成功！')
+    marks = Mark.objects.get(name_id=num)
+    # 添加评论
+    if request.method == 'POST':
+        new_com = request.POST.get('commentContent')
+        com = Comment()
+        com.name = mark_user
+        com.time = timezone.now()
+        com.user = blog
+        com.content = new_com
+        com.save()
+
     txt = {
         'now_time': now_time,
         'this_week': this_week,
@@ -120,22 +168,25 @@ def detail(request, *args):
         'next_blog': next_blog,
         'pre_comment': pre_comment,
         'same_tag_blogs': same_tag_blogs,
+        'username': username,
+        'mark': marks,
+        'num': num,
     }
     return render(request, 'blog/detail.html', txt)
 
 
 def calc(request):
-    print(request.POST)
     # 取得当前博客的点击信息(赞，踩，还是收藏)
+    num = request.POST.get('num')
     mark_method = request.POST.get('mark')
-    name = request.POST.get('mark_name')
+    mark_name = request.POST.get('mark_name')
     # 查找mark的user
-    mark_name = request.session.get('username')
+    name = request.POST.get('blog_name')
     mark_user = Users.objects.get(username=mark_name)
     # 博主的Users对象
-    user = Users.objects.get(name=name)
+    # user = Users.objects.get(username=name)
     # 先根据名字获取对应的BlogUser
-    user = BlogUser.objects.filter(name=user)[0]
+    user = BlogUser.objects.get(id=num)
     # 反向查询
     mark = Mark.objects.filter(name_id=user)[0]
     # 获取需要加上mark数量的元素
@@ -145,7 +196,10 @@ def calc(request):
         print(f'{mark_name}正在给{name}的文章点赞！')
         # 判断是否点赞过此文章
         # 过滤出当前文章对应的数据
+        print(user.id)
+        print(mark_user.id)
         mark_up = UserUp.objects.filter(name=user).filter(mark_name=mark_user)[0]
+        print(mark_up.is_over)
         if mark_up.is_over == False:
             # 该用户已经点过赞
             mark_up.is_over = True
@@ -153,6 +207,7 @@ def calc(request):
             mark_num = mark.up_num + 1
             mark.up_num = mark_num
         else:
+            print('但是已经点过啦')
             mark_num = mark.up_num
     elif mark_method == 'down':
         mark_down = UserDown.objects.filter(name=user).filter(mark_name=mark_user)[0]
@@ -163,15 +218,6 @@ def calc(request):
             mark.down_num = mark_num
         else:
             mark_num = mark.down_num
-    elif mark_method == 'star':
-        mark_star = UserStar.objects.filter(name=user).filter(mark_name=mark_user)[0]
-        if mark_star.is_over == False:
-            mark_star.is_over = True
-            mark_star.save()
-            mark_num = mark.star_num + 1
-            mark.star_num = mark_num
-        else:
-            mark_num = mark.star_num
     mark.save()
     # 给ajax返回success
     return HttpResponse(mark_num)
