@@ -1,6 +1,5 @@
 ﻿{% extends 'blog/base.html' %}
 <!doctype html>
-
 <html>
 <head>
 <meta charset="utf-8">
@@ -44,7 +43,7 @@ window.onload = function() {
         <li><a href=""><span class="glyphicon glyphicon-inbox"></span>后端技术</a></li>
         <li><a href=""><span class="glyphicon glyphicon-globe"></span>管理系统</a></li>
         <li><a href="about.html"><span class="glyphicon glyphicon-user"></span>关于我们</a></li>
-        <li><a href="friendly.html"><span class="glyphicon glyphicon-tags"></span>友情链接</a></li>
+        <li><a href="message.html"><span class="glyphicon glyphicon-tags"></span>友情链接</a></li>
       </ul>
       <div class="feeds"> <a class="feed feed-xlweibo" href="" target="_blank"><i></i>新浪微博</a> <a class="feed feed-txweibo" href="" target="_blank"><i></i>腾讯微博</a> <a class="feed feed-rss" href="" target="_blank"><i></i>订阅本站</a> <a class="feed feed-weixin" data-toggle="popover" data-trigger="hover" title="微信扫一扫" data-html="true" data-content="<img src='images/weixin.jpg' alt=''>" href="javascript:;" target="_blank"><i></i>关注微信</a> </div>
       <div class="wall"><a href="readerWall.html" target="_blank">读者墙</a> | <a href="tags.html" target="_blank">标签云</a></div>
@@ -61,7 +60,7 @@ window.onload = function() {
           <li><a href=""><span class="glyphicon glyphicon-inbox"></span>后端技术</a></li>
           <li><a href=""><span class="glyphicon glyphicon-globe"></span>管理系统</a></li>
           <li><a href="about.html"><span class="glyphicon glyphicon-user"></span>关于我们</a></li>
-          <li><a href="friendly.html"><span class="glyphicon glyphicon-tags"></span>友情链接</a></li>
+          <li><a href="message.html"><span class="glyphicon glyphicon-tags"></span>友情链接</a></li>
             {% block login %}
                 {% if username|length == 0 %}
                     <li><a href="/main/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>

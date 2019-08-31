@@ -79,7 +79,7 @@ body, input, button, textarea, select {
 	overflow: hidden;
 	height: 124px;
 	line-height: 300px;
-	background: url(../images/mxj.png) no-repeat 50% 50%;
+	background: url(../images/blog.png) no-repeat 50% 50%;
 }
 .header .logo a {
 	-moz-transition: all 0.8s ease-in-out;

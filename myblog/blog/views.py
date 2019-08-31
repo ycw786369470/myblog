@@ -17,8 +17,36 @@ def content(request):
     return render(request, 'blog/content.html')
 
 
-def friendly(request):
-    return render(request, 'blog/friendly.html')
+def message(request):
+    if request.method == 'GET':
+        # 观看博客者的username
+        username = request.session.get('username')
+        if username == None:
+            username = ' '
+        mark_user = Users.objects.get(username=username)
+        # 获取当前时间
+        now_time = datetime.date.today()
+        this_week = now_time.isoweekday()
+        all_blogs = BlogUser.objects.all()
+        all_comment = Comment.objects.all()
+        new_blogs = all_blogs[0:5]
+        # 热门评论
+        comment = all_comment[0:5]
+        # 以上为默认上传的两边内容
+
+        txt = {
+            'now_time': now_time,
+            'this_week': this_week,
+            'comment': comment,
+            'new_blog': new_blogs,
+        }
+
+        return render(request, 'blog/message.html', txt)
+    elif request.method == 'POST':
+        name = request.POST.get('commentName')
+        email = request.POST.get('commentEmail')
+        comment = request.POST.get('commentContent')
+        print(name, email, comment)
 
 
 class Index(ListView):
