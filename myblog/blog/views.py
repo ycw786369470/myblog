@@ -18,35 +18,46 @@ def content(request):
 
 
 def message(request):
-    if request.method == 'GET':
-        # 观看博客者的username
-        username = request.session.get('username')
-        if username == None:
-            username = ' '
-        mark_user = Users.objects.get(username=username)
-        # 获取当前时间
-        now_time = datetime.date.today()
-        this_week = now_time.isoweekday()
-        all_blogs = BlogUser.objects.all()
-        all_comment = Comment.objects.all()
-        new_blogs = all_blogs[0:5]
-        # 热门评论
-        comment = all_comment[0:5]
-        # 以上为默认上传的两边内容
+    # 观看博客者的username
+    username = request.session.get('username')
+    if username == None:
+        username = ' '
+    # 获取当前时间
+    now_time = datetime.date.today()
+    this_week = now_time.isoweekday()
+    all_blogs = BlogUser.objects.all()
+    all_user = Users.objects.all()
+    all_comment = Comment.objects.all()
+    new_blogs = all_blogs[0:5]
+    # 热门评论
+    comment = all_comment[0:5]
+    # 以上为默认上传的两边内容
+    # 前五条评论
+    all_msg = Message.objects.all()[0: 5]
 
-        txt = {
-            'now_time': now_time,
-            'this_week': this_week,
-            'comment': comment,
-            'new_blog': new_blogs,
-        }
-
-        return render(request, 'blog/message.html', txt)
-    elif request.method == 'POST':
+    if request.method == 'POST':
         name = request.POST.get('commentName')
         email = request.POST.get('commentEmail')
         comment = request.POST.get('commentContent')
-        print(name, email, comment)
+        msg = Message()
+        msg.name = name
+        msg.time = timezone.now()
+        msg.email = email
+        msg.content = comment
+        msg.save()
+        print(f'{username}发表评论')
+
+    txt = {
+        'users': all_user,
+        'now_time': now_time,
+        'this_week': this_week,
+        'comment': comment,
+        'new_blog': new_blogs,
+        'username': username,
+        'message': all_msg,
+    }
+
+    return render(request, 'blog/message.html', txt)
 
 
 class Index(ListView):
