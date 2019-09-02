@@ -21,20 +21,20 @@ def friendly(request):
     return render(request, 'blog/friendly.html')
 
 
-class Index(ListView):
-    model = BlogUser
-    template_name = 'blog/index.html'
-
-    def get_queryset(self):
-        return super(Index, self).get_queryset()
-
-    def get_context_data(self, **kwargs):
-        '''
-        获取上下文
-            :param kwargs:
-            :return:
-        '''
-        pass
+# class Index(ListView):
+#     model = BlogUser
+#     template_name = 'blog/index.html'
+#
+#     def get_queryset(self):
+#         return super(Index, self).get_queryset()
+#
+#     def get_context_data(self, **kwargs):
+#         '''
+#         获取上下文
+#             :param kwargs:
+#             :return:
+#         '''
+#         pass
 
 
 def index(request, *args):
