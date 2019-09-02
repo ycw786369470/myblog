@@ -56,7 +56,6 @@ def message(request):
         'username': username,
         'message': all_msg,
     }
-
     return render(request, 'blog/message.html', txt)
 
 
@@ -260,9 +259,5 @@ def calc(request):
     mark.save()
     # 给ajax返回success
     return HttpResponse(mark_num)
-
-
-def reader_wall(request):
-    return render(request, 'blog/readerWall.html')
 
 

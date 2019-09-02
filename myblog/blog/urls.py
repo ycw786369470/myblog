@@ -7,6 +7,5 @@ urlpatterns = [
     url(r'/content/', views.content),
     url(r'/detail/(\d+)/$', views.detail),
     url(r'/message/$', views.message),
-    url(r'/readerwall/$', views.reader_wall),
     url(r'/calc/$', views.calc),
 ]
