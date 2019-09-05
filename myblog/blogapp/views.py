@@ -264,7 +264,12 @@ def add_blog(request, *args):
         print('添加完成')
         return HttpResponseRedirect('/main/blog/1')
     elif request.method == 'GET':
-        return render(request, 'blogapp/add_blog.html', {'name': username})
+        form = DjangoForm()
+        txt = {
+            'name': username,
+            'form': form,
+        }
+        return render(request, 'blogapp/add_blog.html', txt)
 
 
 def add_blog_ok(request):

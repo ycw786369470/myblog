@@ -134,8 +134,12 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, r'static/media')
-MEDIA_URL = '/media/blog/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
+MEDIA_URL = '/media/ueditor/'
+MEDIA_DIRS = [
+    os.path.join(BASE_DIR, 'static/media/ueditor/')
+]
+
 THUMB_DIR = os.path.join(BASE_DIR, 'static/media/thumb')
 
 # 发送邮箱引擎

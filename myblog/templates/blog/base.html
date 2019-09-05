@@ -43,9 +43,9 @@ window.onload = function() {
         <li><a href=""><span class="glyphicon glyphicon-inbox"></span>后端技术</a></li>
         <li><a href=""><span class="glyphicon glyphicon-globe"></span>管理系统</a></li>
         <li><a href="/blog/about/"><span class="glyphicon glyphicon-user"></span>关于我们</a></li>
-        <li><a href="/blog/message/"><span class="glyphicon glyphicon-tags"></span>友情链接</a></li>
+        <li><a href="/blog/message/"><span class="glyphicon glyphicon-tags"></span>博客留言</a></li>
           {% block login %}
-        <li><a href="/main/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
+        <li><a href="/blog/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
           {% endblock %}
       </ul>
       <div class="feeds"> <a class="feed feed-xlweibo" href="" target="_blank"><i></i>新浪微博</a> <a class="feed feed-txweibo" href="" target="_blank"><i></i>腾讯微博</a> <a class="feed feed-rss" href="" target="_blank"><i></i>订阅本站</a> <a class="feed feed-weixin" data-toggle="popover" data-trigger="hover" title="微信扫一扫" data-html="true" data-content="<img src='images/weixin.jpg' alt=''>" href="javascript:;" target="_blank"><i></i>关注微信</a> </div>
@@ -229,7 +229,7 @@ window.onload = function() {
                 <dd><span class="name"><a href="" title="由 个人技术博客 发布" rel="author">个人技术博客</a></span> <span class="identity"></span> <span class="time"> 2015-10-19 </span></dd>
                 <dd class="text">欢迎来到个人技术博客技术博客，在这里可以看到网站前端和后端的技术，还有CMS内容管理系统，包括但不限于这些还有CMS内容管理系统，包括但不限于这些。</dd>
               </dl>
-              <div class="news_bot col-sm-7 col-md-8"> <span class="tags visible-lg visible-md"> <a href="">本站</a> <a href="">个人技术博客</a> </span> <span class="look"> 共 <strong>2126</strong> 人围观 </div>
+                <div class="news_bot col-sm-7 col-md-8"> <span class="tags visible-lg visible-md"> <a href="">本站</a> <a href="">个人技术博客</a> </span> <span class="look"> 共 <strong>2126</strong> 人围观 </span></div>
             </div>
           </div>
             {% endblock %}
@@ -300,7 +300,6 @@ window.onload = function() {
     </div>
   </aside>
   <!--/右侧>992px显示-->
-  <footer class="footer">POWERED BY &copy;<a href="#">个人技术博客 XXXXX.COM</a> ALL RIGHTS RESERVED &nbsp;&nbsp;&nbsp;<span><a href="http://www.mycodes.net/" target="_blank">源码之家</a></span> <span style="display:none"><a href="">网站统计</a></span> </footer>
 </section>
 <div><a href="javascript:;" class="gotop" style="display:none;"></a></div>
 <!--/返回顶部-->

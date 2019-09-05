@@ -1,0 +1,27 @@
+.content-block ul{
+    margin-top: 50px;
+}
+.content-block li{
+    margin-top: 20px;
+}
+.content-block li span{
+    position: relative;
+    left: 215px;
+}
+.content-block input{
+    width: 300px;
+    margin: 0 auto;
+}
+.less{
+    width: 300px;
+    margin: 0 auto;
+}
+#submit{
+    background-color: #3399CC;
+    color: whitesmoke;
+    width: 150px;
+    transition: 0.5s;
+}
+#submit:hover{
+    background-color: skyblue;
+}

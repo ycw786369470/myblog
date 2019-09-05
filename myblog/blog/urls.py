@@ -8,4 +8,6 @@ urlpatterns = [
     url(r'/detail/(\d+)/$', views.detail),
     url(r'/message/$', views.message),
     url(r'/calc/$', views.calc),
+    url(r'/login/$', views.login),
+    url(r'/register/$', views.register),
 ]

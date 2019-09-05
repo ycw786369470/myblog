@@ -6,11 +6,33 @@ import math
 from datetime import timedelta
 from django.db.models import F,Q
 from django.views.generic import ListView
+import re
+import hashlib
 # Create your views here.
 
 
 def about(request):
-    return render(request, 'blog/about.html')
+    username = request.session.get('username')
+    if username == None:
+        username = ' '
+    # 获取当前时间
+    now_time = datetime.date.today()
+    this_week = now_time.isoweekday()
+    all_blogs = BlogUser.objects.all()
+    all_user = Users.objects.all()
+    all_comment = Comment.objects.all()
+    new_blogs = all_blogs[0:5]
+    # 热门评论
+    comment = all_comment[0:5]
+    txt = {
+        'users': all_user,
+        'now_time': now_time,
+        'this_week': this_week,
+        'comment': comment,
+        'new_blog': new_blogs,
+        'username': username,
+    }
+    return render(request, 'blog/about.html', txt)
 
 
 def content(request):
@@ -261,3 +283,90 @@ def calc(request):
     return HttpResponse(mark_num)
 
 
+def login(request):
+    if request.method == 'GET':
+        return render(request, 'blog/login.html')
+    elif request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        try:
+            user = Users.objects.get(username=username)
+            # 登陆成功
+            md5_psw = hashlib.md5()
+            md5_psw.update(password.encode(encoding='utf-8'))
+            print(md5_psw.hexdigest())
+            if user.password == md5_psw.hexdigest():
+                request.session['username'] = username
+                return HttpResponseRedirect('blog/index/1')
+            # 密码不对应
+            else:
+                warming = '密码错误！'
+                txt = {
+                    'username': username,
+                    'warming': warming
+                }
+                return render(request, 'blog/login.html', txt)
+        except:
+            warming = '账号不存在！'
+            txt = {
+                'username': username,
+                'warming': warming
+            }
+            return render(request, 'blog/login.html', txt)
+
+
+def register(request):
+    if request.method == 'GET':
+        return render(request, 'blog/register.html')
+    elif request.method == 'POST':
+        tooshort_warming = '密码长度不符！请重新输入'
+        password_warming = '两次密码不匹配！请重新输入'
+        username_warming = '账号已存在！请重新输入'
+        all_num_warming = '账号或密码不能为纯数字！'
+        # 分别取得昵称 账号 密码 确认密码 性别 爱好
+        name = request.POST.get('name')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+        gender = request.POST.get('gender')
+        habits = request.POST.get('habits')
+        reg_html = 'blogapp/register.html'
+        # 判断账号是否是纯数字
+        if username.isdigit() == True and password.isdigit() == True:
+            return render(request, reg_html, {'name': name,
+                                                             'warming': all_num_warming})
+        # 判断密码是否过短或过长,正则判断法
+        if not re.match('[0-9a-zA-Z!@#$%^&*]{8,16}', password):
+            return render(request, reg_html, {'name': name,
+                                                             'warming': tooshort_warming})
+        # 确认两次密码相同
+        if password == password2:
+            # 确认账号没有重复
+            users = Users.objects.filter(username=username)
+            if len(users) == 0:
+                # 判断可以新建账号后添加至数据库
+                new_user = Users()
+                new_user.photo = 'blog/default_photo.png'
+                new_user.name = name
+                new_user.username = username
+                # new_user.password = password
+                # hash md5加密型密码
+                hash_md5 = hashlib.md5()
+                hash_md5.update(password.encode(encoding='utf-8'))
+                md5_psw = hash_md5.hexdigest()
+                new_user.password = md5_psw
+                # 性别
+                new_gender = True if gender == '1' else False
+                new_user.gender = new_gender
+                new_user.habits = Tag.objects.get(id=habits)
+                new_user.save()
+                request.session['username'] = username
+                print('新增账号成功！')
+                return HttpResponseRedirect('/blog/index/1/')
+            # 账号重复，重新填写账号
+            else:
+                return render(request, reg_html, {'name': name,
+                                                    'warming': username_warming})
+        else:
+            return render(request, reg_html, {'name': name,
+                                                'warming': password_warming})

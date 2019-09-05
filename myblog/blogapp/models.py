@@ -14,8 +14,22 @@ from myblog import settings
 from PIL import Image
 # from django.db.
 import os
+from django import forms
+
 
 # Create your models here.
+class DjangoForm(forms.Form):
+    content = UEditorField(
+        '内容', width=600, height=300, toolbars="full", imagePath="ueditor/",
+        filePath="ueditor/",
+        upload_settings={"imageMaxSize": 1204000},
+        settings={}
+    )
+
+
+class NewForm(forms.Form):
+    a = forms.IntegerField()
+    b = forms.IntegerField()
 
 
 class Category(models.Model):
@@ -65,7 +79,7 @@ class Users(models.Model):
     thumb = models.ImageField(upload_to='thumb/', blank=True)   # 缩略图
     name = models.CharField(max_length=25)
     username = models.CharField(max_length=20)
-    password = models.CharField(max_length=20)
+    password = models.CharField(max_length=100)
     gender = models.BooleanField(default=True)
     habits = models.ForeignKey(Tag)
 
@@ -91,7 +105,7 @@ class BlogUser(models.Model):
     tag = models.ForeignKey(Tag)
 
     def __str__(self):
-        return self.name
+        return self.name.name
 
     @classmethod
     def add_user(cls, name, content, time):

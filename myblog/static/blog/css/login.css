@@ -1,0 +1,29 @@
+#inputs{
+    position: relative;
+    top: 50px;
+    width: 300px;
+    margin: 0 auto;
+}
+#password{
+    position: relative;
+    top: 30px;
+}
+#login_box_in .row input{
+    display: inline-block;
+    width: 250px;
+}
+#login_btn{
+    position: relative;
+    top: 120px;
+    width: 100px;
+    margin: 0 auto;
+}
+#register{
+    text-align: center;
+    position: relative;
+    top: 200px;
+}
+#register a{
+    font-size: 18px;
+    color: black;
+}

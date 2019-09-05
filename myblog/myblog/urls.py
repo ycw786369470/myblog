@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from . import settings
+import os
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -22,3 +25,7 @@ urlpatterns = [
     url(r'^blog', include('blog.urls')),
     url(r'^ueditor/', include('DjangoUeditor.urls')),
 ]
+
+if settings.DEBUG:
+    media_root = os.path.join(settings.BASE_DIR, settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=media_root)

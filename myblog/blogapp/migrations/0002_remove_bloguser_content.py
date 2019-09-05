@@ -7,13 +7,12 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blogapp', '0003_auto_20190822_1439'),
+        ('blogapp', '0001_initial'),
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='users',
-            name='thumb',
-            field=models.ImageField(blank=True, upload_to='thumb/'),
+        migrations.RemoveField(
+            model_name='bloguser',
+            name='content',
         ),
     ]
