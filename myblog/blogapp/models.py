@@ -103,6 +103,7 @@ class BlogUser(models.Model):
     content = UEditorField(width=1000, height=300, toolbars="full", imagePath="", filePath="")
     time = models.DateTimeField(auto_now=True)
     tag = models.ForeignKey(Tag)
+    visit = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name.name

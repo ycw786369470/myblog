@@ -1,0 +1,40 @@
+.content-block{
+    position: relative;
+}
+#left_block{
+    width: 200px;
+    height: 245px;
+    padding-top: 20px;
+    border-right: 2px dashed gray;
+    display: inline-block;
+    position: absolute;
+    overflow: hidden;
+}
+#right_block{
+    height: 245px;
+    width: 530px;
+    display: inline-block;
+    position: relative;
+    padding-top: 20px;
+    left: 200px;
+}
+#photo{
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    border: 1px black solid;
+}
+#photo img{
+    width: 100px;
+}
+#left_block ul{
+    margin-top: 15px;
+}
+#left_block ul li{
+    text-align: center;
+    margin-top: 5px;
+}
+#right_block ul li{
+    text-align: center;
+    margin-top: 8px;
+}

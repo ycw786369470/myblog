@@ -16,7 +16,7 @@
 {#热门推荐#}
 {% block hot2 %}
     {% for new in new_blog %}
-        <li><a target="_blank" href=""> <span class="thumb"><img src="/static/media/{{ new.name.photo }}" alt=""></span> <span class="text">{{ new.content|truncatechars:40 }}</span> <span class="text-muted">阅读(2165)</span></a></li>
+        <li><a target="_blank" href=""> <span class="thumb"><img src="/static/media/{{ new.name.photo }}" alt=""></span> <span class="text">{{ new.content|truncatechars:40 }}</span> <span class="text-muted">阅读({{ new.visit }})</span></a></li>
             {% endfor %}
 {% endblock %}
 

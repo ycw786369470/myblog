@@ -432,26 +432,13 @@ def up_img(request, *args):
         user.photo = path
         user.save()
         print('上传头像成功！')
-        return HttpResponseRedirect(f'main/person/username={username}')
+        return HttpResponseRedirect(f'/blog/person/')
 
 
 def logout(request):
     # 清除session，删除用户信息
     request.session.flush()
     return HttpResponseRedirect('/blog/index/1')
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # 设置返回状态码、cookie等

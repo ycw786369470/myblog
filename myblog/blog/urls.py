@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'/calc/$', views.calc),
     url(r'/login/$', views.login),
     url(r'/register/$', views.register),
+    url(r'/person/$', views.person),
 ]

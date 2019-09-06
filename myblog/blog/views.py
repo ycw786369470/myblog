@@ -39,6 +39,36 @@ def content(request):
     return render(request, 'blog/content.html')
 
 
+def person(request):
+    if request.method == 'GET':
+        username = request.session.get('username')
+        if username == None:
+            username = ' '
+        now_time = datetime.date.today()
+        this_week = now_time.isoweekday()
+        all_blogs = BlogUser.objects.all()
+        all_comment = Comment.objects.all()
+        new_blogs = all_blogs[0:5]
+        comment = all_comment[0:5]
+        # 个人内容
+        self = Users.objects.get(username=username)
+        gender = '男' if self.gender == True else '女'
+        up_num = UserUp.objects.filter(mark_name=self)
+        star_num = UserStar.objects.filter(mark_name=self)
+        txt = {
+            'now_time': now_time,
+            'this_week': this_week,
+            'comment': comment,
+            'new_blog': new_blogs,
+            'username': username,
+            'self': self,
+            'gender': gender,
+            'up': up_num.count(),
+            'star': star_num.count(),
+        }
+        return render(request, 'blog/person.html', txt)
+
+
 def message(request):
     # 观看博客者的username
     username = request.session.get('username')
@@ -169,6 +199,8 @@ def detail(request, *args):
     # 当前博客文章
     num = args[0]
     blog = BlogUser.objects.get(id=num)
+    blog.visit += 1
+    blog.save()
     # 上一篇/下一篇
     previous_blog = all_blogs.filter(id__lt=num).order_by('-id')[:1]
     next_blog = all_blogs.filter(id__gt=num)[:1]
@@ -285,7 +317,26 @@ def calc(request):
 
 def login(request):
     if request.method == 'GET':
-        return render(request, 'blog/login.html')
+        username = request.session.get('username')
+        if username == None:
+            username = ' '
+        now_time = datetime.date.today()
+        this_week = now_time.isoweekday()
+        all_blogs = BlogUser.objects.all()
+        all_user = Users.objects.all()
+        all_comment = Comment.objects.all()
+        new_blogs = all_blogs[0:5]
+        comment = all_comment[0:5]
+        # 以上为默认上传的两边内容
+        txt = {
+            'users': all_user,
+            'now_time': now_time,
+            'this_week': this_week,
+            'comment': comment,
+            'new_blog': new_blogs,
+            'username': username,
+        }
+        return render(request, 'blog/login.html', txt)
     elif request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -317,7 +368,26 @@ def login(request):
 
 def register(request):
     if request.method == 'GET':
-        return render(request, 'blog/register.html')
+        username = request.session.get('username')
+        if username == None:
+            username = ' '
+        now_time = datetime.date.today()
+        this_week = now_time.isoweekday()
+        all_blogs = BlogUser.objects.all()
+        all_user = Users.objects.all()
+        all_comment = Comment.objects.all()
+        new_blogs = all_blogs[0:5]
+        comment = all_comment[0:5]
+        # 以上为默认上传的两边内容
+        txt = {
+            'users': all_user,
+            'now_time': now_time,
+            'this_week': this_week,
+            'comment': comment,
+            'new_blog': new_blogs,
+            'username': username,
+        }
+        return render(request, 'blog/register.html', txt)
     elif request.method == 'POST':
         tooshort_warming = '密码长度不符！请重新输入'
         password_warming = '两次密码不匹配！请重新输入'
