@@ -21,9 +21,9 @@
 #register{
     text-align: center;
     position: relative;
-    top: 200px;
+    top: 150px;
 }
 #register a{
-    font-size: 18px;
-    color: black;
+    font-size: 14px;
+    color: gray;
 }

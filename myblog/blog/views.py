@@ -360,7 +360,6 @@ def login(request):
         except:
             warming = '账号不存在！'
             txt = {
-                'username': username,
                 'warming': warming
             }
             return render(request, 'blog/login.html', txt)
@@ -440,3 +439,41 @@ def register(request):
         else:
             return render(request, reg_html, {'name': name,
                                                 'warming': password_warming})
+
+
+def addblog(request):
+    username = request.session.get('username')
+    if username == None:
+        username = ' '
+    if request.method == 'GET':
+        now_time = datetime.date.today()
+        this_week = now_time.isoweekday()
+        all_blogs = BlogUser.objects.all()
+        all_user = Users.objects.all()
+        all_comment = Comment.objects.all()
+        new_blogs = all_blogs[0:5]
+        comment = all_comment[0:5]
+        # 以上为默认上传的两边内容
+        txt = {
+            'users': all_user,
+            'now_time': now_time,
+            'this_week': this_week,
+            'comment': comment,
+            'new_blog': new_blogs,
+            'username': username,
+        }
+        return render(request, 'blog/addblog.html', txt)
+    elif request.method == 'POST':
+        title = request.POST.get('title')
+        content = str(request.POST.get('content'))
+        tag = request.POST.get('tag')
+        user = Users.objects.get(username=username)
+        blog = BlogUser()
+        blog.name = user
+        blog.title = title
+        blog.content = content
+        blog.time = timezone.now()
+        blog.tag = Tag.objects.get(id=tag)
+        blog.save()
+        print('添加完成')
+        return HttpResponseRedirect('/blog/index/1/')

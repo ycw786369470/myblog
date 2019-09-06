@@ -66,7 +66,7 @@ window.onload = function() {
                     <li><a href="/blog/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
                 {% else %}
                     <li><a href="/blog/person/"><span class="glyphicon glyphicon-inbox"></span>欢迎你:{{ username }}</a></li>
-                    <li><a href=""><span class="glyphicon glyphicon-bold"></span>发表博客</a></li>
+                    <li><a href="/blog/addblog/"><span class="glyphicon glyphicon-bold"></span>发表博客</a></li>
                     <li><a href="/main/logout/"><span class="glyphicon glyphicon-remove"></span>注销</a></li>
                 {% endif %}
             {% endblock %}
@@ -116,7 +116,7 @@ window.onload = function() {
             <h3> 欢迎来到个人技术博客技术博客 </h3>
             </a></li>
             {% for week in week_hot %}
-                <li><a href="content.html" target="_blank"><img src="/static/media/{{ week.name.photo }}" alt="">
+                <li><a href="/blog/detail/{{ week.id }}/" target="_blank"><img src="/static/media/{{ week.name.photo }}" alt="">
                 <h3> {{ week.content|truncatechars:20 }} </h3>
                 </a></li>
             {% endfor %}

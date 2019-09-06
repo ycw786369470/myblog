@@ -48,8 +48,7 @@ window.onload = function() {
         <li><a href="/blog/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
           {% endblock %}
       </ul>
-      <div class="feeds"> <a class="feed feed-xlweibo" href="" target="_blank"><i></i>新浪微博</a> <a class="feed feed-txweibo" href="" target="_blank"><i></i>腾讯微博</a> <a class="feed feed-rss" href="" target="_blank"><i></i>订阅本站</a> <a class="feed feed-weixin" data-toggle="popover" data-trigger="hover" title="微信扫一扫" data-html="true" data-content="<img src='images/weixin.jpg' alt=''>" href="javascript:;" target="_blank"><i></i>关注微信</a> </div>
-      <div class="wall"><a href="readerWall.html" target="_blank">读者墙</a> | <a href="tags.html" target="_blank">标签云</a></div>
+      <div class="feeds"> <a class="feed feed-xlweibo" href="" target="_blank"><i></i>新浪微博</a> <a class="feed feed-txweibo" href="" target="_blank"><i></i>腾讯微博</a> <a class="feed feed-rss" href="" target="_blank"><i></i>订阅本站</a> <a class="feed feed-weixin" data-toggle="popover" data-trigger="hover" title="微信扫一扫" data-html="true" data-content="<img src='/static/blog/images/weixin.jpg' style='width:180px;'>" href="javascript:;" target="_blank"><i></i>添加微信</a> </div>
     </div>
     <!--/超小屏幕不显示-->
     <div class="visible-xs header-xs"><!--超小屏幕可见-->
@@ -59,9 +58,9 @@ window.onload = function() {
       <div id="header-xs-menu" class="navbar-collapse collapse">
         <ul class="nav navbar-nav header-xs-nav">
           <li class="active"><a href="index.html"><span class="glyphicon glyphicon-home"></span>网站首页</a></li>
-          <li><a href=""><span class="glyphicon glyphicon-erase"></span>网站前端</a></li>
-          <li><a href=""><span class="glyphicon glyphicon-inbox"></span>后端技术</a></li>
-          <li><a href=""><span class="glyphicon glyphicon-globe"></span>管理系统</a></li>
+          <li><a href=""><span class="glyphicon glyphicon-erase"></span><s>网站前端</s></a></li>
+          <li><a href=""><span class="glyphicon glyphicon-inbox"></span><s>后端技术</s></a></li>
+          <li><a href=""><span class="glyphicon glyphicon-globe"></span><s>管理系统</s></a></li>
           <li><a href="about.html"><span class="glyphicon glyphicon-user"></span>关于我们</a></li>
           <li><a href="message.html"><span class="glyphicon glyphicon-tags"></span>友情链接</a></li>
         </ul>

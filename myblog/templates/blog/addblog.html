@@ -1,0 +1,69 @@
+{% extends 'blog/base.html' %}
+
+{% block head %}
+    文章详情页
+{% endblock %}
+
+{#index部分忽略#}
+{% block index %}
+{% endblock %}
+
+{#每日一句时间#}
+{% block time %}
+    {{ now_time }}&emsp;星期{{ this_week }}
+{% endblock %}
+
+{#热门推荐#}
+{% block hot2 %}
+    {% for new in new_blog %}
+        <li><a target="_blank" href=""> <span class="thumb"><img src="/static/media/{{ new.name.photo }}" alt=""></span> <span class="text">{{ new.content }}</span> <span class="text-muted">阅读({{ new.visit }})</span></a></li>
+            {% endfor %}
+{% endblock %}
+
+{#最新评论#}
+{% block comment %}
+    {% for c in comment %}
+        <li data-toggle="tooltip" data-placement="top" title="{{ c.name.name }}的评论"><a target="_blank" href=""><span class="face"><img src="/static/media/{{ c.name.photo }}" alt=""></span> <span class="text"><strong>{{ c.name.name }}</strong> ({{ c.time }}) 说：<br />
+          {{ c.content }}</span></a></li>
+            {% endfor %}
+{% endblock %}
+
+
+{% block login %}
+    {% if username|length == 0 %}
+        <li><a href="/main/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
+    {% else %}
+        <li><a href="/blog/person/"><span class="glyphicon glyphicon-inbox"></span>欢迎你:{{ username }}</a></li>
+        <li><a href="/blog/addblog/"><span class="glyphicon glyphicon-bold"></span>发表博客</a></li>
+        <li><a href="/main/logout/"><span class="glyphicon glyphicon-remove"></span>注销</a></li>
+    {% endif %}
+{% endblock %}
+
+
+{% block detail %}
+<link rel="stylesheet" href="/static/blog/css/addblog.css">
+  <div class="content-wrap"><!--内容-->
+        <div class="content">
+            <div class="content-block">
+                <h2 class="title"><strong>发表博客</strong></h2>
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <input name="title" id="title" type="text" class="form-control center-block" placeholder="博客文章标题">
+                    <textarea name="content" id="content" class="form-control center-block" placeholder="文章内容"></textarea>
+                    <select name="tag" id="tags" class="form-control center-block">
+                        <option value="1">音乐</option>
+                        <option value="2">电影</option>
+                        <option value="3">游戏</option>
+                        <option value="4">美食</option>
+                        <option value="5">计算机</option>
+                        <option value="6">生活</option>
+                        <option value="7">读书</option>
+                        <option value="8">工作</option>
+                    </select>
+                    <input id="submit" type="submit" class="btn btn-lg center-block">
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}

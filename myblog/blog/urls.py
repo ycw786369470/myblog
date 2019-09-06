@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'/login/$', views.login),
     url(r'/register/$', views.register),
     url(r'/person/$', views.person),
+    url(r'/addblog/$', views.addblog),
 ]

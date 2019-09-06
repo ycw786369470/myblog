@@ -1,0 +1,25 @@
+.content-block input{
+    width: 400px;
+}
+.content-block form{
+    text-align: center;
+}
+#submit{
+    background-color: #3399CC;
+    color: whitesmoke;
+    width: 150px;
+    transition: 0.5s;
+    margin-top: 20px;
+}
+#submit:hover{
+    background-color: skyblue;
+}
+.content-block #content{
+    margin-top: 20px;
+    width: 400px;
+    height: 300px;
+}
+.content-block #tags{
+    margin-top: 20px;
+    width: 400px;
+}

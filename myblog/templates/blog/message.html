@@ -17,7 +17,7 @@
 {#热门推荐#}
 {% block hot2 %}
     {% for new in new_blog %}
-        <li><a target="_blank" href=""> <span class="thumb"><img src="/static/media/{{ new.name.photo }}" alt=""></span> <span class="text">{{ new.content|truncatechars:40 }}</span> <span class="text-muted">阅读(2165)</span></a></li>
+        <li><a target="_blank" href=""> <span class="thumb"><img src="/static/media/{{ new.name.photo }}" alt=""></span> <span class="text">{{ new.content|truncatechars:40 }}</span> <span class="text-muted">阅读({{ new.visit }})</span></a></li>
             {% endfor %}
 {% endblock %}
 
@@ -33,7 +33,8 @@
                 {% if username|length == 1 %}
                     <li><a href="/blog/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
                 {% else %}
-                    <li><a href=""><span class="glyphicon glyphicon-inbox"></span>欢迎你:{{ username }}</a></li>
+                    <li><a href="/blog/person/"><span class="glyphicon glyphicon-inbox"></span>欢迎你:{{ username }}</a></li>
+                    <li><a href="/blog/addblog/"><span class="glyphicon glyphicon-bold"></span>发表博客</a></li>
                     <li><a href="/main/logout/"><span class="glyphicon glyphicon-remove"></span>注销</a></li>
                 {% endif %}
 {% endblock %}
