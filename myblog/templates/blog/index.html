@@ -112,8 +112,8 @@ window.onload = function() {
         <h2 class="title"><strong>本周热门排行</strong></h2>
         <ul>
             {% block hot %}
-            <li class="large"><a href="content.html" target="_blank"><img src="/static/blog/images/img3.jpg" alt="">
-            <h3> 欢迎来到个人技术博客技术博客 </h3>
+            <li class="large"><a href="content.html" target="_blank"><img src="/static/blog/images/yxfs.png" alt="">
+            <h3>以下范上，以flow代枪</h3>
             </a></li>
             {% for week in week_hot %}
                 <li><a href="/blog/detail/{{ week.id }}/" target="_blank"><img src="/static/media/{{ week.name.photo }}" alt="">
@@ -129,7 +129,7 @@ window.onload = function() {
         {% block news_list %}
             {% for blog in blogs %}
             <div class="news-list">
-            <div class="news-img col-xs-5 col-sm-5 col-md-4"> <a target="_blank" href=""><img src="/static/media/{{ blog.name.photo }}" alt="" style="height: 150px;"> </a> </div>
+            <div class="news-img col-xs-5 col-sm-5 col-md-4" style="width: 200px"> <a target="_blank" href=""><img src="/static/media/{{ blog.name.photo }}" alt="" style="height: 150px;"> </a> </div>
             <div class="news-info col-xs-7 col-sm-7 col-md-8">
               <dl>
                 <dt> <a href="/blog/detail/{{ blog.id }}/" target="_blank" > {{ blog.title }} </a> </dt>
@@ -171,7 +171,8 @@ window.onload = function() {
           {{ now_time }}&emsp;星期{{ this_week }}
             {% endblock %}
       </h2>
-      <p>你是我人生中唯一的主角，我却只能是你故事中的一晃而过得路人甲。</p>
+      <p>早就站稳 地下开垦 成为你心中的范本 在这综艺前，
+          早就算准 不怕你玩烂梗 哥们从小拜的关公忠义全。</p>
     </div>
     <div id="search" class="sidebar-block search" role="search">
       <h2 class="title"><strong>搜索</strong></h2>

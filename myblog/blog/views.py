@@ -155,7 +155,7 @@ def index(request, *args):
             user = Users.objects.get(username=username)
             if user.password == password:
                 request.session['username'] = username
-                return HttpResponseRedirect('/main/index/1')
+                return HttpResponseRedirect('/blog/index/1')
         except:
             warming_msg = '账号或密码错误！'
             return render(request, 'blogapp/login.html', {'username': username,
@@ -399,7 +399,7 @@ def register(request):
         password2 = request.POST.get('password2')
         gender = request.POST.get('gender')
         habits = request.POST.get('habits')
-        reg_html = 'blogapp/register.html'
+        reg_html = 'blog/register.html'
         # 判断账号是否是纯数字
         if username.isdigit() == True and password.isdigit() == True:
             return render(request, reg_html, {'name': name,
