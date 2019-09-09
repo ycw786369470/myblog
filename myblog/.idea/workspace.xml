@@ -92,8 +92,8 @@
           <file leaf-file-name="base.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/templates/blog/base.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="136">
-                  <caret line="255" column="10" selection-start-line="255" selection-start-column="10" selection-end-line="255" selection-end-column="10" />
+                <state relative-caret-position="436">
+                  <caret line="267" column="37" selection-start-line="267" selection-start-column="37" selection-end-line="267" selection-end-column="37" />
                 </state>
               </provider>
             </entry>
@@ -105,8 +105,8 @@
           <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/blog/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="63">
-                  <caret line="396" column="47" selection-start-line="396" selection-start-column="47" selection-end-line="396" selection-end-column="47" />
+                <state relative-caret-position="338">
+                  <caret line="407" column="63" lean-forward="true" selection-start-line="407" selection-start-column="63" selection-end-line="407" selection-end-column="63" />
                   <folding>
                     <element signature="e#0#71#0" expanded="true" />
                   </folding>
@@ -601,6 +601,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="507">
           <caret line="31" selection-start-line="31" selection-end-line="31" />
+          <folding>
+            <element signature="e#615#656#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -758,6 +761,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
           <caret line="252" column="8" lean-forward="true" selection-start-line="252" selection-start-column="8" selection-end-line="264" selection-end-column="51" />
+          <folding>
+            <element signature="e#1115#1160#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -822,8 +828,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="396" column="47" selection-start-line="396" selection-start-column="47" selection-end-line="396" selection-end-column="47" />
+        <state relative-caret-position="338">
+          <caret line="407" column="63" lean-forward="true" selection-start-line="407" selection-start-column="63" selection-end-line="407" selection-end-column="63" />
           <folding>
             <element signature="e#0#71#0" expanded="true" />
           </folding>
@@ -832,8 +838,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/blog/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="255" column="10" selection-start-line="255" selection-start-column="10" selection-end-line="255" selection-end-column="10" />
+        <state relative-caret-position="436">
+          <caret line="267" column="37" selection-start-line="267" selection-start-column="37" selection-end-line="267" selection-end-column="37" />
         </state>
       </provider>
     </entry>
