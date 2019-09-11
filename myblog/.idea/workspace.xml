@@ -89,11 +89,20 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="base.html" pinned="false" current-in-tab="true">
+          <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/templates/blog/base.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="436">
-                  <caret line="267" column="37" selection-start-line="267" selection-start-column="37" selection-end-line="267" selection-end-column="37" />
+                <state relative-caret-position="36">
+                  <caret line="251" selection-start-line="250" selection-end-line="251" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="tests.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/blogapp/tests.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="175">
+                  <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
                 </state>
               </provider>
             </entry>
@@ -105,8 +114,8 @@
           <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/blog/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="338">
-                  <caret line="407" column="63" lean-forward="true" selection-start-line="407" selection-start-column="63" selection-end-line="407" selection-end-column="63" />
+                <state relative-caret-position="25">
+                  <caret line="407" column="63" selection-start-line="407" selection-start-column="63" selection-end-line="407" selection-end-column="63" />
                   <folding>
                     <element signature="e#0#71#0" expanded="true" />
                   </folding>
@@ -174,7 +183,6 @@
         <option value="$PROJECT_DIR$/blogapp/templates/blogapp/login.html" />
         <option value="$PROJECT_DIR$/blogapp/templates/blogapp/base.html" />
         <option value="$PROJECT_DIR$/static/myblog/css/register.css" />
-        <option value="$PROJECT_DIR$/blogapp/tests.py" />
         <option value="$PROJECT_DIR$/templates/blogapp/registering.html" />
         <option value="$PROJECT_DIR$/static/myblog/css/login.css" />
         <option value="$PROJECT_DIR$/blogapp/middleware.py" />
@@ -222,6 +230,7 @@
         <option value="$PROJECT_DIR$/blog/views.py" />
         <option value="$PROJECT_DIR$/templates/blog/index.html" />
         <option value="$PROJECT_DIR$/templates/blog/base.html" />
+        <option value="$PROJECT_DIR$/blogapp/tests.py" />
       </list>
     </option>
   </component>
@@ -244,7 +253,25 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="myblog" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myblog" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="myblog" type="b2602c69:ProjectViewProjectNode" />
+              <item name="myblog" type="462c0819:PsiDirectoryNode" />
+              <item name="blogapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
@@ -471,14 +498,15 @@
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17895442" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" weight="0.3297587" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32904148" />
-      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="5" sideWeight="0.49932975" weight="0.34887007" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32905984" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32905984" />
@@ -486,12 +514,11 @@
       <window_info anchor="right" id="Database" order="4" weight="0.288874" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.33333334" />
       <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.50067025" side_tool="true" weight="0.35470086" />
-      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" weight="0.3297587" />
+      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="14" visible="true" weight="0.32905984" />
       <window_info anchor="bottom" id="Database Console" order="13" weight="0.32905984" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="14" visible="true" weight="0.32905984" />
       <window_info id="Favorites" order="2" side_tool="true" />
     </layout-to-restore>
   </component>
@@ -507,13 +534,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/myblog/js/blog_detail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="8" column="44" lean-forward="true" selection-start-line="8" selection-start-column="44" selection-end-line="8" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2018.1/system/python_stubs/659596511/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="172">
@@ -601,9 +621,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="507">
           <caret line="31" selection-start-line="31" selection-end-line="31" />
-          <folding>
-            <element signature="e#615#656#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -761,9 +778,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
           <caret line="252" column="8" lean-forward="true" selection-start-line="252" selection-start-column="8" selection-end-line="264" selection-end-column="51" />
-          <folding>
-            <element signature="e#1115#1160#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -828,8 +842,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="407" column="63" lean-forward="true" selection-start-line="407" selection-start-column="63" selection-end-line="407" selection-end-column="63" />
+        <state relative-caret-position="25">
+          <caret line="407" column="63" selection-start-line="407" selection-start-column="63" selection-end-line="407" selection-end-column="63" />
           <folding>
             <element signature="e#0#71#0" expanded="true" />
           </folding>
@@ -838,8 +852,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/blog/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="267" column="37" selection-start-line="267" selection-start-column="37" selection-end-line="267" selection-end-column="37" />
+        <state relative-caret-position="36">
+          <caret line="251" selection-start-line="250" selection-end-line="251" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogapp/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>

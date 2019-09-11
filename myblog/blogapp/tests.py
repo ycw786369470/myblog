@@ -4,3 +4,4 @@ from django.test import TestCase
 num = 1
 gender = 'man' if num == 1 else 'women'
 print(gender)
+
