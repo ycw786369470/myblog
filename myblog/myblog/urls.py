@@ -18,13 +18,16 @@ from django.contrib import admin
 from . import settings
 import os
 from django.conf.urls.static import static
+from blogapp.upload import upload_image
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^main', include('blogapp.urls')),
     url(r'^blog', include('blog.urls')),
     url(r'^ueditor/', include('DjangoUeditor.urls')),
+    url('^admin/upload/(?P<dir_name>[^/]+)$', upload_image, name='upload_image'),
 ]
+
 
 if settings.DEBUG:
     media_root = os.path.join(settings.BASE_DIR, settings.MEDIA_ROOT)

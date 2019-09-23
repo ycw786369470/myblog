@@ -114,7 +114,7 @@ class BlogUser(models.Model):
         return self
 
     class Meta:
-        verbose_name_plural = '博客用户'
+        verbose_name_plural = '全部博客'
 
 
 class Comment(models.Model):

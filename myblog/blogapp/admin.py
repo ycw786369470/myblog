@@ -16,6 +16,12 @@ admin.site.register(FriendLink)
 admin.site.register(Us)
 
 
+class Media:
+    js = (
+        '/static/js/kindeditor/kindeditor-all-min.js',
+        '/static/js/kindeditor/kindeditor-all.js',
+        '/static/js/kindeditor/config.js'
+    )
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
