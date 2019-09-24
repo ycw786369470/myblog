@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block head %}
-    个人主页
+    选择餐厅
 {% endblock %}
 
 {#index部分忽略#}
@@ -34,41 +34,30 @@
         <li><a href="/main/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
     {% else %}
         <li><a href="/blog/person/"><span class="glyphicon glyphicon-inbox"></span>欢迎你:{{ username }}</a></li>
-        <li><a href="/blog/addblog/ "><span class="glyphicon glyphicon-bold"></span>发表博客</a></li>
+        <li><a href="/blog/addblog/"><span class="glyphicon glyphicon-bold"></span>发表博客</a></li>
         <li><a href="/main/logout/"><span class="glyphicon glyphicon-remove"></span>注销</a></li>
     {% endif %}
 {% endblock %}
 
 
 {% block detail %}
-<link rel="stylesheet" href="/static/blog/css/person.css">
+<link rel="stylesheet" href="/static/blog/css/login.css">
   <div class="content-wrap"><!--内容-->
-        <div class="content">
-            <div class="content-block">
-                <h2 class="title"><strong>个人主页</strong></h2>
-                <div id="left_block">
-                    <div id="photo">
-                        <img src="/static/media/{{ self.photo }}">
+    <div class="content">
+        <div class="content-block">
+            <h2 class="title"><strong>请输入餐厅对应序号</strong></h2>
+            <form action="#" method="post">
+                <div id="inputs">
+                    <div class="row" id="username">
+                        <span>餐厅序号:</span>
+                        <input type="text" class="form-control" name="name" placeholder="输入餐厅编号，如 999" value="{{ canteen_num }}">
+                        {% if warming|length != 0 %}
+                            <p class="danger">您输入的编号有误，请重新输入</p>
+                        {% endif %}
                     </div>
-                    <ul>
-                        <li>昵称:<span>{{ self.name }}</span></li>
-                        <li>性别:<span>{{ gender }}</span></li>
-                        <li>账号:<span>{{ self.username }}</span></li>
-                        <li><a href="/main/img/username={{ user.username }}/" class="glyphicon glyphicon-pencil">更新头像</a></li>
-                    </ul>
                 </div>
-                <div id="right_block">
-                    <ul>
-                        <li>点赞({{ up }})</li>
-                        <li>收藏({{ star }})</li>
-                        <li>关注(0)</li>
-                        <li>粉丝(0)</li>
-                        <li>个人链接:<a href="www.baidu.com">www.baidu.com</a></li>
-                        <li>QQ:786369470</li>
-                        <li>个性签名:孙咲川天皇是弟弟</li>
-                    </ul>
-                </div>
-            </div>
+                <input type="submit" value="进入餐厅" class="form-control" id="login_btn">
+            </form>
         </div>
     </div>
   </div>

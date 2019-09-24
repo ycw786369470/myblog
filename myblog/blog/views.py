@@ -8,9 +8,9 @@ from django.db.models import F,Q
 from django.views.generic import ListView
 import re
 import hashlib
+
+
 # Create your views here.
-
-
 def about(request):
     username = request.session.get('username')
     if username == None:
@@ -109,22 +109,6 @@ def message(request):
         'message': all_msg,
     }
     return render(request, 'blog/message.html', txt)
-
-
-class Index(ListView):
-    model = BlogUser
-    template_name = 'blog/index.html'
-
-    def get_queryset(self):
-        return super(Index, self).get_queryset()
-
-    def get_context_data(self, **kwargs):
-        '''
-        获取上下文
-            :param kwargs:
-            :return:
-        '''
-        pass
 
 
 def index(request, *args):

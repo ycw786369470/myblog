@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'blogapp',
     'blog',
     'DjangoUeditor',
+    'canteen',
 )
 
 MIDDLEWARE_CLASSES = (

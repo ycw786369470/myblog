@@ -258,6 +258,29 @@ class Us(models.Model):
         verbose_name_plural = '关于我们'
 
 
+# 餐厅模型部分
+class Canteen(models.Model):
+    canteen_name = models.CharField(max_length=50)
+    canteen_boss = models.CharField(max_length=30)
+    canteen_num = models.CharField(max_length=10)       # 餐厅编号
+
+
+# 餐厅餐桌表
+class Table(models.Model):
+    canteen = models.ForeignKey(Canteen)
+    table_num = models.IntegerField(default=8)
+    table_clients = models.IntegerField(default=0)
+    is_over = models.BooleanField(default=False)
+
+
+# 客户消费记录
+class ClientHistory(models.Model):
+    consume_time = models.DateTimeField(auto_now_add=True)
+    food = models.CharField(max_length=500)
+    price = models.FloatField()
+    is_over = models.BooleanField(default=False)
+
+
 '''
     制作缩略图
     img_path：图片路径

@@ -17,6 +17,10 @@
     top: 120px;
     width: 100px;
     margin: 0 auto;
+    transition: 0.5s;
+}
+#login_btn:hover{
+    background-color: aliceblue;
 }
 #register{
     text-align: center;
@@ -26,4 +30,12 @@
 #register a{
     font-size: 14px;
     color: gray;
+}
+#canteen_table{
+    width: 24.5%;
+    text-align: center;
+    display: inline-block;
+}
+#canteen_table img{
+    width: 90%;
 }

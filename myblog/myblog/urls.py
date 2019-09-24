@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^main', include('blogapp.urls')),
     url(r'^blog', include('blog.urls')),
+    url(r'^canteen', include('canteen.urls')),
     url(r'^ueditor/', include('DjangoUeditor.urls')),
     url('^admin/upload/(?P<dir_name>[^/]+)$', upload_image, name='upload_image'),
 ]
