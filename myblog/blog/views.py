@@ -72,7 +72,7 @@ def person(request):
 def message(request):
     # 观看博客者的username
     username = request.session.get('username')
-    if username == None:
+    if username is None:
         username = ' '
     # 获取当前时间
     now_time = datetime.date.today()
@@ -276,7 +276,7 @@ def calc(request):
         print(mark_user.id)
         mark_up = UserUp.objects.filter(name=user).filter(mark_name=mark_user)[0]
         print(mark_up.is_over)
-        if mark_up.is_over == False:
+        if mark_up.is_over is False:
             # 该用户已经点过赞
             mark_up.is_over = True
             mark_up.save()
@@ -287,7 +287,7 @@ def calc(request):
             mark_num = mark.up_num
     elif mark_method == 'down':
         mark_down = UserDown.objects.filter(name=user).filter(mark_name=mark_user)[0]
-        if mark_down.is_over == False:
+        if mark_down.is_over is False:
             mark_down.is_over = True
             mark_down.save()
             mark_num = mark.down_num + 1
@@ -302,7 +302,7 @@ def calc(request):
 def login(request):
     if request.method == 'GET':
         username = request.session.get('username')
-        if username == None:
+        if username is None:
             username = ' '
         now_time = datetime.date.today()
         this_week = now_time.isoweekday()

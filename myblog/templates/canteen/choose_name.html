@@ -31,7 +31,7 @@
 
 {% block login %}
     {% if username|length == 1 %}
-        <li><a href="/main/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
+        <li><a href="/blog/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
     {% else %}
         <li><a href="/blog/person/"><span class="glyphicon glyphicon-inbox"></span>欢迎你:{{ username }}</a></li>
         <li><a href="/blog/addblog/"><span class="glyphicon glyphicon-bold"></span>发表博客</a></li>
@@ -51,7 +51,7 @@
                     <div class="row" id="username">
                         <span>餐厅序号:</span>
                         <input type="text" class="form-control" name="name" placeholder="输入餐厅编号，如 999" value="{{ canteen_num }}">
-                        {% if warming|length != 0 %}
+                        {% if warming == 1 %}
                             <p class="danger">您输入的编号有误，请重新输入</p>
                         {% endif %}
                     </div>

@@ -1,11 +1,13 @@
 '''
+    0、早期个人博客
     1、登录、注册界面√
     2、登陆成功后直接跳转至博客主页，左上角“登录”更改为欢迎xxx√
     3、登陆后才能发表博客文章，游客禁止√
     4、发布文章界面完善√
     5、点赞系统完善√
     6、游客禁止点赞界面√
-    7、个人界面
+    7、个人界面√
+    8、餐厅功能(目前账号密码与博客共享)
 '''
 
 from DjangoUeditor.models import UEditorField
@@ -82,6 +84,7 @@ class Users(models.Model):
     password = models.CharField(max_length=100)
     gender = models.BooleanField(default=True)
     habits = models.ForeignKey(Tag)
+    is_boss = models.BooleanField(default=False)
 
     # def save(self, force_insert=False, force_update=False, using=None,
     #          update_fields=None):
@@ -270,7 +273,19 @@ class Table(models.Model):
     canteen = models.ForeignKey(Canteen)
     table_num = models.IntegerField(default=8)
     table_clients = models.IntegerField(default=0)
+    table_food = models.CharField(max_length=300, default='none')
     is_over = models.BooleanField(default=False)
+
+
+class Menu(models.Model):
+    canteen = models.ForeignKey(Canteen)
+    food_name = models.CharField(max_length=30, default='暂无')
+    food_img = models.ImageField(upload_to='canteen/img/', blank=True)
+    food_price = models.FloatField(default=0)       # 价格
+    food_intro = models.CharField(max_length=200)   # 简介
+    food_num = models.IntegerField(default=0)       # 菜品库存
+    food_up = models.IntegerField(default=0)        # 菜品点赞量
+    food_sold = models.IntegerField(default=0)      # 历史售量
 
 
 # 客户消费记录
@@ -281,13 +296,13 @@ class ClientHistory(models.Model):
     is_over = models.BooleanField(default=False)
 
 
-'''
-    制作缩略图
-    img_path：图片路径
-    size：缩略图尺寸
-    return：返回缩咯图
-'''
 def make_thumb(img_path, size=(80, 80)):
+    '''
+        制作缩略图
+        img_path：图片路径
+        size：缩略图尺寸
+        return：返回缩咯图
+    '''
     img = Image.open(img_path)  # 打开图片
     img.thumbnail(size)         # 压缩成指定尺寸
     return img
