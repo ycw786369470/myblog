@@ -6,4 +6,5 @@ urlpatterns = [
     url(r'/table/$', views.choose_table),
     url(r'/add/$', views.add_table),
     url(r'/p/(\d+)/$', views.menu),
+    url(r'/addfood/$', views.add_food),
 ]

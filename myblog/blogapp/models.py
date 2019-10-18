@@ -1,13 +1,23 @@
 '''
-    0、早期个人博客
-    1、登录、注册界面√
-    2、登陆成功后直接跳转至博客主页，左上角“登录”更改为欢迎xxx√
-    3、登陆后才能发表博客文章，游客禁止√
-    4、发布文章界面完善√
-    5、点赞系统完善√
-    6、游客禁止点赞界面√
-    7、个人界面√
-    8、餐厅功能(目前账号密码与博客共享)
+    一、
+        0、早期个人博客√
+        1、登录、注册界面√
+        2、登陆成功后直接跳转至博客主页，左上角“登录”更改为欢迎xxx√
+        3、登陆后才能发表博客文章，游客禁止√
+        4、发布文章界面完善√
+        5、点赞系统完善√
+        6、游客禁止点赞界面√
+        7、个人界面√
+        8、餐厅功能(目前账号密码与博客共享)
+    二、每次迁移数据后应该做什么？
+        0、shell中新增tag表
+            'E:\work\python\学习笔记\django.docx'末尾
+        1、新增超级用户
+            python manage.py createsuperuser
+        2、创建博客管理员用户
+        3、新增餐厅信息
+        4、给餐厅新增菜单
+        ...
 '''
 
 from DjangoUeditor.models import UEditorField
@@ -267,6 +277,9 @@ class Canteen(models.Model):
     canteen_boss = models.CharField(max_length=30)
     canteen_num = models.CharField(max_length=10)       # 餐厅编号
 
+    def __str__(self):
+        return self.canteen_name
+
 
 # 餐厅餐桌表
 class Table(models.Model):
@@ -275,6 +288,9 @@ class Table(models.Model):
     table_clients = models.IntegerField(default=0)
     table_food = models.CharField(max_length=300, default='none')
     is_over = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.canteen.canteen_name + 'self.id'
 
 
 class Menu(models.Model):
@@ -286,6 +302,23 @@ class Menu(models.Model):
     food_num = models.IntegerField(default=0)       # 菜品库存
     food_up = models.IntegerField(default=0)        # 菜品点赞量
     food_sold = models.IntegerField(default=0)      # 历史售量
+
+    def __str__(self):
+        return self.food_name
+
+    @classmethod
+    def add_food(cls, canteen, food_name,
+                      food_img, food_price,
+                      food_intro, food_num,
+                      food_up, food_sold):
+        self = cls(canteen=canteen, food_name=food_name,
+                   food_img=food_img, food_price=food_price,
+                   food_intro=food_intro, food_num=food_num,
+                   food_up=food_up, food_sold=food_sold)
+        return self
+
+    class Meta:
+        verbose_name_plural = '菜单'
 
 
 # 客户消费记录

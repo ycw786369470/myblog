@@ -2,6 +2,20 @@ from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from blogapp.models import *
 import datetime
 
+# 两边内容
+# 获取当前时间
+now_time = datetime.date.today()
+this_week = now_time.isoweekday()
+all_blogs = BlogUser.objects.all().order_by('-time')
+all_user = Users.objects.all()
+all_comment = Comment.objects.all()
+new_blogs = all_blogs[0: 5]
+# 热门评论
+comment = all_comment[0: 5]
+
+
+# 以上为默认上传的两边内容
+
 
 # Create your views here.
 def choose_name(request):
@@ -21,16 +35,7 @@ def choose_name(request):
         username = request.session.get('username')
         if username is None:
             username = ' '
-        # 获取当前时间
-        now_time = datetime.date.today()
-        this_week = now_time.isoweekday()
-        all_blogs = BlogUser.objects.all()
-        all_user = Users.objects.all()
-        all_comment = Comment.objects.all()
-        new_blogs = all_blogs[0:5]
-        # 热门评论
-        comment = all_comment[0:5]
-        # 以上为默认上传的两边内容
+
         txt = {
             'users': all_user,
             'now_time': now_time,
@@ -53,13 +58,7 @@ def choose_table(request):
         username = request.session.get('username')
         if username is None:
             username = ' '
-        now_time = datetime.date.today()
-        this_week = now_time.isoweekday()
-        all_blogs = BlogUser.objects.all()
-        all_user = Users.objects.all()
-        all_comment = Comment.objects.all()
-        new_blogs = all_blogs[0:5]
-        comment = all_comment[0:5]
+
         user = Users.objects.get(username=username)
         tables = Table.objects.filter(canteen=canteen)
         txt = {
@@ -84,13 +83,6 @@ def add_table(request):
         username = request.session.get('username')
         if username is None:
             username = ' '
-        now_time = datetime.date.today()
-        this_week = now_time.isoweekday()
-        all_blogs = BlogUser.objects.all()
-        all_user = Users.objects.all()
-        all_comment = Comment.objects.all()
-        new_blogs = all_blogs[0:5]
-        comment = all_comment[0:5]
 
         txt = {
             'users': all_user,
@@ -111,6 +103,13 @@ def add_table(request):
         new_table.save()
         print('添加桌位成功！')
         return HttpResponseRedirect('/canteen/table/')
+
+
+def add_food(request):
+    if request.method == 'GET':
+        pass
+    else:
+        pass
 
 
 # 点菜

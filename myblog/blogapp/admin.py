@@ -14,6 +14,7 @@ admin.site.register(NewBlog)
 admin.site.register(Message)
 admin.site.register(FriendLink)
 admin.site.register(Us)
+admin.site.register(Menu)
 
 
 class Media:

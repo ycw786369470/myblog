@@ -45,7 +45,12 @@
   <div class="content-wrap"><!--内容-->
     <div class="content">
         <div class="content-block">
-            <h2 class="title"><strong>菜单</strong></h2>
+            <h2 class="title"><strong>{{ canteen_name }}-菜单</strong>&nbsp;&nbsp;
+                {% if is_boss == 1 %}
+                    <a href="/canteen/addfood/" style="color: #666;"><strong>新增菜品</strong></a>
+                {% else %}
+                {% endif %}
+            </h2>
             {% for food in menu %}
             <div id="foods">
                 <!-- 左边图片 -->
@@ -60,11 +65,12 @@
                         <li style="position:relative;">
                             <span style="font-size: 22px;">价格￥:{{ food.food_price }}</span>
                             <span style="position:absolute; right: 20px;">
-                                <a href="#" class="glyphicon glyphicon-minus" id="{{ food.id }}_less"></a>
+                                {# javascript:void(0)伪代码取消a标签的跳转功能 #}
+                                <a href="javascript:void(0)" onclick="return false" class="glyphicon glyphicon-minus" id="{{ food.id }}_less"></a>
                                 &nbsp;&nbsp;
                                 <span><input type="text" id="food_{{ food.id }}" value="0" style="width: 30px; text-align: center"></span>
                                 &nbsp;&nbsp;
-                                <a href="#" class="glyphicon glyphicon-plus" id="{{ food.id }}_more"></a>
+                                <a href="javascript:void(0)" class="glyphicon glyphicon-plus" id="{{ food.id }}_more"></a>
                             </span>
                         </li>
                     </ul>
@@ -73,13 +79,28 @@
             <script>
                 var bt1 = document.getElementById('{{ food.id }}_less');
                 var bt2 = document.getElementById('{{ food.id }}_more');
-                var nums = document.getElementById('{{ food.id }}_food').value;
+                var nums = document.getElementById('food_{{ food.id }}').value;
+                nums{{ food.id }} = parseInt(nums);
                 bt1.onclick = function () {
-                    alert(nums);
-                }
+                    if (nums{{ food.id }} >= 1){
+                        nums{{ food.id }} -= 1;
+                        $('#food_{{ food.id }}').val(nums{{ food.id }});
+                    }else{
+                        alert('菜品数量必须大于一份！');
+                    }
+                };
+                bt2.onclick = function () {
+                    nums{{ food.id }} += 1;
+                    $('#food_{{ food.id }}').val(nums{{ food.id }});
+                };
             </script>
             {% endfor %}
+            <div id="commit_menu">
+                <button id="commit_bt" class="btn-primary">确定</button>
+            </div>
+            <script>
 
+            </script>
         </div>
     </div>
   </div>
