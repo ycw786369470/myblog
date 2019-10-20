@@ -216,7 +216,7 @@ def calc(request):
         # 判断是否点赞过此文章
         # 过滤出当前文章对应的数据
         mark_up = UserUp.objects.filter(name=user).filter(mark_name=mark_user)[0]
-        if mark_up.is_over == False:
+        if mark_up.is_over is False:
             # 该用户已经点过赞
             mark_up.is_over = True
             mark_up.save()
@@ -226,7 +226,7 @@ def calc(request):
             mark_num = mark.up_num
     elif mark_method == 'down':
         mark_down = UserDown.objects.filter(name=user).filter(mark_name=mark_user)[0]
-        if mark_down.is_over == False:
+        if mark_down.is_over is False:
             mark_down.is_over = True
             mark_down.save()
             mark_num = mark.down_num + 1
@@ -235,7 +235,7 @@ def calc(request):
             mark_num = mark.down_num
     elif mark_method == 'star':
         mark_star = UserStar.objects.filter(name=user).filter(mark_name=mark_user)[0]
-        if mark_star.is_over == False:
+        if mark_star.is_over is False:
             mark_star.is_over = True
             mark_star.save()
             mark_num = mark.star_num + 1

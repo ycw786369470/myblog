@@ -18,20 +18,10 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=30)),
                 ('content', DjangoUeditor.models.UEditorField()),
                 ('time', models.DateTimeField(auto_now=True)),
-                ('visit', models.IntegerField(default=0)),
             ],
             options={
-                'verbose_name_plural': '全部博客',
+                'verbose_name_plural': '博客用户',
             },
-        ),
-        migrations.CreateModel(
-            name='Canteen',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
-                ('canteen_name', models.CharField(max_length=50)),
-                ('canteen_boss', models.CharField(max_length=30)),
-                ('canteen_num', models.CharField(max_length=10)),
-            ],
         ),
         migrations.CreateModel(
             name='Category',
@@ -75,23 +65,6 @@ class Migration(migrations.Migration):
                 ('down_num', models.IntegerField(default=0)),
                 ('star_num', models.IntegerField(default=0)),
             ],
-        ),
-        migrations.CreateModel(
-            name='Menu',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
-                ('food_name', models.CharField(max_length=30, default='暂无')),
-                ('food_img', models.ImageField(blank=True, upload_to='canteen/img/')),
-                ('food_price', models.FloatField(default=0)),
-                ('food_intro', models.CharField(max_length=200)),
-                ('food_num', models.IntegerField(default=0)),
-                ('food_up', models.IntegerField(default=0)),
-                ('food_sold', models.IntegerField(default=0)),
-                ('canteen', models.ForeignKey(to='blogapp.Canteen')),
-            ],
-            options={
-                'verbose_name_plural': '菜单',
-            },
         ),
         migrations.CreateModel(
             name='Message',
@@ -151,17 +124,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Table',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
-                ('table_num', models.IntegerField(default=8)),
-                ('table_clients', models.IntegerField(default=0)),
-                ('table_food', models.CharField(max_length=300, default='none')),
-                ('is_over', models.BooleanField(default=False)),
-                ('canteen', models.ForeignKey(to='blogapp.Canteen')),
-            ],
-        ),
-        migrations.CreateModel(
             name='Tag',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
@@ -207,9 +169,8 @@ class Migration(migrations.Migration):
                 ('thumb', models.ImageField(blank=True, upload_to='thumb/')),
                 ('name', models.CharField(max_length=25)),
                 ('username', models.CharField(max_length=20)),
-                ('password', models.CharField(max_length=100)),
+                ('password', models.CharField(max_length=20)),
                 ('gender', models.BooleanField(default=True)),
-                ('is_boss', models.BooleanField(default=False)),
                 ('habits', models.ForeignKey(to='blogapp.Tag')),
             ],
         ),

@@ -1,0 +1,117 @@
+{% extends 'blog/base.html' %}
+
+{% block head %}
+    支付
+{% endblock %}
+
+{#index部分忽略#}
+{% block index %}
+{% endblock %}
+
+{#每日一句时间#}
+{% block time %}
+    {{ now_time }}&emsp;星期{{ this_week }}
+{% endblock %}
+
+{#热门推荐#}
+{% block hot2 %}
+    {% for new in new_blog %}
+        <li><a target="_blank" href=""> <span class="thumb"><img src="/static/media/{{ new.name.photo }}" alt=""></span> <span class="text">{{ new.content|truncatechars:40 }}</span> <span class="text-muted">阅读({{ new.visit }})</span></a></li>
+            {% endfor %}
+{% endblock %}
+
+{#最新评论#}
+{% block comment %}
+    {% for c in comment %}
+        <li data-toggle="tooltip" data-placement="top" title="{{ c.name.name }}的评论"><a target="_blank" href=""><span class="face"><img src="/static/media/{{ c.name.photo }}" alt=""></span> <span class="text"><strong>{{ c.name.name }}</strong> ({{ c.time }}) 说：<br />
+          {{ c.content }}</span></a></li>
+            {% endfor %}
+{% endblock %}
+
+
+{% block login %}
+    {% if username|length == 1 %}
+        <li><a href="/blog/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
+    {% else %}
+        <li><a href="/blog/person/"><span class="glyphicon glyphicon-inbox"></span>{{ username }}</a></li>
+        <li><a href="/blog/addblog/"><span class="glyphicon glyphicon-bold"></span>发表博客</a></li>
+        <li><a href="/main/logout/"><span class="glyphicon glyphicon-remove"></span>注销</a></li>
+    {% endif %}
+{% endblock %}
+
+
+{% block detail %}
+<link rel="stylesheet" href="/static/blog/css/login.css">
+  <div class="content-wrap"><!--内容-->
+    <div class="content">
+        <div class="content-block">
+            <h2 class="title"><strong>{{ canteen_name }}--结账</strong></h2>
+            <div id="paper">
+                <div id="pay-content">
+                    <li><h4>{{ canteen_name }}<span style="font-size: 14px;">--00{{ table }}</span></h4></li>
+                    {% for i in food_ls %}
+                    <li>
+                        <!-- python字典操作 -->
+                        <span class="pay-left">{{ i.Name }} * {{ i.Nums }}</span>
+                        <span style="font-size: 20px">···············</span>
+                        <span class="pay-right">￥{{ i.Price }}</span>
+                    </li>
+                    {% endfor %}
+                    <li><h6 style="text-align: right;"><span class="pay-left">用户id:</span>
+                        {% if username|length == 1 %}
+                            <span class="pay-right">未登陆</span>
+                        {% else %}
+                            <span class="pay-right">{{ username }}</span>
+                        {% endif %}
+                    </h6></li>
+                    <li>
+                        <h6 style="text-align: right"><span class="pay-left">订单编号:</span>
+                            <span class="pay-right">{{ id }}</span>
+                        </h6>
+                    </li>
+                    <li>
+                        <h6 style="text-align: right">
+                            <span class="pay-left">支付状态:</span>
+                            {% if paid == 1 %}
+                            <span class="pay-right" style="color: green;" id="no-pay">已支付</span>
+                            {% else %}
+                            <span class="pay-right" style="color: indianred;" id="no-pay">未支付
+                                <a href="#" id="paying">点击支付</a>
+                                <a href="#" id="refresh"><span class="glyphicon glyphicon-refresh"></span></a>
+                            </span>
+                            {% endif %}
+                        </h6>
+                        <script src="/static/myblog/jquery.js"></script>
+                        <script>
+                            // 局部刷新检测是否支付
+                            $('#refresh').click(function () {
+                                $.ajax({
+                                    url: '/canteen/check/',
+                                    type: 'post',
+                                    data: {
+                                        'id': {{ id }},
+                                    },
+                                    success:function (res) {
+                                        if(res == 1){
+                                            {#// alert('已支付');#}
+                                            $('#no-pay').css({'color': 'green'});
+                                            $('#no-pay').text('已支付');
+                                            $('#paying').text('');
+                                            console.log('ok');
+                                        }else{
+                                            alert('未支付！请尽快支付')
+                                        }
+                                    },
+                                    error:function (err) {
+                                        alert('刷新失败！请重试');
+                                    }
+                                })
+                            })
+                        </script>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}

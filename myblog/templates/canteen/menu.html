@@ -33,7 +33,7 @@
     {% if username|length == 1 %}
         <li><a href="/blog/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
     {% else %}
-        <li><a href="/blog/person/"><span class="glyphicon glyphicon-inbox"></span>欢迎你:{{ username }}</a></li>
+        <li><a href="/blog/person/"><span class="glyphicon glyphicon-inbox"></span>{{ username }}</a></li>
         <li><a href="/blog/addblog/"><span class="glyphicon glyphicon-bold"></span>发表博客</a></li>
         <li><a href="/main/logout/"><span class="glyphicon glyphicon-remove"></span>注销</a></li>
     {% endif %}
@@ -60,15 +60,17 @@
                 <!-- 右边简介 -->
                 <div id="food_intro">
                     <ul>
-                        <li><a href="#"><h2>{{ food.food_name }}</h2></a></li>
+                        <li><a href="#"><h2 class="food_name" title="{{ food.food_name }}">{{ food.food_name }}</h2></a></li>
                         <li><p style="display: block; height: 70px;">{{ food.food_intro }}</p></li>
                         <li style="position:relative;">
-                            <span style="font-size: 22px;">价格￥:{{ food.food_price }}</span>
-                            <span style="position:absolute; right: 20px;">
+                            <span style="font-size: 22px;" class="food_price" title="{{ food.food_price }}">价格￥:{{ food.food_price }}</span>
+                            <span style="font-size: 14px; margin-left: 5px">赞:  {{ food.food_up }}</span>
+                            <span style="font-size: 14px; margin-left: 5px">已售:  {{ food.food_sold }}</span>
+                            <span style="position:absolute; right: 20px; top: 4px;">
                                 {# javascript:void(0)伪代码取消a标签的跳转功能 #}
                                 <a href="javascript:void(0)" onclick="return false" class="glyphicon glyphicon-minus" id="{{ food.id }}_less"></a>
                                 &nbsp;&nbsp;
-                                <span><input type="text" id="food_{{ food.id }}" value="0" style="width: 30px; text-align: center"></span>
+                                <span><input type="text" id="food_{{ food.id }}" class="foods" value="0" style="width: 30px; text-align: center"></span>
                                 &nbsp;&nbsp;
                                 <a href="javascript:void(0)" class="glyphicon glyphicon-plus" id="{{ food.id }}_more"></a>
                             </span>
@@ -99,7 +101,49 @@
                 <button id="commit_bt" class="btn-primary">确定</button>
             </div>
             <script>
-
+                // 提交点菜菜单
+                var commit = document.getElementById('commit_bt');
+                commit.onclick = function () {
+                    var food_nums = document.getElementsByClassName('foods');           //
+                    var food_names = document.getElementsByClassName('food_name');
+                    var food_price = document.getElementsByClassName('food_price');
+                    // 保存菜的名字和数量
+                    var foods_ls = [];
+                    var all_price = 0;
+                    for (var i=0; i<food_nums.length; i++ ){
+                        // 获取点的菜的数量
+                        var name = food_names[i].title;
+                        var num = parseInt(food_nums[i].value);
+                        var price = parseFloat(food_price[i].title);
+                        var food = {
+                            'name': name,
+                            'nums': num,
+                            'price': num * price
+                        };
+                        foods_ls.push(food);
+                        all_price += num * price;
+                    }
+                    console.log(foods_ls);
+                    $.ajax({
+                        url: '/canteen/p/{{ table_num }}/',
+                        type: 'post',
+                        data: {
+                            'foods': foods_ls,
+                            'table_num': {{ table_num }},
+                            'client_name': '{{ username }}',
+                            'all_price': all_price,
+                            'len': food_nums.length,
+                            'csrfmiddlewaretoken': $('[name="csrfmiddlewaretoken"]').val()
+                        },
+                        success:function (res) {
+                            alert('点餐成功！');
+                            window.location.href = res
+                        },
+                        error:function (err) {
+                            alert(err);
+                        }
+                    })
+                }
             </script>
         </div>
     </div>

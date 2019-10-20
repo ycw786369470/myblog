@@ -96,6 +96,8 @@ class Users(models.Model):
     habits = models.ForeignKey(Tag)
     is_boss = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.name
     # def save(self, force_insert=False, force_update=False, using=None,
     #          update_fields=None):
     #     super(Users, self).save()   # 调用父类方法
@@ -307,10 +309,11 @@ class Menu(models.Model):
         return self.food_name
 
     @classmethod
-    def add_food(cls, canteen, food_name,
-                      food_img, food_price,
-                      food_intro, food_num,
-                      food_up, food_sold):
+    def add_food(cls, canteen,
+                 food_name, food_img,
+                 food_price, food_intro,
+                 food_num, food_up,
+                 food_sold):
         self = cls(canteen=canteen, food_name=food_name,
                    food_img=food_img, food_price=food_price,
                    food_intro=food_intro, food_num=food_num,
@@ -323,10 +326,13 @@ class Menu(models.Model):
 
 # 客户消费记录
 class ClientHistory(models.Model):
-    consume_time = models.DateTimeField(auto_now_add=True)
-    food = models.CharField(max_length=500)
-    price = models.FloatField()
-    is_over = models.BooleanField(default=False)
+    client = models.ForeignKey(Users)
+    canteen = models.ForeignKey(Canteen)
+    table = models.IntegerField(default=0)
+    consume_time = models.DateTimeField(auto_now_add=True)          # 消费时间
+    food = models.CharField(max_length=800)                         # 菜单记录
+    price = models.FloatField()                                     # 价格
+    paid = models.BooleanField(default=False)                       # 是否支付
 
 
 def make_thumb(img_path, size=(80, 80)):

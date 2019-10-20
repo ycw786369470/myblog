@@ -32,7 +32,7 @@
                 {% if username|length == 1 %}
                     <li><a href="/main/login/"><span class="glyphicon glyphicon-inbox"></span>注册登录</a></li>
                 {% else %}
-                    <li><a href="/blog/person/"><span class="glyphicon glyphicon-inbox"></span>欢迎你:{{ username }}</a></li>
+                    <li><a href="/blog/person/"><span class="glyphicon glyphicon-inbox"></span>{{ username }}</a></li>
                     <li><a href="/blog/addblog/"><span class="glyphicon glyphicon-bold"></span>发表博客</a></li>
                     <li><a href="/main/logout/"><span class="glyphicon glyphicon-remove"></span>注销</a></li>
                 {% endif %}
@@ -118,9 +118,7 @@
       </div>
 <script src="/static/blog/js/jquery-2.1.4.min.js"></script>
 <script>
-console.log('123');
 $('#up').click(function () {
-    console.log('123');
     $.ajax({
         url: '/blog/calc/',
         type: 'post',

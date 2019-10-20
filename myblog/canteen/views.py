@@ -1,6 +1,10 @@
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from blogapp.models import *
 import datetime
+import json
+import math
+from django.utils import timezone
+
 
 # 两边内容
 # 获取当前时间
@@ -8,7 +12,7 @@ now_time = datetime.date.today()
 this_week = now_time.isoweekday()
 all_blogs = BlogUser.objects.all().order_by('-time')
 all_user = Users.objects.all()
-all_comment = Comment.objects.all()
+all_comment = Comment.objects.all().order_by('-time')
 new_blogs = all_blogs[0: 5]
 # 热门评论
 comment = all_comment[0: 5]
@@ -114,22 +118,15 @@ def add_food(request):
 
 # 点菜
 def menu(request, *args):
+    # 餐桌号
     num = args[0]
     canteen_num = request.session.get('canteen_num')
     canteen = Canteen.objects.get(canteen_num=canteen_num)
+    username = request.session.get('username')
+    if username is None:
+        username = ' '
     if request.method == 'GET':
-        username = request.session.get('username')
-        if username is None:
-            username = ' '
-        now_time = datetime.date.today()
-        this_week = now_time.isoweekday()
-        all_blogs = BlogUser.objects.all()
-        all_user = Users.objects.all()
-        all_comment = Comment.objects.all()
-        new_blogs = all_blogs[0:5]
-        comment = all_comment[0:5]
-
-        menu = Menu.objects.filter(canteen=canteen)
+        canteen_menu = Menu.objects.filter(canteen=canteen)
         txt = {
             'users': all_user,
             'now_time': now_time,
@@ -138,8 +135,88 @@ def menu(request, *args):
             'new_blog': new_blogs,
             'username': username,
             'canteen_name': canteen.canteen_name,
-            'menu': menu,
+            'menu': canteen_menu,
+            'table_num': num,
         }
         return render(request, 'canteen/menu.html', txt)
     else:
-        pass
+        user = Users.objects.get(username=username)
+        json_data = request.POST
+        # 将json文件转化成字典文件
+        dict_data = eval(json.dumps(json_data, ensure_ascii=False))
+        # 提取数据给厨房（boss）查看
+        food_ls = []
+        # 保存至数据库的菜单
+        food_data = []
+        table = dict_data['table_num']
+        client = dict_data['client_name']
+        all_price = round(float(dict_data['all_price']), 2)
+        length = int(dict_data['len'])
+        for i in range(length):
+            name = dict_data[f'foods[{i}][name]']
+            nums = dict_data[f'foods[{i}][nums]']
+            price = dict_data[f'foods[{i}][price]']
+            if int(nums) > 0:
+                d = {
+                    'Name': name,
+                    'Nums': nums,
+                    'Price': price,
+                }
+                food_ls.append(d)
+                food_data.append(f'【{name}】*{nums}')
+        request.session.set_expiry(0)   # 关闭浏览器则清空session
+        food_data = '——'.join(food_data)
+        # 保存数据
+        c_history = ClientHistory()
+        c_history.client = user
+        c_history.canteen = canteen
+        c_history.consume_time = timezone.now()
+        c_history.food = food_data
+        c_history.price = all_price
+        c_history.table = int(table)
+        c_history.save()
+        request.session['food_ls'] = food_ls
+        request.session['table'] = table
+        request.session['id'] = c_history.id
+        return HttpResponse('/canteen/paying/')
+
+
+# 支付
+def paying(request):
+    canteen_num = request.session.get('canteen_num')
+    canteen = Canteen.objects.get(canteen_num=canteen_num)
+    if request.method == 'GET':
+        username = request.session.get('username')
+        if username is None:
+            username = ' '
+        food_ls = request.session.get('food_ls')
+        table = request.session.get('table')
+        id = request.session.get('id')
+        history = ClientHistory.objects.get(id=id)
+        paid = 1 if history.paid else 0
+        txt = {
+            'users': all_user,
+            'now_time': now_time,
+            'this_week': this_week,
+            'comment': comment,
+            'new_blog': new_blogs,
+            'username': username,
+            'canteen_name': canteen.canteen_name,
+            'food_ls': food_ls,
+            'table': table,
+            'id': id,
+            'paid': paid,
+        }
+        return render(request, 'canteen/paying.html', txt)
+
+
+# ajax检验是否支付成功
+def check_paid(request):
+    if request.method == 'POST':
+        json_data = request.POST
+        dict_data = eval(json.dumps(json_data, ensure_ascii=False))
+        id = dict_data['id']
+        history = ClientHistory.objects.get(id=id)
+        paid = 1 if history.paid else 0
+        return HttpResponse(paid)
+
