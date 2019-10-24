@@ -328,6 +328,7 @@ class Menu(models.Model):
 class ClientHistory(models.Model):
     client = models.ForeignKey(Users)
     canteen = models.ForeignKey(Canteen)
+    client_num = models.IntegerField(default=1)                     # 用餐人数
     table = models.IntegerField(default=0)
     consume_time = models.DateTimeField(auto_now_add=True)          # 消费时间
     food = models.CharField(max_length=800)                         # 菜单记录

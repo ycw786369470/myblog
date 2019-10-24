@@ -6,7 +6,6 @@ import math
 from django.utils import timezone
 
 
-# 两边内容
 # 获取当前时间
 now_time = datetime.date.today()
 this_week = now_time.isoweekday()
@@ -16,12 +15,10 @@ all_comment = Comment.objects.all().order_by('-time')
 new_blogs = all_blogs[0: 5]
 # 热门评论
 comment = all_comment[0: 5]
-
-
 # 以上为默认上传的两边内容
 
 
-# Create your views here.
+# 客户选择餐厅
 def choose_name(request):
     if request.method == 'POST':
         canteen_num = str(request.POST.get('name'))
@@ -55,6 +52,7 @@ def choose_name(request):
         )
 
 
+# 客户选择餐桌
 def choose_table(request):
     canteen_num = request.session.get('canteen_num')
     canteen = Canteen.objects.get(canteen_num=canteen_num)
@@ -79,6 +77,7 @@ def choose_table(request):
         return render(request, 'canteen/choose_table.html', txt)
 
 
+# 管理员新增餐桌
 def add_table(request):
     # 获取店名
     canteen_num = request.session.get('canteen_num')
@@ -109,6 +108,40 @@ def add_table(request):
         return HttpResponseRedirect('/canteen/table/')
 
 
+# 选择用餐人数
+def client_num(request, *args):
+    nums = args[0]
+    canteen_num = request.session.get('canteen_num')
+    canteen = Canteen.objects.get(canteen_num=canteen_num)
+    table = Table.objects.get(id=nums)
+    table_num = table.table_num
+    ls = [i + 1 for i in range(table_num)]
+    if request.method == 'GET':
+        username = request.session.get('username')
+        if username is None:
+            username = ' '
+        txt = {
+            'users': all_user,
+            'now_time': now_time,
+            'this_week': this_week,
+            'comment': comment,
+            'new_blog': new_blogs,
+            'username': username,
+            'nums': nums,
+            'ls': ls,
+            'canteen_name': canteen.canteen_name,
+        }
+        return render(request, 'canteen/client_num.html', txt)
+    else:
+        clients = request.POST.get('client')
+        print(type(clients), clients)
+        table.table_clients = int(clients)
+        table.is_over = False
+        table.save()
+        return HttpResponseRedirect(f'/canteen/p/{nums}/')
+
+
+# 管理员新增菜单
 def add_food(request):
     if request.method == 'GET':
         pass
@@ -149,13 +182,13 @@ def menu(request, *args):
         # 保存至数据库的菜单
         food_data = []
         table = dict_data['table_num']
-        client = dict_data['client_name']
+        # client = dict_data['client_name']
         all_price = round(float(dict_data['all_price']), 2)
         length = int(dict_data['len'])
         for i in range(length):
             name = dict_data[f'foods[{i}][name]']
             nums = dict_data[f'foods[{i}][nums]']
-            price = dict_data[f'foods[{i}][price]']
+            price = round(float(dict_data[f'foods[{i}][price]']), 2)
             if int(nums) > 0:
                 d = {
                     'Name': name,
@@ -181,19 +214,21 @@ def menu(request, *args):
         return HttpResponse('/canteen/paying/')
 
 
-# 支付
+# 支付页面
 def paying(request):
     canteen_num = request.session.get('canteen_num')
     canteen = Canteen.objects.get(canteen_num=canteen_num)
+    food_ls = request.session.get('food_ls')
+    table = request.session.get('table')  # 桌号
+    id = request.session.get('id')  # 消费记录id
+    table_now = Table.objects.get(id=int(table))
     if request.method == 'GET':
         username = request.session.get('username')
         if username is None:
             username = ' '
-        food_ls = request.session.get('food_ls')
-        table = request.session.get('table')
-        id = request.session.get('id')
         history = ClientHistory.objects.get(id=id)
         paid = 1 if history.paid else 0
+        is_over = 1 if table_now.is_over else 0
         txt = {
             'users': all_user,
             'now_time': now_time,
@@ -206,8 +241,18 @@ def paying(request):
             'table': table,
             'id': id,
             'paid': paid,
+            'is_over': is_over,
         }
         return render(request, 'canteen/paying.html', txt)
+    else:
+        json_data = request.POST
+        dict_data = eval(json.dumps(json_data, ensure_ascii=False))
+        table_id = dict_data['table']
+        if table == table_id:
+            table_now.is_over = True
+            table_now.table_clients = 0
+            table_now.save()
+            return HttpResponse(1)
 
 
 # ajax检验是否支付成功
@@ -220,3 +265,12 @@ def check_paid(request):
         paid = 1 if history.paid else 0
         return HttpResponse(paid)
 
+
+# ajax支付
+def wx_pay(request):
+    if request.method == 'POST':
+        id = request.session.get('id')
+        history = ClientHistory.objects.get(id=id)
+        history.paid = True
+        history.save()
+        return HttpResponse(1)

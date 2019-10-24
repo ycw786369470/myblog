@@ -76,39 +76,75 @@
                             <span class="pay-right" style="color: green;" id="no-pay">已支付</span>
                             {% else %}
                             <span class="pay-right" style="color: indianred;" id="no-pay">未支付
-                                <a href="#" id="paying">点击支付</a>
+                                <a href="#" id="paying" class="feed" data-toggle="popover" data-trigger="hover" data-html="true" data-content="<img src='/static/canteen/img/wx.png/' style='width:180px;'>">扫码支付</a>
                                 <a href="#" id="refresh"><span class="glyphicon glyphicon-refresh"></span></a>
                             </span>
                             {% endif %}
                         </h6>
-                        <script src="/static/myblog/jquery.js"></script>
-                        <script>
-                            // 局部刷新检测是否支付
-                            $('#refresh').click(function () {
-                                $.ajax({
-                                    url: '/canteen/check/',
-                                    type: 'post',
-                                    data: {
-                                        'id': {{ id }},
-                                    },
-                                    success:function (res) {
-                                        if(res == 1){
-                                            {#// alert('已支付');#}
-                                            $('#no-pay').css({'color': 'green'});
-                                            $('#no-pay').text('已支付');
-                                            $('#paying').text('');
-                                            console.log('ok');
-                                        }else{
-                                            alert('未支付！请尽快支付')
-                                        }
-                                    },
-                                    error:function (err) {
-                                        alert('刷新失败！请重试');
-                                    }
-                                })
-                            })
-                        </script>
                     </li>
+                    {% if paid == 1 %}
+                    <li style="margin-top: 20px">
+                        {% if is_over == 1 %}
+                            <h5>用餐完毕</h5>
+                        {% else %}
+                            <h5><a href="#" id="over">结束用餐</a></h5>
+                        {% endif %}
+                    </li>
+                    {% endif %}
+                    <script src="/static/myblog/jquery.js"></script>
+                    <script>
+                        // 局部刷新检测是否支付
+                        $('#refresh').click(function () {
+                            $.ajax({
+                                url: '/canteen/check/',
+                                type: 'post',
+                                data: {
+                                    'id': {{ id }},
+                                },
+                                success:function (res) {
+                                    if(res == 1){
+                                        {#// alert('已支付');#}
+                                        $('#no-pay').css({'color': 'green'});
+                                        $('#no-pay').text('已支付');
+                                        $('#paying').text('');
+                                        console.log('ok');
+                                    }else{
+                                        alert('未支付！请尽快支付')
+                                    }
+                                },
+                                error:function (err) {
+                                    alert('刷新失败！请重试');
+                                }
+                            })
+                        });
+                        $('#paying').click(function () {
+                            $.ajax({
+                                url: '/canteen/wxpay/',
+                                type: 'post',
+                                data: {},
+                                success: function (res) {
+                                    alert('支付成功！');
+                                    location.reload();
+                                }
+                            })
+                        });
+                        $('#over').click(function () {
+                            $.ajax({
+                                url: '/canteen/paying/',
+                                type: 'post',
+                                data: {
+                                    table: {{ table }},
+                                    paid: {{ paid }},
+                                },
+                                success: function (res) {
+                                    if(res == 1){
+                                        alert('用餐已结束!')
+                                        $('#over').text('用餐完毕')
+                                    }
+                                }
+                            })
+                        })
+                    </script>
                 </div>
             </div>
         </div>
