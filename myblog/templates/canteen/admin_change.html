@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block head %}
-    选择座位
+    餐厅管理界面
 {% endblock %}
 
 {#index部分忽略#}
@@ -45,28 +45,34 @@
   <div class="content-wrap"><!--内容-->
     <div class="content">
         <div class="content-block">
-            <h2 class="title"><strong>{{ canteen_name }}-选择座位</strong>&nbsp;&nbsp;
-                {% if is_boss == 1 %}
-                    <a href="/canteen/newtable/" style="color: #666;"><strong>新增桌位</strong></a>
-                {% else %}
-                {% endif %}
-            </h2>
-            {% for t in table_nums %}
-                {% if t.table_clients == 0 %}
-                <div id="canteen_table">
-                    <a href="/canteen/client/{{ t.id }}/"><img src="/static/canteen/img/table_none.png" class="img-responsive" ></a>
-                    <p>餐桌人数:{{ t.table_clients }}/{{ t.table_num }}</p>
-                    <p>桌位:00{{ forloop.counter }}</p>
-                </div>
-                {% else %}
-                <div id="canteen_table">
-                    <a href="/canteen/client/{{ t.id }}/"><img src="/static/canteen/img/table_full.png" class="img-responsive" ></a>
-                    <p style="color: darkred">餐桌人数:{{ t.table_clients }}/{{ t.table_num }}</p>
-                    <p style="color: darkred">桌位:00{{ forloop.counter }}(被使用)</p>
-                </div>
-                {% endif %}
-            {% endfor %}
-
+            <h2 class="title"><strong>餐厅管理</strong></h2>
+            <!-- 表格 -->
+            <table class="table table-hover table-striped">
+                <tr>
+                    <td>餐厅名:{{ canteen.canteen_name }}</td>
+                    <td>操作</td>
+                </tr>
+                <tr>
+                    <td>BOSS:{{ canteen.canteen_boss }}</td>
+                    <td><a href="#">修改</a></td>
+                </tr>
+                <tr>
+                    <td>餐厅编号:{{ canteen.canteen_num }}</td>
+                    <td><a href="#">修改</a></td>
+                </tr>
+                <tr>
+                    <td>历史订单</td>
+                    <td><a href="#">查看</a></td>
+                </tr>
+                <tr>
+                    <td>餐厅桌位</td>
+                    <td><a href="#">查看</a></td>
+                </tr>
+                <tr>
+                    <td>餐厅菜单</td>
+                    <td><a href="#">查看</a></td>
+                </tr>
+            </table>
         </div>
     </div>
   </div>

@@ -73,7 +73,7 @@
                         <h6 style="text-align: right">
                             <span class="pay-left">支付状态:</span>
                             {% if paid == 1 %}
-                            <span class="pay-right" style="color: green;" id="no-pay">已支付</span>
+                            <span class="pay-right" style="color: green;" id="no-pay">已支付 <span class="glyphicon glyphicon-ok" style="color: darkgreen"></span></span>
                             {% else %}
                             <span class="pay-right" style="color: indianred;" id="no-pay">未支付
                                 <a href="#" id="paying" class="feed" data-toggle="popover" data-trigger="hover" data-html="true" data-content="<img src='/static/canteen/img/wx.png/' style='width:180px;'>">扫码支付</a>
@@ -85,9 +85,9 @@
                     {% if paid == 1 %}
                     <li style="margin-top: 20px">
                         {% if is_over == 1 %}
-                            <h5>用餐完毕</h5>
+                            <h5 style="color:#666;">用餐完毕</h5>
                         {% else %}
-                            <h5><a href="#" id="over">结束用餐</a></h5>
+                            <h5><a href="#" id="over">结束用餐(结束用餐时请点击)</a></h5>
                         {% endif %}
                     </li>
                     {% endif %}

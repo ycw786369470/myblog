@@ -21,22 +21,12 @@ comment = all_comment[0: 5]
 # 客户选择餐厅
 def choose_name(request):
     if request.method == 'POST':
-        canteen_num = str(request.POST.get('name'))
-        # 拉取餐厅信息,拉取失败则返回选择页面
-        try:
-            canteen = Canteen.objects.get(canteen_num=canteen_num)
-            request.session['canteen_num'] = canteen_num
-            return HttpResponseRedirect('/canteen/table/')
-        except:
-            return render(request, 'canteen/choose_name.html', {'canteen_num': canteen_num,
-                                                                'warming': 1,
-                                                                })
-    elif request.method == 'GET':
-        # 观看博客者的username
         username = request.session.get('username')
+        user = Users.objects.get(username=username)
         if username is None:
             username = ' '
-
+        canteen_num = str(request.POST.get('name'))
+        # 拉取餐厅信息,拉取失败则返回选择页面
         txt = {
             'users': all_user,
             'now_time': now_time,
@@ -44,6 +34,31 @@ def choose_name(request):
             'comment': comment,
             'new_blog': new_blogs,
             'username': username,
+            'canteen_num': canteen_num,
+            'warming': 1,
+            'is_boss': 1 if user.is_boss else 0,
+        }
+        try:
+            canteen = Canteen.objects.get(canteen_num=canteen_num)
+            request.session['canteen_num'] = canteen_num
+            return HttpResponseRedirect('/canteen/table/')
+        except:
+            return render(request, 'canteen/choose_name.html', txt)
+    elif request.method == 'GET':
+        # 观看博客者的username
+        username = request.session.get('username')
+        username = request.session.get('username')
+        user = Users.objects.get(username=username)
+        if username is None:
+            username = ' '
+        txt = {
+            'users': all_user,
+            'now_time': now_time,
+            'this_week': this_week,
+            'comment': comment,
+            'new_blog': new_blogs,
+            'username': username,
+            'is_boss': 1 if user.is_boss else 0,
         }
         return render(
             request,
@@ -60,7 +75,6 @@ def choose_table(request):
         username = request.session.get('username')
         if username is None:
             username = ' '
-
         user = Users.objects.get(username=username)
         tables = Table.objects.filter(canteen=canteen)
         txt = {
@@ -274,3 +288,37 @@ def wx_pay(request):
         history.paid = True
         history.save()
         return HttpResponse(1)
+
+
+# 管理员页面,操作餐厅数据。
+def adm_choose_canteen(request):
+    if request.method == 'GET':
+        username = request.session.get('username')
+        canteens = Canteen.objects.all()
+        txt = {
+            'users': all_user,
+            'now_time': now_time,
+            'this_week': this_week,
+            'comment': comment,
+            'new_blog': new_blogs,
+            'username': username,
+            'canteens': canteens,
+        }
+        return render(request, 'canteen/admin_choose.html', txt)
+
+
+def adm_change_canteen(request, *args):
+    canteen_id = args[0]
+    if request.method == 'GET':
+        username = request.session.get('username')
+        canteen = Canteen.objects.get(id=canteen_id)
+        txt = {
+            'users': all_user,
+            'now_time': now_time,
+            'this_week': this_week,
+            'comment': comment,
+            'new_blog': new_blogs,
+            'username': username,
+            'canteen': canteen,
+        }
+        return render(request, 'canteen/admin_change.html', txt)

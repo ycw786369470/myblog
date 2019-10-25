@@ -45,14 +45,19 @@
   <div class="content-wrap"><!--内容-->
     <div class="content">
         <div class="content-block">
-            <h2 class="title"><strong>请输入餐厅对应序号</strong></h2>
+            <h2 class="title">
+                <strong>请输入餐厅序号</strong>&nbsp;&nbsp;
+                {% if is_boss == 1 %}
+                <strong><a href="/canteen/admin/choose/" style="color: #666;">管理餐厅界面</a></strong>
+                {% endif %}
+            </h2>
             <form action="#" method="post">
                 <div id="inputs">
                     <div class="row" id="username">
                         <span>餐厅序号:</span>
-                        <input type="text" class="form-control" name="name" placeholder="输入餐厅编号，如 999" value="{{ canteen_num }}">
+                        <input style="margin-top: 5px" type="text" class="form-control" name="name" placeholder="输入餐厅编号，如 999" value="{{ canteen_num }}">
                         {% if warming == 1 %}
-                            <p class="danger">您输入的编号有误，请重新输入</p>
+                            <p style="color: darkred; margin-top: 5px">您输入的编号有误，请重新输入</p>
                         {% endif %}
                     </div>
                 </div>
