@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block head %}
-    选择座位
+    餐厅修改主管
 {% endblock %}
 
 {#index部分忽略#}
@@ -43,31 +43,13 @@
 {% block detail %}
 <link rel="stylesheet" href="/static/blog/css/login.css">
   <div class="content-wrap"><!--内容-->
-    <div class="content">
+     <div class="content">
         <div class="content-block">
-            <h2 class="title"><strong>{{ canteen_name }}-选择座位</strong>&nbsp;&nbsp;
-                {% if is_boss == 1 %}
-                    <a href="/canteen/newtable/" style="color: #666;"><strong>新增桌位</strong></a>&nbsp;&nbsp;
-                    <a href="/canteen/addfood/" style="color: #666;"><strong>新增菜品</strong></a>
-                {% else %}
-                {% endif %}
-            </h2>
-            {% for t in table_nums %}
-                {% if t.table_clients == 0 %}
-                <div id="canteen_table">
-                    <a href="/canteen/client/{{ t.id }}/"><img src="/static/canteen/img/table_none.png" class="img-responsive" ></a>
-                    <p>餐桌人数:{{ t.table_clients }}/{{ t.table_num }}</p>
-                    <p>桌位:00{{ forloop.counter }}</p>
-                </div>
-                {% else %}
-                <div id="canteen_table">
-                    <a href="/canteen/client/{{ t.id }}/"><img src="/static/canteen/img/table_full.png" class="img-responsive" ></a>
-                    <p style="color: darkred">餐桌人数:{{ t.table_clients }}/{{ t.table_num }}</p>
-                    <p style="color: darkred">桌位:00{{ forloop.counter }}(被使用)</p>
-                </div>
-                {% endif %}
-            {% endfor %}
-
+            <h2 class="title"><strong>{{ canteen.canteen_name }}-更换餐厅主管</strong></h2>
+            <form action="#" method="post" style="text-align: center">
+                <input type="text" placeholder="新的主管姓名" name="new_name" id="new_name" class="form-control">
+                <input type="submit" class="form-control" id="new_name_sub">
+            </form>
         </div>
     </div>
   </div>

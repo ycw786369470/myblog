@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block head %}
-    选择座位
+    新增菜单
 {% endblock %}
 
 {#index部分忽略#}
@@ -43,31 +43,39 @@
 {% block detail %}
 <link rel="stylesheet" href="/static/blog/css/login.css">
   <div class="content-wrap"><!--内容-->
-    <div class="content">
+     <div class="content">
         <div class="content-block">
-            <h2 class="title"><strong>{{ canteen_name }}-选择座位</strong>&nbsp;&nbsp;
-                {% if is_boss == 1 %}
-                    <a href="/canteen/newtable/" style="color: #666;"><strong>新增桌位</strong></a>&nbsp;&nbsp;
-                    <a href="/canteen/addfood/" style="color: #666;"><strong>新增菜品</strong></a>
-                {% else %}
-                {% endif %}
-            </h2>
-            {% for t in table_nums %}
-                {% if t.table_clients == 0 %}
-                <div id="canteen_table">
-                    <a href="/canteen/client/{{ t.id }}/"><img src="/static/canteen/img/table_none.png" class="img-responsive" ></a>
-                    <p>餐桌人数:{{ t.table_clients }}/{{ t.table_num }}</p>
-                    <p>桌位:00{{ forloop.counter }}</p>
-                </div>
-                {% else %}
-                <div id="canteen_table">
-                    <a href="/canteen/client/{{ t.id }}/"><img src="/static/canteen/img/table_full.png" class="img-responsive" ></a>
-                    <p style="color: darkred">餐桌人数:{{ t.table_clients }}/{{ t.table_num }}</p>
-                    <p style="color: darkred">桌位:00{{ forloop.counter }}(被使用)</p>
-                </div>
-                {% endif %}
-            {% endfor %}
-
+            <h2 class="title"><strong>{{ canteen_name }}-新增菜品</strong></h2>
+            <form action="#" method="post" id="add-menu-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <li>
+                    <label for="exampleInputName2" class="add-menu-label">菜名</label>&nbsp;
+                    <input type="text" class="form-control add-menu-input" name="food_name">
+                </li>
+                <li>
+                    <label for="exampleInputName2" class="add-menu-label">价格</label>&nbsp;
+                    <input type="text" class="form-control add-menu-input" name="food_price" placeholder="菜品价格">
+                </li>
+                <li>
+                    <label for="exampleInputName2" class="add-menu-label">简介</label>&nbsp;
+                    <input type="text" class="form-control add-menu-input" name="food_intro" placeholder="菜品简介">
+                </li>
+                <li>
+                    <label for="exampleInputName2" class="add-menu-label">库存</label>&nbsp;
+                    <input type="text" class="form-control add-menu-input" name="food_num" placeholder="菜品数目">
+                </li>
+                <li>
+                    <input type="file" class="form-control add-menu-input" name="food_img" id="up-img">
+                </li>
+                <li>
+                    <input type="submit" class="form-control" style="
+                    margin: 0 auto;
+                    width: 200px;
+                    margin-top: 20px;
+                    background-color: aliceblue;
+                ">
+                </li>
+            </form>
         </div>
     </div>
   </div>

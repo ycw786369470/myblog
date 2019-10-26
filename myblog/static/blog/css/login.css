@@ -118,10 +118,35 @@
     top: 5px;
 }
 
+/* admin_change_name.html */
+#new_name{
+    width: 250px;
+    display: inline-block;
+    border-radius: 4px;
+}
+#new_name_sub{
+    width: 50px;
+    display: inline-block;
+    position: relative;
+    border-radius: 4px;
+    background-color: #3399CC;
+    color: white;
+}
 
-
-
-
-
-
+/* add_menu */
+#add-menu-form li{
+    margin-top: 10px;
+    text-align: center;
+}
+.add-menu-label{
+    display: inline-block;
+}
+.add-menu-input{
+    display: inline-block;
+    width: 250px;
+}
+#up-img{
+    margin: 0 auto;
+    width: 285px;
+}
 

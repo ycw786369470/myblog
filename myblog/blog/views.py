@@ -10,20 +10,21 @@ import re
 import hashlib
 
 
+now_time = datetime.date.today()
+this_week = now_time.isoweekday()
+all_blogs = BlogUser.objects.all()
+all_user = Users.objects.all()
+all_comment = Comment.objects.all()
+new_blogs = all_blogs[0:5]
+comment = all_comment[0:5]
+
+
+# 以上为默认上传的两边内容
 # Create your views here.
 def about(request):
     username = request.session.get('username')
     if username == None:
         username = ' '
-    # 获取当前时间
-    now_time = datetime.date.today()
-    this_week = now_time.isoweekday()
-    all_blogs = BlogUser.objects.all()
-    all_user = Users.objects.all()
-    all_comment = Comment.objects.all()
-    new_blogs = all_blogs[0:5]
-    # 热门评论
-    comment = all_comment[0:5]
     txt = {
         'users': all_user,
         'now_time': now_time,
@@ -42,14 +43,8 @@ def content(request):
 def person(request):
     if request.method == 'GET':
         username = request.session.get('username')
-        if username == None:
+        if username is None:
             username = ' '
-        now_time = datetime.date.today()
-        this_week = now_time.isoweekday()
-        all_blogs = BlogUser.objects.all()
-        all_comment = Comment.objects.all()
-        new_blogs = all_blogs[0:5]
-        comment = all_comment[0:5]
         # 个人内容
         self = Users.objects.get(username=username)
         gender = '男' if self.gender == True else '女'
@@ -74,19 +69,7 @@ def message(request):
     username = request.session.get('username')
     if username is None:
         username = ' '
-    # 获取当前时间
-    now_time = datetime.date.today()
-    this_week = now_time.isoweekday()
-    all_blogs = BlogUser.objects.all()
-    all_user = Users.objects.all()
-    all_comment = Comment.objects.all()
-    new_blogs = all_blogs[0:5]
-    # 热门评论
-    comment = all_comment[0:5]
-    # 以上为默认上传的两边内容
-    # 前五条评论
     all_msg = Message.objects.all()[0: 5]
-
     if request.method == 'POST':
         name = request.POST.get('commentName')
         email = request.POST.get('commentEmail')
@@ -173,14 +156,6 @@ def detail(request, *args):
         username = ' '
     mark_user = Users.objects.get(username=username)
     # 获取当前时间
-    now_time = datetime.date.today()
-    this_week = now_time.isoweekday()
-    all_blogs = BlogUser.objects.all()
-    all_comment = Comment.objects.all()
-    new_blogs = all_blogs[0:5]
-    # 热门评论
-    comment = all_comment[0:5]
-    # 当前博客文章
     num = args[0]
     blog = BlogUser.objects.get(id=num)
     blog.visit += 1
@@ -304,14 +279,6 @@ def login(request):
         username = request.session.get('username')
         if username is None:
             username = ' '
-        now_time = datetime.date.today()
-        this_week = now_time.isoweekday()
-        all_blogs = BlogUser.objects.all()
-        all_user = Users.objects.all()
-        all_comment = Comment.objects.all()
-        new_blogs = all_blogs[0:5]
-        comment = all_comment[0:5]
-        # 以上为默认上传的两边内容
         txt = {
             'users': all_user,
             'now_time': now_time,
@@ -321,7 +288,7 @@ def login(request):
             'username': username,
         }
         return render(request, 'blog/login.html', txt)
-    elif request.method == 'POST':
+    else:
         username = request.POST.get('username')
         password = request.POST.get('password')
         try:
@@ -329,22 +296,36 @@ def login(request):
             # 登陆成功
             md5_psw = hashlib.md5()
             md5_psw.update(password.encode(encoding='utf-8'))
-            print(md5_psw.hexdigest())
             if user.password == md5_psw.hexdigest():
                 request.session['username'] = username
-                return HttpResponseRedirect('blog/index/1')
+                if user.is_boss:
+                    request.session['is_boss'] = True
+                else:
+                    request.session['is_boss'] = False
+                return HttpResponseRedirect('/blog/index/1/')
             # 密码不对应
             else:
                 warming = '密码错误！'
                 txt = {
                     'username': username,
-                    'warming': warming
+                    'warming': warming,
+                    'users': all_user,
+                    'now_time': now_time,
+                    'this_week': this_week,
+                    'comment': comment,
+                    'new_blog': new_blogs,
                 }
                 return render(request, 'blog/login.html', txt)
         except:
             warming = '账号不存在！'
             txt = {
-                'warming': warming
+                'warming': warming,
+                'username': username,
+                'users': all_user,
+                'now_time': now_time,
+                'this_week': this_week,
+                'comment': comment,
+                'new_blog': new_blogs,
             }
             return render(request, 'blog/login.html', txt)
 

@@ -336,6 +336,14 @@ class ClientHistory(models.Model):
     paid = models.BooleanField(default=False)                       # 是否支付
 
 
+# 管理员操作记录
+class AdminHistory(models.Model):
+    user = models.ForeignKey(Users)                                 # 操作者
+    time = models.DateTimeField(auto_now_add=True)                  # 操作时间
+    canteen = models.ForeignKey(Canteen)                            # 被操作的餐厅
+    did = models.CharField(max_length=100)                          # 操作的命令
+
+
 def make_thumb(img_path, size=(80, 80)):
     '''
         制作缩略图

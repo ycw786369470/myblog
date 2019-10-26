@@ -49,20 +49,20 @@
             <!-- 表格 -->
             <table class="table table-hover table-striped">
                 <tr>
-                    <td>餐厅名:{{ canteen.canteen_name }}</td>
-                    <td>操作</td>
+                    <td>餐厅名:&nbsp;&nbsp;&nbsp;&nbsp;{{ canteen.canteen_name }}</td>
+                    <td><a href="/canteen/admin/change/name/">修改</a></td>
                 </tr>
                 <tr>
-                    <td>BOSS:{{ canteen.canteen_boss }}</td>
-                    <td><a href="#">修改</a></td>
+                    <td>BOSS:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ canteen.canteen_boss }}</td>
+                    <td><a href="/canteen/admin/change/boss/">修改</a></td>
                 </tr>
                 <tr>
-                    <td>餐厅编号:{{ canteen.canteen_num }}</td>
-                    <td><a href="#">修改</a></td>
+                    <td>餐厅号:&nbsp;&nbsp;&nbsp;&nbsp;{{ canteen.canteen_num }}</td>
+                    <td><a href="/canteen/admin/change/num/">修改</a></td>
                 </tr>
                 <tr>
                     <td>历史订单</td>
-                    <td><a href="#">查看</a></td>
+                    <td><a href="/canteen/admin/history/">查看</a></td>
                 </tr>
                 <tr>
                     <td>餐厅桌位</td>
