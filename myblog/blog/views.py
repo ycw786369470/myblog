@@ -289,15 +289,18 @@ def login(request):
         }
         return render(request, 'blog/login.html', txt)
     else:
-        username = request.POST.get('username')
+        username = request.session.get('username')
+        if username is None:
+            username = ' '
+        username_input = request.POST.get('username')
         password = request.POST.get('password')
         try:
-            user = Users.objects.get(username=username)
+            user = Users.objects.get(username=username_input)
             # 登陆成功
             md5_psw = hashlib.md5()
             md5_psw.update(password.encode(encoding='utf-8'))
             if user.password == md5_psw.hexdigest():
-                request.session['username'] = username
+                request.session['username'] = username_input
                 if user.is_boss:
                     request.session['is_boss'] = True
                 else:
@@ -308,6 +311,7 @@ def login(request):
                 warming = '密码错误！'
                 txt = {
                     'username': username,
+                    'username_input': username_input,
                     'warming': warming,
                     'users': all_user,
                     'now_time': now_time,

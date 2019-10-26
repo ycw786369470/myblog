@@ -308,18 +308,6 @@ class Menu(models.Model):
     def __str__(self):
         return self.food_name
 
-    @classmethod
-    def add_food(cls, canteen,
-                 food_name, food_img,
-                 food_price, food_intro,
-                 food_num, food_up,
-                 food_sold):
-        self = cls(canteen=canteen, food_name=food_name,
-                   food_img=food_img, food_price=food_price,
-                   food_intro=food_intro, food_num=food_num,
-                   food_up=food_up, food_sold=food_sold)
-        return self
-
     class Meta:
         verbose_name_plural = '菜单'
 

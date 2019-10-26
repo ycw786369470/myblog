@@ -4,6 +4,8 @@ import datetime
 import json
 import math
 from django.utils import timezone
+from django.core.files.storage import FileSystemStorage
+
 
 
 # 获取当前时间
@@ -186,12 +188,22 @@ def add_food(request):
         else:
             return  render(request, 'no_power.html')
     else:
+        img = request.FILES.get('food_img')
+        f2 = FileSystemStorage()
+        path = f2.save('canteen/img/%s'%(img.name), img)   # 保存文件并返回文件名，如果文件名存在则会创建一个不重复的名称
         name = request.POST.get('food_name')
         price = request.POST.get('food_price')
         intro = request.POST.get('food_intro')
         num = request.POST.get('food_num')
-
-
+        new_menu = Menu()
+        new_menu.canteen = canteen
+        new_menu.food_name = name
+        new_menu.food_img = path
+        new_menu.food_price = price
+        new_menu.food_intro = intro
+        new_menu.food_num = num
+        new_menu.save()
+        return HttpResponseRedirect('/canteen/table/')
 
 # 点菜
 def menu(request, *args):
