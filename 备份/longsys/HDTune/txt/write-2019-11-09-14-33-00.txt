@@ -1,0 +1,11 @@
+HD Tune Pro: KINGSHARKS-CUTS25W 基准
+
+Test capacity: full
+
+写入传输率
+最低传输速率 : 20.3 MB/秒
+最大传输速率 : 38.1 MB/秒
+平均传输速率 : 37.1 MB/秒
+访问时间           : 0.539 ms
+突发速率            : 32.5 MB/秒
+CPU 使用率             : 56.4%

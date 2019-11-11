@@ -1,0 +1,8 @@
+seq_Read:42.46 MB/s
+seq_Write:42.49 MB/s
+R_4K1T_Read:10.90 MB/s
+R_4K1T_Write:13.11 MB/s
+R_4K64T_Read:21.96 MB/s
+R_4K64T_Write:24.02 MB/s
+AccTime_Read:0.532 ms
+AccTime_Write:0.461 ms

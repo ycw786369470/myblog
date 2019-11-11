@@ -1,0 +1,5 @@
+Testing,Speed(MB/S),performance
+"Sequential Read (Q= 32,T= 1) ",44.093,异常
+"Sequential Write (Q= 32,T= 1) ",43.999,异常
+"Random Read 4KiB (Q= 32,T= 1) ",31.422,异常
+"Random Write 4KiB (Q= 32,T= 1) ",25.957,异常

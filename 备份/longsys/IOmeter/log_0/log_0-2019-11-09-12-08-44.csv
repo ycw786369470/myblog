@@ -1,0 +1,25 @@
+'Test Type,Test Description
+0,
+'Version
+1.3.0
+'Time Stamp
+2019-11-09 12:09:07:873
+'Access specifications
+'Access specification name,default assignment
+128K Seq write,0
+'size,% of size,% reads,% random,delay,burst,align,reply
+131072,100,0,0,0,1,4096,0,
+'End access specifications
+'Results
+'Target Type,Target Name,Access Specification Name,# Managers,# Workers,# Disks,IOps,Read IOps,Write IOps,MiBps (Binary),Read MiBps (Binary),Write MiBps (Binary),MBps (Decimal),Read MBps (Decimal),Write MBps (Decimal),Transactions per Second,Connections per Second,Average Response Time,Average Read Response Time,Average Write Response Time,Average Transaction Time,Average Connection Time,Maximum Response Time,Maximum Read Response Time,Maximum Write Response Time,Maximum Transaction Time,Maximum Connection Time,Errors,Read Errors,Write Errors,Bytes Read,Bytes Written,Read I/Os,Write I/Os,Connections,Transactions per Connection,Total Raw Read Response Time,Total Raw Write Response Time,Total Raw Transaction Time,Total Raw Connection Time,Maximum Raw Read Response Time,Maximum Raw Write Response Time,Maximum Raw Transaction Time,Maximum Raw Connection Time,Total Raw Run Time,Starting Sector,Maximum Size,Queue Depth,% CPU Utilization,% User Time,% Privileged Time,% DPC Time,% Interrupt Time,Processor Speed,Interrupts per Second,CPU Effectiveness,Packets/Second,Packet Errors,Segments Retransmitted/Second,0 to 50 uS,50 to 100 uS,100 to 200 uS,200 to 500 uS,0.5 to 1 mS,1 to 2 mS,2 to 5 mS,5 to 10 mS,10 to 15 mS,15 to 20 mS,20 to 30 mS,30 to 50 mS,50 to 100 mS,100 to 200 mS,200 to 500 mS,0.5 to 1 S,1 to 2 s,2 to 4.7 s,4.7 to 5 s,5 to 10 s, >= 10 s
+ALL,All,128K Seq write,1,1,1,791.720732,0.000000,791.720732,98.965092,0.000000,98.965092,103.772420,0.000000,103.772420,791.720732,0.000000,40.408588,0.000000,40.408588,40.408588,0.000000,257.156441,0.000000,257.156441,257.156441,0.000000,0,0,0,0,661127168,0,5044,0,-1,,,,,,,,,,0,0,32,50.747868,44.142223,6.833733,0.246261,0.123130,,10276.752801,15.601064,11.662905,0.000000,0.157607,0,0,0,0,0,0,0,0,69,668,3246,19,511,499,32,0,0,0,0,0,0
+MANAGER,WINDOWS-QU5FSQ8,128K Seq write,,1,1,791.720732,0.000000,791.720732,98.965092,0.000000,98.965092,103.772420,0.000000,103.772420,791.720732,0.000000,40.408588,0.000000,40.408588,40.408588,0.000000,257.156441,0.000000,257.156441,257.156441,0.000000,0,0,0,0,661127168,0,5044,0,-1,0,735665313,735665313,0,0,928173,928173,0,22995062,0,0,32,50.747868,44.142223,6.833733,0.246261,0.123130,3609371.000000,10276.752801,15.601064,11.662905,0.000000,0.157607,0,0,0,0,0,0,0,0,69,668,3246,19,511,499,32,0,0,0,0,0,0
+PROCESSOR,CPU 0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,40.651181,32.998928,7.880341,0.000000,0.000000,3609371.000000,3384.764100,,,,
+PROCESSOR,CPU 1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,43.606309,37.431620,6.402777,0.246261,0.492521,3609371.000000,2841.178173,,,,
+PROCESSOR,CPU 2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,56.165603,47.528307,8.865384,0.738782,0.000000,3609371.000000,2137.148501,,,,
+PROCESSOR,CPU 3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,62.568380,58.610037,4.186431,0.000000,0.000000,3609371.000000,1913.662028,,,,
+WORKER,Worker 1,128K Seq write,,,1,791.720732,0.000000,791.720732,98.965092,0.000000,98.965092,103.772420,0.000000,103.772420,791.720732,0.000000,40.408588,0.000000,40.408588,40.408588,0.000000,257.156441,0.000000,257.156441,257.156441,0.000000,0,0,0,0,661127168,0,5044,0,-1,0,735665313,735665313,0,0,928173,928173,0,22995062,0,0,32,,,,,,3609371.000000,,,,,,0,0,0,0,0,0,0,0,69,668,3246,19,511,499,32,0,0,0,0,0,0
+DISK,C: "Windows",,,,,791.720732,0.000000,791.720732,98.965092,0.000000,98.965092,103.772420,0.000000,103.772420,791.720732,0.000000,40.408588,0.000000,40.408588,40.408588,0.000000,257.156441,0.000000,257.156441,257.156441,0.000000,0,0,0,0,661127168,0,5044,0,-1,0,735665313,735665313,0,0,928173,928173,0,22995062,0,0,32,,,,,,3609371.000000,,,,,,0,0,0,0,0,0,0,0,69,668,3246,19,511,499,32,0,0,0,0,0,0
+'Time Stamp
+2019-11-09 12:09:19:857
+Aborted test

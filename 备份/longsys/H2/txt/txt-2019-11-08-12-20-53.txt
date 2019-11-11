@@ -1,0 +1,6 @@
+Warning: Only 10 of 122101 MByte tested.
+Test finished without errors.
+You can now delete the test files *.h2w or verify them again.
+Writing speed: 41.0 MByte/s
+Reading speed: 40.1 MByte/s
+H2testw v1.4

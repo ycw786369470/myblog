@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ASSSDBenchmark
+  XmlFormatVersion="1">
+  <Information>
+    <Name>KINGSHAR KS-CUTS25W SCSI Disk Device</Name>
+    <Firmware>0   </Firmware>
+    <Controller>UASPStor</Controller>
+    <Size>119.24 GB</Size>
+    <DateTime>2019/11/9 16:15:45</DateTime>
+    <BenchmarkVersion>2.0.6485.19676</BenchmarkVersion>
+    <Mode>MB/s</Mode>
+    <Note />
+    <Signature />
+  </Information>
+  <SeqTest>
+    <Read>42.46 MB/s</Read>
+    <Write>42.49 MB/s</Write>
+  </SeqTest>
+  <Random4K1TTest>
+    <Read>10.90 MB/s</Read>
+    <Write>13.11 MB/s</Write>
+  </Random4K1TTest>
+  <Random4K64TTest>
+    <Read>21.96 MB/s</Read>
+    <Write>24.02 MB/s</Write>
+  </Random4K64TTest>
+  <AccTimeTest>
+    <Read>0.532 ms</Read>
+    <Write>0.461 ms</Write>
+  </AccTimeTest>
+  <Score>
+    <Read>37</Read>
+    <Write>41</Write>
+    <Total>103</Total>
+  </Score>
+</ASSSDBenchmark>

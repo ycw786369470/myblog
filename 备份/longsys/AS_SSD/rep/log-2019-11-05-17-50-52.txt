@@ -1,0 +1,8 @@
+seq_Read:-.-- MB/s
+seq_Write:-.-- MB/s
+R_4K1T_Read:-.-- MB/s
+R_4K1T_Write:-.-- MB/s
+R_4K64T_Read:-.-- MB/s
+R_4K64T_Write:-.-- MB/s
+AccTime_Read:-.-- ms
+AccTime_Write:-.-- ms

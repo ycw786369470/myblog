@@ -1,0 +1,12 @@
+storage_score : 3180
+storage_bandwidth : 23635094
+storage_world_of_warcraft : 102.46033 s 
+storage_battlefield : 158.83067 s 
+storage_adobe_photoshop_light : 208.47333 s 
+storage_adobe_photoshop_heavy : 586.50433 s 
+storage_adobe_indesign : 182.66033 s 
+storage_adobe_after_effects : 96.77133 s 
+storage_adobe_illustrator : 118.17233 s 
+storage_microsoft_word : 33.47600 s 
+storage_microsoft_excel : 11.62433 s 
+storage_microsoft_powerpoint : 12.03133 s 
