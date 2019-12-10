@@ -24,7 +24,6 @@ from DjangoUeditor.models import UEditorField
 from django.db import models
 from myblog import settings
 from PIL import Image
-# from django.db.
 import os
 from django import forms
 

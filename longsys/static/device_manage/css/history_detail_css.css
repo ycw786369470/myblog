@@ -1,0 +1,29 @@
+.detail{
+    width: 60%;
+    margin: auto;
+}
+
+.history_det td,th{
+    width: 30%;
+    border: solid black 1px;
+    text-align: center;
+}
+.history_det th{
+    font-family: 微软雅黑;
+    font-size: 20px;
+}
+.history_det{
+    height: 50px;
+}
+.detail_table{
+    width: 100%;
+}
+.mid_table{
+    width: 100%;
+}
+.footer_table{
+    width: 100%;
+}
+.footer_table td{
+    height: 100px;
+}

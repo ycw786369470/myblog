@@ -20,6 +20,7 @@ import os
 from django.conf.urls.static import static
 from blogapp.upload import upload_image
 
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^main', include('blogapp.urls')),

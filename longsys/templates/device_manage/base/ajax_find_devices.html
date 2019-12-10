@@ -1,0 +1,51 @@
+<table class="table table-hover table-striped">
+    <thead>
+    <tr>
+        <th>设备id</th>
+        <th>设备编号</th>
+        <th>设备品牌</th>
+        <th>设备型号</th>
+        <th>上市年份</th>
+        <th>型号数量</th>
+        <th>是否支持4K</th>
+        <th>固件版本</th>
+        <th>卡片形态</th>
+        <th>卡槽</th>
+    </tr>
+    </thead>
+    {% for item in devices %}
+    <tr id="{{ item.1.id }}" onclick="check_choose(this.id)">
+        <td>{{ item.1.id }}</td>
+        <td>{{ item.1.device_id }}</td>
+        <td>{{ item.1.device_brand }}</td>
+        <td>{{ item.1.device_spec }}</td>
+        <td>{{ item.1.device_year }}</td>
+        <td>{{ item.0 }}</td>
+        <td>
+            {% if item.1.device_support == 0 %}
+                不支持4K
+            {% elif item.1.device_support == 1 %}
+                支持4K
+            {% elif item.1.device_support == 2 %}
+                支持4K、6K
+            {% endif %}
+        </td>
+        <td>{{ item.1.device_fw_ver }}</td>
+        <td>{{ item.1.device_card }}</td>
+        <td>{{ item.1.device_card_slog }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>没有搜索到"{{ input }}"</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {% endfor %}
+</table>

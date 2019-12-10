@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>用户详情</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="/static/device_manage/vendors/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="/static/device_manage/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="/static/device_manage/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/static/device_manage/css/style.css"/> <!-- End layout styles -->
+    <link rel="shortcut icon" href="/static/device_manage/images/min_logo.png" />
+      <script src="/static/device_manage/js/jquery.js" rel="script" type="application/javascript"></script>
+  </head>
+  <body>
+    <div class="container-scroller">
+      <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth">
+          <div class="row flex-grow">
+            <div class="col-lg-4 mx-auto">
+              <div class="auth-form-light text-left p-5">
+                <div class="brand-logo">
+                  <img src="/static/device_manage/images/logo.png">
+                </div>
+                <h4>{{ user.name }}&nbsp;个人信息:</h4>
+                <h6 class="font-weight-light">浏览和修改个人信息</h6>
+                <form class="pt-3" method="post" action="">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <span>姓名:</span>
+                    <input type="text" class="form-control form-control-lg" id="exampleInputname" placeholder="输入姓名" value="{{ user.name }}" name="name">
+                    <span style="color: red;display: none;font-size: 10%"></span>
+                  </div>
+                  <div class="form-group">
+                    <span>工号:</span>
+                    <input type="text" class="form-control form-control-lg" id="exampleInputstaff" placeholder="输入工号" value="{{ user.staff_number }}" name="number">
+                    <span style="color: red;display: none;font-size: 10%"></span>
+                  </div>
+                  <div class="form-group">
+                    <select class="form-control form-control-lg" id="exampleFormControlSelect2" name="group" style="color: black">
+                      <option value="{{ user.group.id }}">{{ user.group }}</option>
+                      {% for group in group_list %}
+                        <option value="{{ group.id }}">{{ group.name }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <select class="form-control form-control-lg" id="exampleFormControlSelect2" name="job" style="color: black">
+                      <option value="{{ user.job.id }}">{{ user.job }}</option>
+                      {% for job in job_list %}
+                        <option value="{{ job.id }}">{{ job.name }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="Jurisdiction">
+                      <span style="color: red">修改权限:</span>
+                  </div>
+                  <div class="form-group">
+                  <span>需求发起人权限:</span>
+                    <select class="form-control form-control-lg" id="select_init" name="init" style="color: black">
+                      {% if user.is_init == 1 %}
+                      <option value="1">是</option>
+                      {% else %}
+                          <option value="0">否</option>
+                      {% endif %}
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                  <span>管理员权限:</span>
+                    <select class="form-control form-control-lg" id="select_admin" name="admin" style="color: black">
+                      {% if user.is_admin == 1 %}
+                      <option value="1">是</option>
+                      {% else %}
+                          <option value="0">否</option>
+                      {% endif %}
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
+                  </div>
+                  <div class="mt-3">
+                    <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" id="submit_btn" type="submit" value="提交修改" onclick="return window.confirm('将修改用户信息，是否继续?');">
+                    <span style="color: red;display: block;font-size: 10%;padding-top: 2%">{{ point_out }}</span>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="/static/device_manage/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="/static/device_manage/js/off-canvas.js"></script>
+    <script src="/static/device_manage/js/misc.js"></script>
+    <!-- endinject -->
+  </body>
+</html>

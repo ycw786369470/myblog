@@ -7,7 +7,6 @@ from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
 
 
-
 # 获取当前时间
 now_time = datetime.date.today()
 this_week = now_time.isoweekday()
@@ -204,6 +203,7 @@ def add_food(request):
         new_menu.food_num = num
         new_menu.save()
         return HttpResponseRedirect('/canteen/table/')
+
 
 # 点菜
 def menu(request, *args):

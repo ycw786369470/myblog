@@ -1,0 +1,192 @@
+{% extends 'device_manage/base/base.html' %}
+<!-- 分为客户/测试者/管理员三种身份，通过登录方式判断身份，客户不用登陆
+客户只能查看基础页面，管理员可以查看所有信息-->
+
+{#修改网页标题title#}
+{% block title %}
+    测试记录汇总
+{% endblock %}
+
+{% block personal %}
+    <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+{% endblock %}
+
+{# 通过继承在新页面改写用户名 #}
+{% block user %}
+    {{ name }}
+{% endblock %}
+
+{% block job %}
+    身份:{{ job }}
+{% endblock %}
+
+{# 右边个人信息栏 #}
+{% block self %}
+    {{ name }}
+{% endblock %}
+
+{# 登录登出图标 #}
+{% block login_logout %}
+    {% if name == '客户'%}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/login/">
+            <i class="icon-badge mx-2"></i>登录
+        </a>
+    {% else %}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/logout/">
+            <i class="icon-badge mx-2"></i>注销
+        </a>
+    {% endif %}
+{% endblock %}
+
+{# 右边选项栏 #}
+{% block option %}
+    {% if name == '客户' %}
+        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% else %}
+        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-camera text-primary"></i> 查看设备 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-map text-primary"></i> 测试报表 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% endif %}
+{% endblock %}
+
+{# 管理员-设备管理选项 #}
+{% block admin %}
+    {% if is_admin == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#admin" aria-expanded="false" aria-controls="admin">
+        <span class="menu-title nav-category">管理选项</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+      <div class="collapse" id="admin">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'user_list' %}?page=1">人员管理<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 判断是否为需求发起人 #}
+{% block init %}
+    {% if is_init == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#demand" aria-expanded="false" aria-controls="demand">
+        <span class="menu-title nav-category">需求管理</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="demand">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'new_demand' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block staff %}
+    {% if name == '客户' %}
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">更多功能</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title nav-category">公司介绍</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="https://www.longsys.com/">公司官网<i class="icon-home menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">关于我们<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'choose' %}">
+        <span class="menu-title">设备测试</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title">个人中心</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="#"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#"> 生成报表 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#"> 关于 <i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 修改操作框内容 #}
+{% block content %}
+    <div class="col-md-12" style="background-color: white">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th></th>
+                <th>测试设备</th>
+                <th>测试人员</th>
+                <th>测试版本</th>
+                <th>搭配</th>
+                <th>卡数量</th>
+                <th>卡片编号</th>
+            </tr>
+            </thead>
+            {% for i in history_ls%}
+                <tr onclick="showId(this.id)" id="{{ i.0 }}" title="点击查看详情">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.1}}</td>
+                    <td>{{ i.2}}</td>
+                    <td>{{ i.3 }}</td>
+                    <td>{{ i.4 }}</td>
+                    <td>{{ i.5 }}</td>
+                    <td>{{ i.6 }}</td>
+                </tr>
+                <script>
+                 function showId(id){
+                    location.href="/history_detail/id/"+id;
+                }
+                </script>
+            {% endfor %}
+        </table>
+        <div class="col-md-12 text-center">
+            <div class="btn-group" role="group" style="margin-top: 20px">
+                    <a style="border: none" href="{% url 'test_history' %}?page=1"><button class="btn btn-outline-dark">返回首页</button></a>
+                {% if history_ls.has_previous %}
+                    <a href="{% url 'test_history' %}?page={{ history_ls.previous_page_number }}"><button class="btn btn-outline-dark"><span class="icon-arrow-left">上一页</span></button></a>
+                {% else %}
+                    <a href="javascript:void(0);" onclick="window.alert('没有上一页哦')"><button class="btn btn-outline-dark"><span class="icon-arrow-left">上一页</span></button></a>
+                {% endif %}
+                {% for page in history_ls.paginator.page_range %}
+                    {% if page > history_ls.number|add:-2 and page < history_ls.number|add:2 %}
+                        <a href="{% url 'test_history' %}?page={{ page }}"><button class="btn btn-outline-dark">{{ page }}</button></a>
+                    {% endif %}
+                {% endfor %}
+                {% if history_ls.has_next%}
+                <a href="{% url 'test_history' %}?page={{ history_ls.next_page_number }}"><button class="btn btn-outline-dark" >下一页<span class="icon-arrow-right"></span></button></a>
+                {% else%}
+                    <a href="javascript:void(0);" onclick="window.alert('没有下一页了哦')"><button class="btn btn-outline-dark"><span class="icon-arrow-right">下一页</span></button></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

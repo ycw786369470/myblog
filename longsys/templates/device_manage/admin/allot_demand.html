@@ -1,0 +1,254 @@
+{% extends 'device_manage/base/base.html' %}
+<!-- 分为客户/测试者/管理员三种身份，通过登录方式判断身份，客户不用登陆
+客户只能查看基础页面，管理员可以查看所有信息-->
+
+{% block title %}
+    分配需求至测试员
+{% endblock %}
+
+{% block personal %}
+    <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+{% endblock %}
+
+{# 通过继承在新页面改写用户名 #}
+{% block user %}
+    {{ name }}
+{% endblock %}
+
+{% block job %}
+    身份:{{ job }}
+{% endblock %}
+
+{# 右边个人信息栏 #}
+{% block self %}
+    {{ name }}
+{% endblock %}
+
+{# 登录登出图标 #}
+{% block login_logout %}
+    {% if name == '客户'%}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/login/">
+            <i class="icon-badge mx-2"></i>登录
+        </a>
+    {% else %}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/logout/">
+            <i class="icon-badge mx-2"></i>注销
+        </a>
+    {% endif %}
+{% endblock %}
+
+{# 右边选项栏 #}
+{% block option %}
+    {% if name == '客户' %}
+        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% else %}
+        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-camera text-primary"></i> 查看设备 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-map text-primary"></i> 测试报表 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% endif %}
+{% endblock %}
+
+{# 管理员-设备管理选项 #}
+{% block admin %}
+    {% if is_admin == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#admin" aria-expanded="false" aria-controls="admin">
+        <span class="menu-title nav-category">管理选项</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+      <div class="collapse" id="admin">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'user_list' %}?page=1">人员管理<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 判断是否为需求发起人 #}
+{% block init %}
+    {% if is_init == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#demand" aria-expanded="false" aria-controls="demand">
+        <span class="menu-title nav-category">需求管理</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="demand">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'new_demand' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block staff %}
+    {% if name == '客户' %}
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">更多功能</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title nav-category">公司介绍</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="https://www.longsys.com/">公司官网<i class="icon-home menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">关于我们<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'choose' %}">
+        <span class="menu-title">设备测试</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title">个人中心</span>
+        <i class="icon-user menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="#"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#"> 生成报表 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#"> 关于 <i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block head %}
+    <style>
+    .white-box{
+        background-color: white;
+    }
+    #top-box{
+        background-color: white;
+        height: 500px;
+        position: fixed;
+        left: 25%;
+        z-index: 9;
+        margin: 0 auto;
+        box-shadow: #969696 0 10px 10px;
+    }
+    </style>
+{% endblock %}
+
+{# 修改操作框内容 #}
+{% block content %}
+<div class="col-md-6 d-none" id="top-box">
+
+</div>
+<div>
+    <button class="btn btn-inverse-dark" onclick='javascript:history.back(-1);'>返回</button>
+    <h2 class="text-center">选择需要分配的任务</h2>
+</div>
+<div class="col-md-12 white-box table-responsive" style="padding: 20px 0;">
+    <table class="table table-hover text-center">
+        <thead>
+        <tr>    
+            <th>
+                <a href="javascript:void(0);" id="choose_all" onclick="choose_all()">全选</a>
+            </th>
+            <th>ID</th>
+            <th>设备种类</th>
+            <th>设备编号</th>
+            <th>设备品牌</th>
+            <th>设备型号</th>
+            <th>上市年份</th>
+            <th>固件版本</th>
+            <th>卡片形态</th>
+            <th>卡槽</th>
+            <th>分配情况</th>
+        </tr>
+        </thead>
+        {% for d in devices %}
+        <tr {% if d.1 != None %} class="table-success" {% endif %}>
+            <td>
+                {% if d.1 == None %}
+                <div class="form-check text-center"  style="margin-top: 0; margin-bottom: 0; left: 40%;">
+                <label class="form-check-label">
+                    <input name="checkbox" type="checkbox" class="form-check-input checkbox-choose" style="position:relative;top: -5px;" id="check-{{ d.0.id }}" onclick="check_box(this.id)">
+                </label>
+                </div>
+                {% endif %}
+            </td>
+            <td>{{ d.0.id }}</td>
+            <td>{{ d.0.device_type }}</td>
+            <td>{{ d.0.device_id }}</td>
+            <td>{{ d.0.device_brand }}</td>
+            <td>{{ d.0.device_spec }}</td>
+            <td>{{ d.0.device_year }}</td>
+            <td>{{ d.0.device_fw_ver }}</td>
+            <td>{{ d.0.device_card }}</td>
+            <td>{{ d.0.device_card_slog }}</td>
+            {% if d.1 == None %}
+            <td><a href="javascript:void(0)">分配</a></td>
+            {% else %}
+            <td>{{ d.1 }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="col-md-12 text-center">
+    <button class="btn btn-inverse-dark" style="margin-top: 20px">选择测试员</button>
+</div>
+    <script>
+    checked_ls = [];
+    function check_box(id) {
+        this_box = $("#"+id);
+        is_checked = this_box.get(0).checked;
+        if(is_checked === true){
+            checked_ls.push(id);
+            this_box.attr('checked', true);
+        }else{
+            checked_ls = delete_element(checked_ls, id);
+            this_box.removeAttr("checked", true)
+        }
+        console.log(checked_ls)
+    }
+    function delete_element(ls, element) {
+        for(var i=0; ls.length; i++){
+            if (ls[i].toString() === element.toString()){
+                ls.splice(i, 1);
+                return ls;
+            }
+        }
+     }
+    function choose_all() {
+        {#$("[name='checkbox']").attr('checked', true);#}
+        all_box = $('.checkbox-choose');
+        {#checked_ls.length = 0;#}
+        for(var i=0; i<all_box.length; i++){
+            console.log($.inArray(all_box[i].id, checked_ls));
+            if($.inArray(all_box[i].id, checked_ls) !== -1){
+
+            }else{
+                checked_ls.push(all_box[i].id);
+                $("#"+all_box[i].id).prop('checked', true);
+            }
+        }
+        console.log(checked_ls);
+     }
+    </script>
+{% endblock %}
+</a>

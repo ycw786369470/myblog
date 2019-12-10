@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+        {% block title %}
+            {# title  #}
+        {% endblock title %}
+    </title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="/static/device_manage/vendors/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="/static/device_manage/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="/static/device_manage/vendors/css/vendor.bundle.base.css">
+{#    <link rel="stylesheet" href="/static/device_manage/lib/weui.min.css" />#}
+{#    <link rel="stylesheet" href="/static/device_manage/css/jquery-weui.css" />#}
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="/static/device_manage/css/style.css" /><!-- End layout styles -->
+    <link rel="shortcut icon" href="/static/device_manage/images/min_logo.png" />
+      <!-- plugins:js -->
+    <script src="/static/device_manage/vendors/js/vendor.bundle.base.js"></script>
+    <script src="/static/device_manage/js/off-canvas.js"></script>
+    <script src="/static/device_manage/js/misc.js"></script>
+    <script src="/static/device_manage/lib/jquery-2.1.4.js"></script>
+    <script src="/static/device_manage/lib/fastclick.js"></script>
+    <script src="/static/device_manage/js/jquery-weui.js"></script>
+    <!-- endinject -->
+  {% block head %}
+  {% endblock %}
+  </head>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:../../partials/_navbar.html -->
+      <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="navbar-brand-wrapper d-flex align-items-center">
+          <a class="navbar-brand brand-logo" href="/">
+            <img src="/static/device_manage/images/logo.png" alt="logo" class="logo-dark" />
+          </a>
+            {# 首页 #}
+          <a class="navbar-brand brand-logo-mini" href="#"><img src="/static/device_manage/images/min_logo.png" alt="logo"></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
+          <h5 class="mb-0 font-weight-medium d-none d-lg-flex">欢迎进入测试部设备管理系统!</h5>
+          <ul class="navbar-nav navbar-nav-right ml-auto">
+            <form class="search-form d-none d-md-block" action="{% url 'device_search' %}" method="get">
+              <i class="icon-magnifier"></i>
+              <input type="search" class="form-control" placeholder="点此搜索设备" name="name" title="点击搜索"  required>
+            </form>
+
+{#            <li class="nav-item"><a href="#" class="nav-link"><i class="icon-chart"></i></a></li>#}
+{#            <li class="nav-item dropdown">#}
+{#              <a class="nav-link count-indicator message-dropdown" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">#}
+{#                <i class="icon-speech"></i>#}
+{#                <!--未读信息数-->#}
+{#                <span class="count">6</span>#}
+{#              </a>#}
+{#              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown">#}
+{#                <a class="dropdown-item py-3">#}
+{#                  <p class="mb-0 font-weight-medium float-left">未读信息</p>#}
+{#                  <span class="badge badge-pill badge-primary float-right">查看</span>#}
+{#                </a>#}
+{#                <div class="dropdown-divider"></div>#}
+{#                <!--这里是信息栏-->#}
+{#                <a class="dropdown-item preview-item">#}
+{#                  <div class="preview-thumbnail">#}
+{#                    <img src="/static/device_manage/images/faces/face12.jpg" alt="image" class="img-sm profile-pic"> </div>#}
+{#                  <div class="preview-item-content flex-grow py-2">#}
+{#                    <p class="preview-subject ellipsis font-weight-medium text-dark">收到xxx的动态信息</p>#}
+{#                    <p class="font-weight-light small-text"> 点击这里查看动态信息 </p>#}
+{#                  </div>#}
+{#                </a>#}
+{#              </div>#}
+{#            </li>#}
+            <li class="nav-item dropdown language-dropdown d-none d-sm-flex align-items-center">
+              <div class="dropdown-menu dropdown-menu-left navbar-dropdown py-2" aria-labelledby="LanguageDropdown">
+                <a class="dropdown-item">
+                  <i class="flag-icon flag-icon-us"></i> English </a>
+                <a class="dropdown-item">
+                  <i class="flag-icon flag-icon-fr"></i> French </a>
+                <a class="dropdown-item">
+                  <i class="flag-icon flag-icon-ae"></i> Arabic </a>
+                <a class="dropdown-item">
+                  <i class="flag-icon flag-icon-ru"></i> Russian </a>
+              </div>
+            </li>
+            <li class="nav-item dropdown d-none d-xl-inline-flex user-dropdown">
+              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                  {% block face-menu %}
+                      <img class="img-xs rounded-circle ml-2" src="/static/device_manage/images/faces-clipart/pic-1.png" alt="Profile image">
+                  {% endblock %}
+                  <span class="font-weight-normal"> {% block self %}
+                          { % block self% }个人页面
+                      {% endblock %} </span></a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                <a class="dropdown-item"><i class="dropdown-item-icon icon-user text-primary"></i> 管理设备 <span class="badge badge-pill badge-danger">1</span></a>
+                <a class="dropdown-item"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备 </a>
+                <a class="dropdown-item"><i class="dropdown-item-icon icon-energy text-primary"></i> 测试记录 </a>
+                <a class="dropdown-item"><i class="dropdown-item-icon icon-map text-primary"></i> 报表记录 </a>
+                <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i> FAQ</a>
+                <a class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i> 注销 </a>
+              </div>
+            </li>
+          </ul>
+          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="icon-menu"></span>
+          </button>
+        </div>
+      </nav>
+      <!-- 整体内容框架 -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <ul class="nav">
+            <li class="nav-item nav-profile">
+              {% block personal %}
+
+              {% endblock %}
+              <!-- 信息栏 -->
+                <div class="profile-image">
+                    {% block face-left %}
+                        <img class="img-xs rounded-circle" src="/static/device_manage/images/faces-clipart/pic-1.png" alt="profile image">
+                    {% endblock %}
+                  <div class="dot-indicator bg-success"></div>
+                </div>
+                <div class="text-wrapper">
+                  <p class="profile-name">
+                      {% block user %}
+                          { % block user % }
+                      {% endblock %}
+                  </p>
+                  <p class="designation">
+                      {% block job %}
+                          { % block job % }
+                      {% endblock %}
+                  </p>
+                </div>
+              </a>
+            </li>
+{#            <li class="nav-item nav-category">#}
+{#              <span class="nav-link">管理按钮</span>#}
+{#            </li>#}
+            {% block admin %}
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span class="menu-title">设备管理(管理员可见)</span>
+                <i class="icon-screen-desktop menu-icon"></i>
+              </a>
+            </li>
+            {% endblock %}
+
+            {% block init %}
+                需求发起人
+            {% endblock %}
+
+            {% block staff %}
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span class="menu-title">设备测试</span>
+                <i class=" icon-wrench menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <span class="menu-title">个人中心</span>
+                <i class="icon-list menu-icon"></i>
+              </a>
+              <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="#"> 测试记录 <i class="icon-calendar menu-icon"></i></a></li>
+                  <li class="nav-item"> <a class="nav-link" href="#"> 生成报表 <i class="icon-map menu-icon"></i></a></li>
+                  <li class="nav-item"> <a class="nav-link" href="#"> FAQ <i class="icon-question menu-icon"></i></a></li>
+                </ul>
+              </div>
+            </li>
+            {% endblock %}
+            <li class="nav-item pro-upgrade">
+              <span class="nav-link">
+                  {% block login_logout %}
+                    <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="#" target="_blank">
+                        <i class="icon-badge mx-2"></i>登录和注销
+                    </a>
+                  {% endblock %}
+              </span>
+            </li>
+          </ul>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel" style="position:relative;">
+
+          <div class="content-wrapper">
+            <div style="display: none">
+{#              <h1>企业简介</h1><br>#}
+{#              <p> &ensp;&ensp; 深圳市江波龙电子股份有限公司成立于1999年，总部位于深圳，#}
+{#                  在北京、上海、重庆、中山、香港、台北、等地设有分公司或办事处，#}
+{#                  是一家聚焦NAND型闪存应用和存储芯片定制、存储软件开发的中国存储企业。</p>#}
+{#              <p> &ensp;&ensp;截至目前，江波龙电子旗下拥有嵌入式存储FORESEE和高端消费品牌Lexar：#}
+{#                  FORESEE深耕行业应用，嵌入式存储、固态硬盘存储、微存储、汽车存储四条产品线各自为营，#}
+{#                  全面深入手机、PC、汽车、IOT、安防、工业等诸多领域，正加速开拓全球市场。产品覆盖SD存储卡、#}
+{#                  microSD卡、U盘、读卡器、固态硬盘等。</p>#}
+{#              <p> &ensp;&ensp;在IC固件设计、封装基板设计等方面的实力和高于行业标准的全面质量管理，#}
+{#                  江波龙电子结合市场需求进行产品自主研发，持续为客户提供应用广泛、#}
+{#                  性能优异的创新性存储产品和解决方案，并不断扩展NAND型闪存产品的应用范围。 </p>#}
+            </div>
+              {% block content %}
+
+              {% endblock content %}
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+
+    {% block scr %}
+
+    {% endblock %}
+    {% block footer %}
+        {# 页面的底部，可以用来放jtml片段  可以添加新的js#}
+    {% endblock %}
+  </body>
+</html>

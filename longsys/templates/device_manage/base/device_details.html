@@ -1,0 +1,216 @@
+{% extends 'device_manage/base/base.html' %}
+<!-- 分为客户/测试者/管理员三种身份，通过登录方式判断身份，客户不用登陆
+客户只能查看基础页面，管理员可以查看所有信息-->
+
+{#修改网页标题title#}
+{% block title %}
+    设备详情
+{% endblock %}
+
+{% block personal %}
+    <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+{% endblock %}
+
+{# 通过继承在新页面改写用户名 #}
+{% block user %}
+    {{ name }}
+{% endblock %}
+
+{% block job %}
+    身份:{{ job }}
+{% endblock %}
+
+{# 右边个人信息栏 #}
+{% block self %}
+    {{ name }}
+{% endblock %}
+
+{# 登录登出图标 #}
+{% block login_logout %}
+    {% if name == '客户'%}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/login/">
+            <i class="icon-badge mx-2"></i>登录
+        </a>
+    {% else %}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/logout/">
+            <i class="icon-badge mx-2"></i>注销
+        </a>
+    {% endif %}
+{% endblock %}
+
+{# 右边选项栏 #}
+{% block option %}
+    {% if name == '客户' %}
+        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% else %}
+        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-camera text-primary"></i> 查看设备 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-map text-primary"></i> 测试报表 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% endif %}
+{% endblock %}
+
+{# 管理员-设备管理选项 #}
+{% block admin %}
+    {% if is_admin == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#admin" aria-expanded="false" aria-controls="admin">
+        <span class="menu-title nav-category">管理选项</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+      <div class="collapse" id="admin">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'user_list' %}?page=1">人员管理<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 判断是否为需求发起人 #}
+{% block init %}
+    {% if is_init == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#demand" aria-expanded="false" aria-controls="demand">
+        <span class="menu-title nav-category">需求管理</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="demand">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'new_demand' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block staff %}
+    {% if name == '客户' %}
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">更多功能</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title nav-category">公司介绍</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="https://www.longsys.com/">公司官网<i class="icon-home menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">关于我们<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'choose' %}">
+        <span class="menu-title">设备测试</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title">个人中心</span>
+        <i class="icon-user menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="#"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#"> 生成报表 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#"> 关于 <i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="col-md-7" style=" margin: 0 auto">
+        <table class="table table-hover table-bordered" style="background-color: white; margin-bottom: 20px;">
+            <tr>
+                <td class="font-weight-bold">设备类型</td>
+                <td>{{ device.device_type.device_type }}</td>
+                <td class="font-weight-bold">设备状态</td>
+                <td>{{ device.device_state.state }}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">设备编号</td>
+                <td>{{ device.device_id }}</td>
+                <td class="font-weight-bold">设备品牌</td>
+                <td>{{ device.device_brand }}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">上市年份</td>
+                <td>{{ device.device_year }}</td>
+                <td class="font-weight-bold">支持4K/6K</td>
+                <td>{{ device.device_support }}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">固件版本</td>
+                <td>{{ device.device_fw_ver }}</td>
+                <td class="font-weight-bold">支持卡型</td>
+                <td>{{ device.device_card }}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">卡槽形态</td>
+                <td>{{ device.device_card_slog }}</td>
+                <td class="font-weight-bold">图片格式</td>
+                <td>{{ device.device_img_format }}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">图片平均速度</td>
+                <td>{{ device.device_img_avg }}</td>
+                <td class="font-weight-bold">视频格式</td>
+                <td>{{ device.device_video_format }}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">视频速度</td>
+                <td>{{ device.device_video_speed }}</td>
+                <td class="font-weight-bold">最高录制设置</td>
+                <td>{{ device.device_video_max }}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">视频文件分割</td>
+                <td>{{ device.device_video_cut }}</td>
+                <td class="font-weight-bold">支持容量</td>
+                <td>{{ device.device_capacity }}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">速度要求</td>
+                <td>{{ device.device_speed }}</td>
+                <td class="font-weight-bold">设备特性</td>
+                <td>{{ device.device_character }}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">资产编号</td>
+                <td>{{ device.device_property_id }}</td>
+                <td class="font-weight-bold">资产所属</td>
+                <td>{{ device.device_property_belong }}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">启用时间</td>
+                <td>{{ device.device_begin }}</td>
+                <td class="font-weight-bold">购买价格</td>
+                <td>{{ device.device_price }}</td>
+            </tr>
+        </table>
+        <div class="btn-group col-md-12 text-center">
+            <button class="btn btn-outline-dark center-block">返回上层</button>
+            <button class="btn btn-outline-dark center-block">选中设备</button>
+        </div>
+
+    </div>
+{% endblock %}
