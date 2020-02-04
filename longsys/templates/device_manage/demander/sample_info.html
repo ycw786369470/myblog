@@ -1,0 +1,550 @@
+{% extends 'device_manage/base/base.html' %}
+<!-- 分为客户/测试者/管理员三种身份，通过登录方式判断身份，客户不用登陆
+客户只能查看基础页面，管理员可以查看所有信息-->
+
+{% block head %}
+    <link href="/static/device_manage/vendors/datetimepicker/jquery.datetimepicker.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/device_manage/css/new_built.css" />
+{% endblock %}
+
+{% block personal %}
+    <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+{% endblock %}
+
+{#修改网页标题title#}
+{% block title %}
+    Longsys设备管理系统
+{% endblock %}
+
+{% block search %}
+    {# 不继承父模板的搜索功能 此处为空 #}
+{% endblock %}
+
+{# 通过继承在新页面改写用户名 #}
+{% block user %}
+    {{ name }}
+{% endblock %}
+
+{% block job %}
+    身份:{{ job }}
+{% endblock %}
+
+{# 右边个人信息栏 #}
+{% block self %}
+    {{ name }}
+{% endblock %}
+
+{# 右边选项栏 #}
+{% block option %}
+    {% if name == '客户' %}
+        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% else %}
+        <a class="dropdown-item"  href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-map text-primary"></i> 测试报表 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% endif %}
+{% endblock %}
+
+{# 登录登出图标 #}
+{% block login_logout %}
+    {% if name == '客户'%}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/login/">
+            <i class="icon-badge mx-2"></i>登录
+        </a>
+    {% else %}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/logout/">
+            <i class="icon-badge mx-2"></i>注销
+        </a>
+    {% endif %}
+{% endblock %}
+
+{# 管理员-设备管理选项 #}
+{% block admin %}
+    {% if is_admin == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#admin" aria-expanded="false" aria-controls="admin">
+        <span class="menu-title nav-category">管理选项</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+      <div class="collapse" id="admin">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'many_devices' %}">导入系统<i class="icon-bag menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 判断是否为需求发起人 #}
+{% block init %}
+    {% if is_init == 1 %}
+    <li class="nav-item nav-category">
+        <a class="nav-link" data-toggle="collapse" href="#demand" aria-expanded="false" aria-controls="demand">
+            <span class="menu-title nav-category">需求管理</span>
+            <i class="icon-list menu-icon"></i>
+        </a>
+        <div class="collapse" id="demand">
+            <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+                <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+            </ul>
+        </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block staff %}
+    {% if name == '客户' %}
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">更多功能</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title nav-category">公司介绍</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="https://www.longsys.com/">公司官网<i class="icon-home menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">关于我们<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'personal_task' %}">
+        <span class="menu-title">设备测试</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title">个人中心</span>
+        <i class="icon-user menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="new_demand_body table-responsive" style="width: 100%;">
+        <div class="new_demand_container" style="padding: 20px;width: 100%;">
+            <div class="new_demand_head">
+                <h2 class="text-center">样品信息</h2>
+            </div>
+            <div class="new_demand_body" style="width: 100%;padding-left: 5.132%;">
+                <ul style="list-style: none;font-family: 微软雅黑,serif;" >
+                    {% csrf_token %}
+                    {%  for item in sample_info_list %}
+                    <li class="demand_list" value="{{ forloop.counter0 }}" >
+{#                        <label style="width: 70%;">#}
+                            {% if item == '' %}
+                                <table class="" style="width: 90%">
+                                    <tr style="width: 100%;">
+                                        <td style="width:20%;">
+                                            <i>主控:</i>
+                                            <label>
+                                                <select name="" id="slt1" class="form-control" style="width:150% ">
+                                                    {% if demand_list %}
+                                                         {% for item in master_control %}
+                                                             {% if item.collocation == demand_list.1 %}
+                                                                 <option id="{{ item.num }}" selected>{{ demand_list.1 }}</option>
+                                                             {% else %}
+                                                                 <option id="{{ item.num }}">{{ item.collocation }}</option>
+                                                             {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <option value="" disabled selected hidden >choose</option>
+                                                        {% for item in master_control %}
+                                                            <option id="{{ item.num }}">{{ item.collocation }}</option>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </select>
+                                            </label>
+                                        </td>
+                                        <td style="width:30%;">
+                                            <i>Flash:</i>
+                                            <label>
+                                                <select name="" id="slt2" class="form-control">
+                                                    {% if demand_list %}
+                                                         {% for item in flash %}
+                                                             {% if item.collocation == demand_list.2 %}
+                                                                 <option id="{{ item.num }}" selected value="{{ item.abbreviation }}">{{ item.abbreviation}}</option>
+                                                             {% else %}
+                                                                 <option id="{{ item.num }}" value="{{ item.abbreviation }}">{{ item.collocation }}</option>
+                                                             {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <option value="" disabled selected hidden >choose</option>
+                                                        {% for item in flash %}
+                                                            <option id="{{ item.num }}" value="{{ item.abbreviation }}">{{ item.collocation }}</option>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </select>
+                                            </label>
+                                        </td>
+                                        <td style="width:20%;">
+                                            <i>Die:</i>
+                                            <label>
+                                                <select name="" id="slt3" class="form-control" style="width:150% ">
+                                                    {% if demand_list %}
+                                                        {% for item in die %}
+                                                            {% if item.collocation == demand_list.3 %}
+                                                                <option id="{{ item.num }}" selected>{{ item.collocation }}</option>
+                                                            {% else %}
+                                                                <option id="{{ item.num }}">{{ item.collocation }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <option value="" disabled selected hidden >choose</option>
+                                                        {% for item in die %}
+                                                            <option id="{{ item.num }}">{{ item.collocation }}</option>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </select>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:20%;">
+                                            <i>容量:</i>
+                                            <label>
+                                                <select name="" id="slt5" class="form-control" style="width:150% ">
+                                                     {% if demand_list %}
+                                                         {% for item in capacity %}
+                                                             {% if item.collocation == demand_list.4 %}
+                                                                 <option id="{{ item.num }}" selected>{{ item.abbreviation }}</option>
+                                                             {% else %}
+                                                                 <option id="{{ item.num }}">{{ item.abbreviation }}</option>
+                                                             {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <option value="" disabled selected hidden >choose</option>
+                                                        {% for item in capacity %}
+                                                            <option id="{{ item.num }}">{{ item.abbreviation }}</option>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </select>
+                                            </label>
+                                        </td>
+                                        <td style="width:20%;">
+                                            <i>Ver:</i>
+                                            <input type="text"
+                                                {% if  demand_list %}
+                                                   value="{{ demand_list.5 }}"{% endif %}
+                                                   id="d{{ forloop.counter }}">
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            {% elif item == '需求发起人' %}
+                                <i class="text-danger"> * </i><i>{{ item|safe }}</i> :
+                                <input  type="text" value="{{ name }}" disabled="disabled"  id="name" style="background-color: white;width: 24%;">
+                             {% elif item == '搭&emsp;&emsp;&emsp;配' %}
+                                <i class="text-danger"> * </i><i>{{ item|safe }}</i> :
+                                <input  type="text" {% if demand_list %} value="{{ demand_list.0.match }}" {% endif %} disabled="disabled"  id="match" style="width: 35%">
+                            {% elif item == '&ensp;测试周期&ensp;' %}
+                                <i class="text-danger"> * </i><i>{{ item|safe }}</i> :
+                                <input id="start_time" {% if demand_list %} value="{{ demand_list.0.start_time|date:"Y-m-d H:i" }}"
+                                {% else %} value="{{ start_time|date:"Y-m-d H:i"  }}"
+                                {% endif %} type="text">
+                                —
+                                <input id="end_time" {% if demand_list %} value="{{ demand_list.0.end_time|date:"Y-m-d H:i" }}" {% endif %} type="text" >
+                            {% elif item == '上传' %}
+                                <form action="{% url 'new_built' %}" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <lable>
+                                        {% if demand_list %}
+                                            <input id="file_show" type="text" disabled value="{{ demand_list.0.file_path|truncatechars:12 }}" style="width: 30%">
+                                            <input type="button" class="form-control" value="更改文件" style="width: 6%;display: inline;height: 40px;position: relative;left: -7px;top: -1px;border: rgb(170, 170, 170) 1px solid;" id="update_int">
+                                            <input id="int_file1" class="d-none" type="file" name="zip">
+                                            <input id="submit-file" type="submit" value="提交" style="width: 70px;height: 40px" class="submit-row d-none">
+                                        {% else %}
+                                        <input id="int_file" class="file-upload" type="file" name="zip" >
+                                        <input id="submit-file" type="submit" value="提交" style="width: 70px;height: 40px" class="submit-row d-none">
+                                        {% endif %}
+                                    </lable>
+                                </form>
+                                <script>
+                                    var update_int =  $('#update_int');
+                                    update_int.click(function () {
+                                    var int_file1 = $('#int_file1');
+                                    int_file1.click();
+                                    int_file1.change(function (data) {
+                                        var file_msg = data.currentTarget.files;
+                                        var file_name = file_msg[0].name;
+                                        $('#file_show').attr('value', file_name)
+                                    });
+                                })</script>
+                            {% elif item == '备&emsp;&emsp;&emsp;注'%}
+                                <i>{{ item|safe }}</i> ：
+                                <textarea class="demand_txt" rows="3" cols="21" id="txt"></textarea>
+                                <script>
+                                    document.getElementById('txt').value = '{{ demand_list.0.remark }}';
+                                </script>
+                            {% else %}
+                                {% if item == '兼容性测试版本'%}
+                                    <i>{{ item|safe }}</i> :
+                                    <label>
+                                        <select name="" id="slt6" class="form-control" style="width:150% ">
+                                            <option value="" disabled selected>待选</option>
+                                            {% for item in ver %}
+                                                <option id="">{{ item}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </label>
+                                {% else %}
+                                    <i class="text-danger"> * </i><i>{{ item|safe }}</i> :
+                                    <input type="text" id="d{{ forloop.counter }}">
+                                    <script>
+                                    var demand_id = '{{ demand_id }}';
+                                    console.log(demand_id);
+                                    if(demand_id !== 'none'){
+                                        var p_n = '{{ demand_list.6 }}' ;
+                                        var s_q = '{{ demand_list.7}}' ;
+                                        if(p_n || s_q){
+                                            $('#d4').attr('value', p_n);
+                                            $('#d5').attr('value', s_q)
+                                        }
+                                    }
+                                    </script>
+                                {% endif %}
+                            {% endif %}
+{#                        </label>#}
+                    </li>
+                   {% endfor %}
+                    <li class="demand_list">
+                        <input type="button" accept="a" id="save" value="保存" style="width: 80px;border: none;margin-right: 11.9%">
+                        <input type="button" id="update" value="修改" style="width: 80px;border: none;margin-left: 11.9%">
+                    </li>
+                </ul>
+                <div class="new_demand_footer" >
+                    <input type="button" value="选择设备" style="width: 120px;height: 40px;border: none;margin-left: 14%" id="btn1">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <script src="/static/device_manage/vendors/datetimepicker/modal.js"></script>
+    <script src="/static/device_manage/vendors/datetimepicker/jquery.js"></script>
+    <script src="/static/device_manage/vendors/datetimepicker/jquery.datetimepicker.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+    {% csrf_token %}
+    <script>
+        $(function () {
+            var input = 'input[type=text]'; // 匹配input框
+            var select = 'select'; // 匹配select框
+            var txt = 'textarea';  // 匹配textarea框
+            var match_value = ''; // 搭配框的value
+            var slt_data = {};  //select选择框的数据
+            var slt_num = {}; //select选中的num
+            var info_data = {}; //所有的文本内容
+            var start_time_id = '#start_time'; //开始时间的id
+            var end_time_id = '#end_time';  //结束时间的id
+
+            {# 开始时间插件 #}
+            $(start_time_id).datetimepicker({
+            {#minView: "month",#}
+            language:  'zh-CN',
+            format: 'Y-m-d H:i',
+            autoclose: true,
+            todayBtn: true,
+            pickerPosition: "bottom-left"
+            });
+
+            {# 结束时间的插件 #}
+            $(end_time_id).datetimepicker({
+                {#minView: "month",#}
+                language:  'zh-CN',
+                format: 'Y-m-d H:i',
+                autoclose: true,
+                todayBtn: true,
+                pickerPosition: "bottom-left"
+            });
+
+            {# 获取select中的值 #}
+            var demand_id  = '{{ demand_id }}';
+            console.log(demand_id);
+            if(demand_id !== 'none'){
+                $('select').each(function () {
+                    var slt_id = $(this).attr('id');
+                    slt_id = '#' + slt_id;
+                    var item_id = slt_id;
+                    console.log(item_id);
+                    slt_id = slt_id +' '+ 'option:selected';
+                    slt_num[item_id] = $(slt_id).attr('id');
+                    console.log($(slt_id).attr('id'))
+                });
+             }
+            $(select).change(function () {
+                var slt_id = $(this).attr('id');
+                console.log(slt_id);
+                slt_id = '#' + slt_id;
+                if(slt_id==='#slt2'){
+                    slt_data[slt_id] = $(slt_id).val();
+                    var item_num = slt_id;
+                    slt_id = slt_id +' '+ 'option:selected';
+                    slt_num[item_num] = $(slt_id).attr('id')
+
+                }
+                else {
+                    var item_id = slt_id;
+                    slt_id = slt_id +' '+ 'option:selected';
+                    slt_data[item_id]= $(slt_id).text();
+                    slt_num[item_id] = $(slt_id).attr('id')
+                }
+                {#搭配自动生成 #}
+                console.log(slt_data);
+                console.log(slt_num);
+                match_value = is_undefined(slt_data,'#slt1') + '-' + is_undefined(slt_data,'#slt2')+
+                    '-' + is_undefined(slt_data,'#slt3') + '-' + is_undefined(slt_data,'#slt5');
+                $('#match').prop('value', match_value);
+
+            });
+            // 判断是否被选择
+            function is_undefined(slt_data,key){
+                if(slt_data[key] === undefined){
+                    slt_data[key] = '未选择'
+                }
+                return slt_data[key]
+            }
+            console.log('11', match_value);
+
+            {# 保存事件 #}
+            var is_save = false;
+            $('#save').click(function () {
+                var is_block= false;
+                var block_list = [];
+                {#var path = {{ request.session.path }};#}
+                {#console.log(path);#}
+                info_data['slt6'] = $('#slt6'+' option:selected').val();
+               $(input).each(function () {
+                   var int_id = $(this).attr('id');
+                   if (int_id==='d8'){
+                       info_data[int_id] = $(this).val();
+                   }
+                   else {
+                       var value = $(this).val();
+                       is_block = !value;
+                       block_list.push(is_block);
+                       info_data[int_id] = value;
+                   }
+               });
+               for(var i=0;i<block_list.length;i++){
+                   if (block_list[i]){
+                       alert('有必填项未填写');
+                       return 0
+                   }
+               }
+               var txt_id = $(txt).attr('id');
+               info_data[txt_id] = $(txt).val();
+               console.log(info_data);
+               var is_file = $('#int_file').val();
+               console.log(is_file);
+               if (is_file=== ''){
+                   alert('未上传FW包,请上传')
+               }
+               else {
+                   if(is_block){
+                   alert('有必填项未填写')
+                   }
+                   else {
+                       var start_time = new Date($(start_time_id).val());
+                       var end_time = new Date($(end_time_id).val());
+                       var usetime = end_time - start_time;
+                       if (usetime > 0){
+                           $(input).attr('disabled', 'disabled');
+                           $(select).attr('disabled', 'disabled');
+                           $(txt).attr('disabled', 'disabled');
+                           is_save = true;
+                           alert('保存成功')
+                       }
+                       else if (usetime <= 0){
+                            alert("开始时间大于结束日期！请重新选择时间");
+                       }
+                   }
+               }
+            });
+
+            {# 修改事件 #}
+            $('#update').click(function () {
+                if (is_save){
+                    $(input).removeAttr('disabled', 'disabled');
+                    $(select).removeAttr('disabled', 'disabled');
+                    $(txt).removeAttr('disabled', 'disabled');
+                    $('#name').attr('disabled', 'disabled');
+                    $('#match').attr('disabled', 'disabled');
+                    is_save = false
+                }
+                else {
+                    alert('未保存')
+                }
+            });
+            console.log(info_data);
+            {# 待选设备事件 #}
+            $('#btn1').click(function () {
+                if (is_save){
+                    console.log(is_save);
+                    console.log(info_data);
+                    console.log(slt_num);
+                    $.ajax({
+                        url: '{% url 'release_task' %}',
+                        type: 'post',
+                        data:{
+                            'info_data': JSON.stringify(info_data),
+                            'slt_num': JSON.stringify(slt_num),
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        },
+                        success: function () {
+                            $('#submit-file').trigger('click');
+                            {#window.location.href = '{% url 'new_built' %}'#}
+                        },
+                        error: function () {
+                            alert('error')
+                         }
+                    });
+                }
+                else {
+                    alert('数据未保存')
+                }
+            })
+        });
+        function f1() {
+            $.ajax({
+                url: '{% url 'check_allotted' %}',
+                type: 'post',
+                data: {
+                    'data': 'check',
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+
+                },
+                success: function (res) {
+                    $("#allot").text(res)
+                }
+            });
+        }
+    </script>
+{% endblock %}
+</a>

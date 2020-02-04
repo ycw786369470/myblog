@@ -1,0 +1,61 @@
+<table class="table table-hover table-striped">
+    <thead>
+    <tr>
+        <th>设备id</th>
+        <th>设备编号</th>
+        <th>设备品牌</th>
+        <th>设备型号</th>
+        <th>上市年份</th>
+        <th>型号数量</th>
+        <th>是否支持4K</th>
+        <th>固件版本</th>
+        <th>卡片形态</th>
+        <th>卡槽</th>
+    </tr>
+    </thead>
+    {% for item in devices %}
+    <tr id="{{ item.1.id }}" onclick="check_choose(this.id)">
+        <td>{{ item.1.id }}</td>
+        {% if item.1.is_problem == True %}
+        <td class="text-danger">{{ item.1.device_id }}</td>
+        {% else %}
+        <td>{{ item.1.device_id }}</td>
+        {% endif %}
+        <td>{{ item.1.device_brand }}</td>
+        <td title="{{ item.1.device_spec }}">{{ item.1.device_spec|truncatechars:18 }}</td>
+        <td>{{ item.1.device_year }}</td>
+        <td>{{ item.0 }}</td>
+        <td>
+            {% if item.1.device_support == 0 %}
+                不支持4K
+            {% elif item.1.device_support == 1 %}
+                支持4K
+            {% elif item.1.device_support == 2 %}
+                支持4K、6K
+            {% endif %}
+        </td>
+        <td>{{ item.1.device_fw_ver }}</td>
+        <td title="{{ item.1.device_card }}">{{ item.1.device_card|truncatechars:10 }}</td>
+        <td title="{{ item.1.device_card_slog}}">{{ item.1.device_card_slog|truncatechars:10 }}</td>
+        <td title="{{ d.1.device_card_slog}}">{{ d.1.device_card_slog|truncatechars:10 }}</td>
+        {% if item.1.device_state.state == '可使用' %}
+            <td><label class="badge badge-success">{{ item.1.device_state.state }}</label></td>
+        {% else %}
+            <td><label class="badge badge-dark">{{ item.1.device_state.state }}</label></td>
+        {% endif %}
+    </tr>
+    {% empty %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>没有搜索到"{{ input }}"</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {% endfor %}
+</table>

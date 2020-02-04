@@ -3,7 +3,15 @@
 客户只能查看基础页面，管理员可以查看所有信息-->
 
 {% block personal %}
-    <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+    {% if name == '客户'%}
+        <a href="{% url 'login' %}" class="nav-link">
+    {% else %}
+        <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+    {% endif %}
+{% endblock %}
+
+{% block css %}
+
 {% endblock %}
 
 {# 通过继承在新页面改写用户名 #}
@@ -36,15 +44,26 @@
 {# 右边选项栏 #}
 {% block option %}
     {% if name == '客户' %}
-        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+        <a class="dropdown-item" href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'login' %}"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% elif is_admin == 1 %}
+        <a class="dropdown-item" href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% elif is_init == 1 %}
+        <a class="dropdown-item" href="{% url 'sample_info' %}"><i class="dropdown-item-icon icon-plus text-primary"></i> 发起需求 </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
     {% else %}
-        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-camera text-primary"></i> 查看设备 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-map text-primary"></i> 测试报表 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
     {% endif %}
 {% endblock %}
 
@@ -60,8 +79,8 @@
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="{% url 'user_list' %}?page=1">人员管理<i class="icon-people menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'many_devices' %}">导入系统<i class="icon-bag menu-icon"></i></a></li>
         </ul>
       </div>
     </li>
@@ -78,8 +97,8 @@
       </a>
       <div class="collapse" id="demand">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="{% url 'new_demand' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
         </ul>
       </div>
@@ -110,7 +129,7 @@
     </li>
     {% else %}
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'choose' %}">
+      <a class="nav-link" href="{% url 'personal_task' %}">
         <span class="menu-title">设备测试</span>
         <i class=" icon-wrench menu-icon"></i>
       </a>
@@ -122,9 +141,9 @@
       </a>
       <div class="collapse" id="auth">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="#"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#"> 生成报表 <i class="icon-map menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#"> 关于 <i class="icon-question menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
         </ul>
       </div>
     </li>
@@ -154,6 +173,13 @@
         font-weight: bold;
         font-size: 18px;
     }
+    .no-padding{
+        padding: 0;
+        line-height: 51px;
+    }
+    .select-box{
+        width: 20px;
+    }
     </style>
 {% endblock %}
 
@@ -169,58 +195,62 @@
         <h2 class="text-center">选择修改的设备</h2>
         <div class="col-md-12 text-center">
             {% csrf_token %}
-            <div class="form-check text-left" style="width: 100px; display: inline-block;">
-                <label class="form-check-label text-muted">
-                    <input type="checkbox" class="form-check-input" title="{{ sum.0 }}台" id="d1" onclick="push_type(this.id, '相机')"> 相机
-                </label>
-            </div>
-            <div class="form-check text-left" style="width: 100px; display: inline-block;">
-                <label class="form-check-label text-muted">
-                    <input type="checkbox" class="form-check-input" title="{{ sum.1 }}台" id="d2" onclick="push_type(this.id, '摄像机')"> 摄像机
-                </label>
-            </div>
-            <div class="form-check text-left" style="width: 100px; display: inline-block;">
-                <label class="form-check-label text-muted">
-                    <input type="checkbox" class="form-check-input" title="{{ sum.2 }}台" id="d3" onclick="push_type(this.id, 'Surface')"> Surface
-                </label>
-            </div>
-            <div class="form-check text-left" style="width: 100px; display: inline-block;">
-                <label class="form-check-label text-muted">
-                    <input type="checkbox" class="form-check-input" title="{{ sum.3 }}台" id="d4" onclick="push_type(this.id, '手机')"> 手机
-                </label>
-            </div>
-            <div class="form-check text-left" style="width: 100px; display: inline-block;">
-                <label class="form-check-label text-muted">
-                    <input type="checkbox" class="form-check-input" title="{{ sum.4 }}台" id="d5" onclick="push_type(this.id, '行车记录仪')"> 行车记录仪
-                </label>
-            </div>
-            <div class="form-check text-left" style="width: 100px; display: inline-block;">
-                <label class="form-check-label text-muted">
-                    <input type="checkbox" class="form-check-input" title="{{ sum.5 }}台" id="d6" onclick="push_type(this.id, '监控')"> 监控
-                </label>
-            </div>
-            <div class="form-check text-left" style="width: 100px; display: inline-block;">
-                <label class="form-check-label text-muted">
-                    <input type="checkbox" class="form-check-input" title="{{ sum.6 }}台" id="d7" onclick="push_type(this.id, '无人机')"> 无人机
-                </label>
-            </div>
-            <div class="form-check text-left" style="width: 100px; display: inline-block;">
-                <label class="form-check-label text-muted">
-                    <input type="checkbox" class="form-check-input" title="{{ sum.7 }}台" id="d8" onclick="push_type(this.id, '运动相机')"> 运动相机
-                </label>
-            </div>
-            <div class="form-check" style="width: 100px; display: inline-block;">
-                <label class="form-check-label text-muted">
-                    <input type="checkbox" class="form-check-input" title="{{ sum.8 }}台" id="d9" onclick="push_type(this.id, '游戏机')"> 游戏机
-                </label>
-            </div>
-            <div class="form-check text-left" style="width: 100px; display: inline-block;">
-                <label class="form-check-label text-muted">
-                    <input type="checkbox" class="form-check-input" title="{{ sum.9 }}台" id="d10" onclick="push_type(this.id, '智能门铃')"> 智能门铃
-                </label>
-            </div>
+{#            <div class="form-check text-left" style="width: 100px; display: inline-block;">#}
+{#                <label class="form-check-label text-muted">#}
+{#                    <input type="checkbox" class="form-check-input" title="{{ sum.0 }}台" id="d1" onclick="push_type(this.id, '相机')"> 相机#}
+{#                </label>#}
+{#            </div>#}
+{#            <div class="form-check text-left" style="width: 100px; display: inline-block;">#}
+{#                <label class="form-check-label text-muted">#}
+{#                    <input type="checkbox" class="form-check-input" title="{{ sum.1 }}台" id="d2" onclick="push_type(this.id, '摄像机')"> 摄像机#}
+{#                </label>#}
+{#            </div>#}
+{#            <div class="form-check text-left" style="width: 100px; display: inline-block;">#}
+{#                <label class="form-check-label text-muted">#}
+{#                    <input type="checkbox" class="form-check-input" title="{{ sum.2 }}台" id="d3" onclick="push_type(this.id, 'Surface')"> Surface#}
+{#                </label>#}
+{#            </div>#}
+{#            <div class="form-check text-left" style="width: 100px; display: inline-block;">#}
+{#                <label class="form-check-label text-muted">#}
+{#                    <input type="checkbox" class="form-check-input" title="{{ sum.3 }}台" id="d4" onclick="push_type(this.id, '手机')"> 手机#}
+{#                </label>#}
+{#            </div>#}
+{#            <div class="form-check text-left" style="width: 100px; display: inline-block;">#}
+{#                <label class="form-check-label text-muted">#}
+{#                    <input type="checkbox" class="form-check-input" title="{{ sum.4 }}台" id="d5" onclick="push_type(this.id, '行车记录仪')"> 行车记录仪#}
+{#                </label>#}
+{#            </div>#}
+{#            <div class="form-check text-left" style="width: 100px; display: inline-block;">#}
+{#                <label class="form-check-label text-muted">#}
+{#                    <input type="checkbox" class="form-check-input" title="{{ sum.5 }}台" id="d6" onclick="push_type(this.id, '监控')"> 监控#}
+{#                </label>#}
+{#            </div>#}
+{#            <div class="form-check text-left" style="width: 100px; display: inline-block;">#}
+{#                <label class="form-check-label text-muted">#}
+{#                    <input type="checkbox" class="form-check-input" title="{{ sum.6 }}台" id="d7" onclick="push_type(this.id, '无人机')"> 无人机#}
+{#                </label>#}
+{#            </div>#}
+{#            <div class="form-check text-left" style="width: 100px; display: inline-block;">#}
+{#                <label class="form-check-label text-muted">#}
+{#                    <input type="checkbox" class="form-check-input" title="{{ sum.7 }}台" id="d8" onclick="push_type(this.id, '运动相机')"> 运动相机#}
+{#                </label>#}
+{#            </div>#}
+{#            <div class="form-check" style="width: 100px; display: inline-block;">#}
+{#                <label class="form-check-label text-muted">#}
+{#                    <input type="checkbox" class="form-check-input" title="{{ sum.8 }}台" id="d9" onclick="push_type(this.id, '游戏机')"> 游戏机#}
+{#                </label>#}
+{#            </div>#}
+{#            <div class="form-check text-left" style="width: 100px; display: inline-block;">#}
+{#                <label class="form-check-label text-muted">#}
+{#                    <input type="checkbox" class="form-check-input" title="{{ sum.9 }}台" id="d10" onclick="push_type(this.id, '智能门铃')"> 智能门铃#}
+{#                </label>#}
+{#            </div>#}
+{#            <div class="form-check text-left" style="width: 100px; display: inline-block;">#}
+{#                <label class="form-check-label text-danger">#}
+{#                    <input type="checkbox" class="form-check-input" title="{{ sum.10 }}台" id="d11" onclick="push_type(this.id, '问题设备')"> 问题设备#}
+{#                </label>#}
+{#            </div>#}
         </div>
-
         <div class="col-md-8" style="margin: 10px auto;">
             <div class="input-group col-md-5" style="margin: 0 auto;">
                 <input type="text" class="form-control" style="height: 35px;" placeholder="查找设备型号/编号" aria-label="查找设备型号/编号" aria-describedby="basic-addon2" id="search-input">
@@ -236,27 +266,90 @@
             <thead>
             <tr>
                 <th></th>
-                <th>设备种类</th>
-                <th>设备编号</th>
-                <th>设备品牌</th>
-                <th>设备型号</th>
-                <th>上市年份</th>
-                <th>数量</th>
-                <th>是否支持4K</th>
-                <th>固件版本</th>
-                <th>卡片形态</th>
-                <th>卡槽</th>
-                <th>状态</th>
+                <th>
+                    设备种类
+                    <select class="choose-btn select-box" name="type" id="type" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for type in options.type %}
+                            <option value="{{ type }}">{{ type }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>
+                    设备编号
+                    <select class="choose-btn select-box" name="spec" id="spec" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for spec in options.spec %}
+                            <option value="{{ spec }}">{{ spec }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th style="width: 175px">
+                    设备品牌
+                    <select class="choose-btn select-box" name="brand" id="brand" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for brand in options.brand %}
+                            <option value="{{ brand }}">{{ brand }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th style="padding: 0;line-height: 51px;">设备型号</th>
+                <th style="padding: 0;line-height: 51px; width: 100px;">上市年份</th>
+                <th style="padding: 0;line-height: 51px; width: 100px;">数量</th>
+                <th>
+                    是否支持4K
+                    <select class="choose-btn select-box" name="support" id="support" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        <option value="0">不支持4K</option>
+                        <option value="1">支持4K</option>
+                        <option value="2">高性能(6K)</option>
+                    </select>
+                </th>
+                <th>
+                    固件版本
+                    <select class="choose-btn select-box" name="ver" id="ver" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for ver in options.ver %}
+                            <option value="{{ ver }}">{{ ver }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>
+                    卡片形态
+                    <select class="choose-btn select-box" name="card" id="card" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for card in options.card %}
+                            <option value="{{ card }}">{{ card }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>
+                    卡槽
+                    <select class="choose-btn select-box" name="slog" id="slog" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for slog in options.brand %}
+                            <option value="{{ slog }}">{{ slog }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>
+                    状态
+                    <select class="choose-btn select-box" name="state" id="state" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for state in options.state %}
+                            <option value="{{ state }}">{{ state }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
             </tr>
             </thead>
-            {% for d in num_page_data_list %}
+            {% for d in data_list %}
             <tr id="{{ d.1.id }}" onclick="check_choose({{ d.1.id }})">
-                {% csrf_token %}
                 <td>{{ d.0 }}</td>
                 <td>{{ d.1.device_type }}</td>
-                <td>{{ d.1.device_id }}</td>
+                <td {% if d.1.is_problem == True %} class="text-danger" {% endif %}>{{ d.1.device_id }}</td>
                 <td>{{ d.1.device_brand }}</td>
-                <td>{{ d.1.device_spec }}</td>
+                <td title="{{ d.1.device_spec }}">{{ d.1.device_spec|truncatechars:15 }}</td>
                 <td>{{ d.1.device_year }}</td>
                 <td>{{ d.2 }}</td>
                 <td>
@@ -269,64 +362,89 @@
                     {% endif %}
                 </td>
                 <td>{{ d.1.device_fw_ver }}</td>
-                <td>{{ d.1.device_card }}</td>
-                <td>{{ d.1.device_card_slog }}</td>
+                <td title="{{ d.1.device_card }}">{{ d.1.device_card|truncatechars:10 }}</td>
+                <td title="{{ d.1.device_card_slog}}">{{ d.1.device_card_slog|truncatechars:10 }}</td>
                 {% if d.1.device_state.state == '可使用' %}
                     <td><label class="badge badge-success">{{ d.1.device_state.state }}</label></td>
-                {% elif d.1.device_state.state == '维护中' %}
-                    <td><label class="badge badge-dark">{{ d.1.device_state.state }}</label></td>
-                {% elif d.1.device_state.state == '无电池' %}
-                    <td><label class="badge badge-dark">{{ d.1.device_state.state }}</label></td>
-                {% elif d.1.device_state.state == '卡槽损坏' %}
-                    <td><label class="badge badge-dark">{{ d.1.device_state.state }}</label></td>
-                {% elif d.1.device_state.state == '借出' %}
-                    <td><label class="badge badge-dark">{{ d.1.device_state.state }}</label></td>
-                {% elif d.1.device_state.state == '租赁' %}
-                    <td><label class="badge badge-dark">{{ d.1.device_state.state }}</label></td>
-                {% elif d.1.device_state.state == '测试中' %}
+                {% else %}
                     <td><label class="badge badge-dark">{{ d.1.device_state.state }}</label></td>
                 {% endif %}
             </tr>
             {% endfor %}
             <script>
-                var type_ls = [];
-                function check_choose(id) {
-                    location.href="/modify_device?id="+id;
+                 {#var type_ls = [];#}
+                 function check_choose(id) {
+                    location.href="/device_detail/?d_id="+id;
                  }
-                 function push_type(id, name) {
-                    var this_type = $('#'+id);
-                    var type_bool = this_type.get(0).checked;
-                    if (type_bool === true){
-                        type_ls.push(name);
-                        $.ajax({
-                            url: '/ajax_find/',
-                            type: 'post',
-                            data: {
-                                'way': 'type',
-                                'types': type_ls,
-                                'csrfmiddlewaretoken': $("[name='csrfmiddlewaretoken']").val(),
-                            },
-                            success: function (res) {
-                                $('#table_data').html(res)
-                            },
-                            error: function (err) {
-                                alert('error')
-                            }
-                        })
-                     }
-                    if (type_bool === false){
-                        type_ls = delete_element(type_ls, name);
-                     }
-                     console.log(type_ls);
-                 }
-                 function delete_element(ls, element) {
-                    for(var i=0; ls.length; i++){
-                        if (ls[i].toString() === element.toString()){
-                            ls.splice(i, 1);
-                            return ls;
-                        }
-                    }
-                 }
+                 {#function push_type(id, name) {#}
+                 {#   var this_type = $('#'+id);#}
+                 {#   var type_bool = this_type.get(0).checked;#}
+                 {#   console.log('send1...');#}
+                 {#   if (type_bool === true){#}
+                 {#       console.log('send2...');#}
+                 {#       type_ls.push(name);#}
+                 {#       $.ajax({#}
+                 {#           url: '/ajax_find/',#}
+                 {#           type: 'post',#}
+                 {#           data: {#}
+                 {#               'way': 'type',#}
+                 {#               'types': type_ls,#}
+                 {#               'csrfmiddlewaretoken': $("[name='csrfmiddlewwinaretoken']").val(),#}
+                 {#           },#}
+                 {#           success: function (res) {#}
+                 {#               $('#table_data').html(res)#}
+                 {#           },#}
+                 {#           error: function (err) {#}
+                 {#               alert('error')#}
+                 {#           }#}
+                 {#       })#}
+                 {#    }#}
+                 {#   if (type_bool === false){#}
+                 {#       type_ls = delete_element(type_ls, name);#}
+                 {#       if(type_ls.length === 0){#}
+                 {#           $.ajax({#}
+                 {#               url: '/ajax_find/',#}
+                 {#               type: 'post',#}
+                 {#               data: {#}
+                 {#                   'way': 'type',#}
+                 {#                   'types': [],#}
+                 {#                   'csrfmiddlewaretoken': $("[name='csrfmiddlewwinaretoken']").val(),#}
+                 {#               },#}
+                 {#               success: function (res) {#}
+                 {#                   $('#table_data').html(res)#}
+                 {#               },#}
+                 {#               error: function (err) {#}
+                 {#                   alert('error')#}
+                 {#               }#}
+                 {#           })#}
+                 {#       }else{#}
+                 {#           $.ajax({#}
+                 {#               url: '/ajax_find/',#}
+                 {#               type: 'post',#}
+                 {#               data: {#}
+                 {#                   'way': 'type',#}
+                 {#                   'types': type_ls,#}
+                 {#                   'csrfmiddlewaretoken': $("[name='csrfmiddlewwinaretoken']").val(),#}
+                 {#               },#}
+                 {#               success: function (res) {#}
+                 {#                   $('#table_data').html(res)#}
+                 {#               },#}
+                 {#               error: function (err) {#}
+                 {#                   alert('error')#}
+                 {#               }#}
+                 {#           })#}
+                 {#       }#}
+                 {##}
+                 {#    }#}
+                 {# }#}
+                 {#function delete_element(ls, element) {#}
+                 {#   for(var i=0; ls.length; i++){#}
+                 {#       if (ls[i].toString() === element.toString()){#}
+                 {#           ls.splice(i, 1);#}
+                 {#           return ls;#}
+                 {#       }#}
+                 {#   }#}
+                 {# }#}
                  function search() {
                      var search_txt = $('#search-input').val();
                      $.ajax({
@@ -345,8 +463,55 @@
                         }
                      })
                  }
+                 function filt_data(id){
+                    var value = $("#"+id).val();
+                    $.ajax({
+                        url: '{% url 'filter' %}',
+                        type: 'post',
+                        dataType: "json",
+                        data: {
+                            'way': id,
+                            'value': value,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        },
+                        success: function (res) {
+                            var data = eval(res);
+                            $("#table_data").html(data.data);
+                        },
+                        error: function () {
+                            alert('发生未知错误，请刷新试试~');
+                        }
+                    })
+                 }
             </script>
         </table>
+    <div class="col-md-12 text-center" style="margin-top: 20px">
+        <div class="btn-group" role="group">
+                <a href="{% url 'manage_devices' %}?page=1"><button class="btn btn-outline-dark">First</button></a>
+            {% if now_page != 1 %}
+                <a href="{% url 'manage_devices' %}?page={{ before_next.0 }}"><button class="btn btn-outline-dark"><span class="icon-arrow-left"></span></button></a>
+            {% else %}
+                <a href=""><button class="btn btn-outline-dark" disabled><span class="icon-arrow-left"></span></button></a>
+            {% endif %}
+
+            {% for num in page_num_list %}
+                <a href="{% url 'manage_devices' %}?page={{ num }}">
+                {% if num == page %}
+                    <button class="btn btn-dark">{{ num }}</button>
+                {% else %}
+                    <button class="btn btn-outline-dark">{{ num }}</button>
+                {% endif %}
+                </a>
+            {% endfor %}
+
+            {% if now_page != page_nums %}
+                <a href="{% url 'manage_devices' %}?page={{ before_next.1 }}"><button class="btn btn-outline-dark" ><span class="icon-arrow-right"></span></button></a>
+            {% else%}
+                <a href=""><button class="btn btn-outline-dark" disabled><span class="icon-arrow-right"></span></button></a>
+            {% endif %}
+                    <a href="{% url 'manage_devices' %}?page={{ page_nums }}"><button class="btn btn-outline-dark">Last</button></a>
+                <button type="button" class="btn btn-outline-dark" disabled>total:{{ page_nums }}</button>
+        </div>
     </div>
-    </a>
+</div>
 {% endblock %}

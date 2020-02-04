@@ -1,0 +1,235 @@
+{% extends 'device_manage/base/base.html' %}
+<!-- 分为客户/测试者/管理员三种身份，通过登录方式判断身份，客户不用登陆
+客户只能查看基础页面，管理员可以查看所有信息-->
+
+{#修改网页标题title#}
+{% block title %}
+    设备历史测试记录
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block personal %}
+    {% if name == '客户'%}
+        <a href="{% url 'login' %}" class="nav-link">
+    {% else %}
+        <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+    {% endif %}
+{% endblock %}
+
+{# 通过继承在新页面改写用户名 #}
+{% block user %}
+    {{ name }}
+{% endblock %}
+
+{% block job %}
+    身份:{{ job }}
+{% endblock %}
+
+{# 右边个人信息栏 #}
+{% block self %}
+    {{ name }}
+{% endblock %}
+
+{# 登录登出图标 #}
+{% block login_logout %}
+    {% if name == '客户'%}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/login/">
+            <i class="icon-badge mx-2"></i>登录
+        </a>
+    {% else %}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/logout/">
+            <i class="icon-badge mx-2"></i>注销
+        </a>
+    {% endif %}
+{% endblock %}
+
+{# 右边选项栏 #}
+{% block option %}
+    {% if name == '客户' %}
+        <a class="dropdown-item" href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'login' %}"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% elif is_admin == 1 %}
+        <a class="dropdown-item" href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% elif is_init == 1 %}
+        <a class="dropdown-item" href="{% url 'sample_info' %}"><i class="dropdown-item-icon icon-plus text-primary"></i> 发起需求 </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% else %}
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% endif %}
+{% endblock %}
+
+{# 管理员-设备管理选项 #}
+{% block admin %}
+    {% if is_admin == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#admin" aria-expanded="false" aria-controls="admin">
+        <span class="menu-title nav-category">管理选项</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+      <div class="collapse" id="admin">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'many_devices' %}">导入系统<i class="icon-bag menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 判断是否为需求发起人 #}
+{% block init %}
+    {% if is_init == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#demand" aria-expanded="false" aria-controls="demand">
+        <span class="menu-title nav-category">需求管理</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="demand">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block staff %}
+    {% if name == '客户' %}
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">更多功能</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title nav-category">公司介绍</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="https://www.longsys.com/">公司官网<i class="icon-home menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">关于我们<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'personal_task' %}">
+        <span class="menu-title">设备测试</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title">个人中心</span>
+        <i class="icon-user menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 修改操作框内容 #}
+{% block content %}
+    <div class="back">
+        <a href="javascript:history.back(-1)"><button class="btn btn-outline-dark" style="font-family: 微软雅黑">&lt;&lt;返回</button></a>
+    </div>
+    <div class="title" style="width: 20%;margin: auto">
+        <h2>设备历史测试数据</h2>
+    </div>
+    <div class="col-md-12 table-responsive" id="history" style="background-color: white">
+        <table class="table table-hover table-bordered text-center" id="table_content">
+            <tr>
+                <th></th>
+                <th>设备编号</th>
+                <th>设备品牌</th>
+                <th>型号</th>
+                <th>是否支持4k</th>
+                <th>卡槽</th>
+                <th>卡片数量</th>
+                <th>卡片编号</th>
+                <th>版本</th>
+                <th>搭配</th>
+                <th>兼容性测试版本</th>
+                <th>SN</th>
+                <th>测试结果</th>
+                <th>测试人员</th>
+                <th>备注</th>
+                <th>失败项目</th>
+            </tr>
+            {% for re in record_ls %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ re.device.device_id }}</td>
+                <td>{{ re.device.device_brand }}</td>
+                <td>{{ re.device.device_spec }}</td>
+                <td>
+                    {% if re.device.device_support == 1 %}
+                        是
+                    {% else %}
+                        否
+                    {% endif %}
+                </td>
+                <td>{{ re.device.device_card_slog }}</td>
+                <td>{{ re.record.card_num }}</td>
+                <td>{{ re.record.card_id }}</td>
+                <td>{{ re.requirements.ver }}</td>
+                <td>{{ re.requirements.match }}</td>
+                <td>{{ re.requirements.compatible_ver }}</td>
+                <td>{{ re.requirements.SN }}</td>
+                {% if re.record.result == 1 %}
+                    <td style="color: #58d8a3">pass</td>
+                {% elif re.record.result == 0 %}
+                    <td style="color: red">fail</td>
+                {% else %}
+                    <td style="color: orange">待测</td>
+                {% endif %}
+                <td>{{ re.record.user }}</td>
+                <td>{{ re.record.remark }}</td>
+                <td>{{ re.fail_pro }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <script>
+    function f1() {
+        $.ajax({
+            url: '{% url 'check_allotted' %}',
+            type: 'post',
+            data: {
+                'data': 'check',
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+
+            },
+            success: function (res) {
+                $("#allot").text(res)
+            }
+        });
+        }
+    </script>
+{% endblock %}

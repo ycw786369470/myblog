@@ -1,19 +1,7 @@
 
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th>{{ type }}</th>
-        <th>设备编号</th>
-        <th>设备品牌</th>
-        <th>设备型号</th>
-        <th>上市年份</th>
-        <th>数量</th>
-        <th>是否支持4K</th>
-        <th>固件版本</th>
-        <th>卡片形态</th>
-        <th>卡槽</th>
-    </tr>
-    </thead>
+
+<table class="table table-hover" >
+
     {% for item in object_list %}
     <tr>
         <td>{{ item.id }}</td>

@@ -29,23 +29,27 @@
                   {% csrf_token %}
                   <div class="form-group">
                     <input type="text" class="form-control form-control-lg" id="exampleInputname" placeholder="姓名Name" name="name">
-                    <span style="color: red;display: none;font-size: 10%"></span>
+                    <span style="color: red;display: none;font-size: 13px"></span>
                   </div>
                   <div class="form-group">
                     <input type="text" class="form-control form-control-lg" id="exampleInputstaff" placeholder="工号Number" name="number">
-                    <span style="color: red;display: none;font-size: 10%"></span>
+                    <span style="color: red;display: none;font-size: 13px"></span>
+                  </div>
+                  <div class="form-group">
+                    <input type="email" class="form-control form-control-lg" id="exampleInputEmail" placeholder="邮箱Email" name="email">
+                    <span style="color: red;display: none;font-size: 13px"></span>
                   </div>
                   <div class="form-group">
                     <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="密码Password" name="password">
-                    <span style="color: red;display: none;font-size: 10%"></span>
+                    <span style="color: red;display: none;font-size: 13px"></span>
                   </div>
                   <div class="form-group">
                     <input type="password" class="form-control form-control-lg" id="exampleInputPassword2" placeholder="确认密码" name="check_password">
-                    <span style="color: red;display: none;font-size: 10%"></span>
+                    <span style="color: red;display: none;font-size: 13px"></span>
                   </div>
                   <div class="form-group">
                     <select class="form-control form-control-lg" id="exampleFormControlSelect2" name="group">
-                      <option>选择小组</option>
+                      <option value="">选择小组</option>
                       {% for group in group_list %}
                         <option value="{{ group.id }}">{{ group.name }}</option>
                       {% endfor %}
@@ -53,7 +57,7 @@
                   </div>
                   <div class="form-group">
                     <select class="form-control form-control-lg" id="exampleFormControlSelect2" name="job">
-                      <option>岗位</option>
+                      <option value="">岗位</option>
                       {% for job in job_list %}
                         <option value="{{ job.id }}">{{ job.name }}</option>
                       {% endfor %}
@@ -61,7 +65,7 @@
                   </div>
                   <div class="mt-3">
                     <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" id="submit_btn" type="submit" value="注册">
-                    <span style="color: red;display: block;font-size: 10%;padding-top: 2%">{{ point_out }}</span>
+                    <span style="color: red;display: block;font-size: 13px;padding-top: 2%">{{ point_out }}</span>
                   </div>
                   <div class="form-check">
                      <label class="form-check-label text-muted">
@@ -81,22 +85,26 @@
     <script src="/static/device_manage/js/off-canvas.js"></script>
     <script src="/static/device_manage/js/misc.js"></script>
     <!-- endinject -->
-    <script>
-        $(function () {
-            is_staff_num = false;
-            is_password = false;
-            is_cpwd = false;
-            is_name = false;
+<script>
+    $(function () {
+        is_staff_num = false;
+        is_password = false;
+        is_cpwd = false;
+        is_name = false;
+        is_email = false;
 
         check_staff_num();
+        check_mail();
         check_password();
         check_cpwd();
         check_name();
+        check_all();
 
         function check_name() {
             $('#exampleInputname').blur(function () {
                 var name = $('#exampleInputname').val();
                 if (name==""){
+                    is_name = false;
                 $('input[name="name"]').next().html('请输入真实姓名').show();
             }else{
                     is_name = true;
@@ -109,6 +117,7 @@
             $('#exampleInputstaff').blur(function () {
             staff = $('#exampleInputstaff').val();
             if (staff==""){
+                is_staff_num = false;
                 $('input[name="number"]').next().html('工号不能为空！！').show();
             }else{
                 reg = /[0-9a-zA-Z\-]{4,10}/;
@@ -116,6 +125,7 @@
                     $.post("/check_staff/",{"staff":staff,csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
                         if (data.erro == 1){
                              $('input[name="number"]').next().html('该工号用户已存在！！').show();
+                             is_staff_num = false;
                         }else{
                             is_staff_num = true;
                             $('input[name="number"]').next().hide();
@@ -124,6 +134,25 @@
                 }else{
                     is_staff_num = false;
                     $('input[name="number"]').next().html('工号由4-10位数字和字母组成！！').show();
+                }
+            }
+        })
+        }
+        //校验邮箱
+        function check_mail() {
+            $('#exampleInputEmail').blur(function () {
+            email = $('#exampleInputEmail').val();
+            if (email==""){
+                is_email = false;
+                $('input[name="email"]').next().html('请输入有效的邮箱地址').show();
+            }else{
+                reg = /^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+                if (reg.test(email)){     //格式校验通过
+                    is_email = true;
+                    $('input[name="email"]').next().hide();
+                }else{
+                    is_email = false;
+                    $('input[name="email"]').next().html('请输入有效的邮箱地址').show();
                 }
             }
         })
@@ -140,6 +169,7 @@
                     reg = /[0-9a-zA-Z]{8,16}/;
                     if (reg.test(pwd)){
                         if (!isNaN(pwd)){
+                            is_passwrod = false;
                             $('#exampleInputPassword1').next().html('密码不能为纯数字！！').show();
                         }else{
                             is_password = true;
@@ -170,6 +200,24 @@
                 }
             }
         })
+        }
+
+        function check_all() {
+            $("#submit_btn").click(function () {
+                group = document.getElementsByName("group")[0].value;
+                job = document.getElementsByName("job")[0].value;
+                if(is_staff_num&&is_password&&is_cpwd&&is_name&&is_email){
+                    if(group&&job){
+                        return true;
+                    }else{
+                        alert('请选择小组和岗位！');
+                        return false;
+                    }
+                }else{
+                    alert('注册信息填写有误或不完全！');
+                    return false;
+                }
+            })
         }
         })
     </script>

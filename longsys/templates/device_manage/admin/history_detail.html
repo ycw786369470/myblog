@@ -4,11 +4,7 @@
 
 {#修改网页标题title#}
 {% block title %}
-    longsys设备展示
-{% endblock %}
-
-{% block head %}
-    <link rel="stylesheet" href="/static/device_manage/css/history_detail_css.css">
+    测试记录详情
 {% endblock %}
 
 {% block personal %}
@@ -45,15 +41,20 @@
 {# 右边选项栏 #}
 {% block option %}
     {% if name == '客户' %}
-        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+        <a class="dropdown-item" href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'login' %}"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% elif name == '管理员' %}
+        <a class="dropdown-item" href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
     {% else %}
-        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-camera text-primary"></i> 查看设备 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-map text-primary"></i> 测试报表 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
     {% endif %}
 {% endblock %}
 
@@ -69,8 +70,8 @@
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="{% url 'user_list' %}?page=1">人员管理<i class="icon-people menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'many_devices' %}">导入系统<i class="icon-bag menu-icon"></i></a></li>
         </ul>
       </div>
     </li>
@@ -87,8 +88,8 @@
       </a>
       <div class="collapse" id="demand">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="{% url 'new_demand' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
         </ul>
       </div>
@@ -119,7 +120,7 @@
     </li>
     {% else %}
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'choose' %}">
+      <a class="nav-link" href="{% url 'personal_task' %}">
         <span class="menu-title">设备测试</span>
         <i class=" icon-wrench menu-icon"></i>
       </a>
@@ -131,106 +132,802 @@
       </a>
       <div class="collapse" id="auth">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="#"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#"> 生成报表 <i class="icon-map menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#"> 关于 <i class="icon-question menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
         </ul>
       </div>
     </li>
     {% endif %}
 {% endblock %}
 
+{% block head %}
+    <style>
+        #progress span{
+            border: solid 1px grey;
+            border-radius: 5px;
+        }
+
+        select{
+            border-radius: 3px;
+            box-shadow: #969696 0 3px 3px;
+        }
+
+        #export_record:hover {
+            box-shadow: #969696 0 5px 5px;
+        }
+
+        #model .form-check{
+            font-size: 12px;
+        }
+    </style>
+{% endblock %}
 {# 修改操作框内容 #}
 {% block content %}
     <div class="back">
-        <a href="javascript:history.back(-1)"><button class="btn btn-outline-dark" style="font-family: 微软雅黑">&lt;&lt;返回</button></a>
+        <a href="{% url 'test_history' %}?page=1"><button class="btn btn-outline-dark" style="font-family: 微软雅黑">&lt;&lt;返回</button></a>
     </div>
-    <div class="detail" style="background-color: white">
-        <table class="detail_table">
-            <tr class="history_det">
-                <th>测试设备</th>
-                <th>测试人员</th>
-                <th>测试版本</th>
-            </tr>
-            <tr class="history_det">
-                <td>{{ history.device }}</td>
-                <td>{{ history.user }}</td>
-                <td>{{ history.version }}</td>
-            </tr>
-            <tr class="history_det">
+    <div class="export_record" style="padding: 20px;background-color: #cbd3da">
+        <span>选择报告导出内容(不勾选默认导出所有信息):</span><br>
+        <div class="form-check" style="width: 90px; display: inline-block;">
+            <label class="form-check-label text-muted">
+                <input type="checkbox" class="form-check-input" id="card_num"> 卡数量
+            </label>
+        </div>
+        <div class="form-check" style="width: 90px; display: inline-block;">
+            <label class="form-check-label text-muted">
+                <input type="checkbox" class="form-check-input" id="test_cycle"> 测试周期
+            </label>
+        </div>
+        <div class="form-check" style="width: 130px; display: inline-block;">
+            <label class="form-check-label text-muted">
+                <input type="checkbox" class="form-check-input" id="compatible_ver"> 兼容性测试版本
+            </label>
+        </div>
+        <div class="form-check" style="width: 120px; display: inline-block;">
+            <label class="form-check-label text-muted">
+                <input type="checkbox" class="form-check-input" id="device_support"> 是否支持4K
+            </label>
+        </div>
+        <div class="form-check" style="width: 90px; display: inline-block;">
+            <label class="form-check-label text-muted">
+                <input type="checkbox" class="form-check-input" id="device_card_slog"> 卡槽
+            </label>
+        </div>
+        <div class="form-check" style="width: 90px; display: inline-block;">
+            <label class="form-check-label text-muted">
+                <input type="checkbox" class="form-check-input" id="card_num_1"> 卡片数量
+            </label>
+        </div>
+        <div class="form-check" style="width: 90px; display: inline-block;">
+            <label class="form-check-label text-muted">
+                <input type="checkbox" class="form-check-input" id="card_id"> 卡片编号
+            </label>
+        </div>
+        <div class="form-check" style="width: 90px; display: inline-block;">
+            <label class="form-check-label text-muted">
+                <input type="checkbox" class="form-check-input" id="user"> 测试人员
+            </label>
+        </div>
+        <div class="form-check" style="width: 90px; display: inline-block;">
+            <label class="form-check-label text-muted">
+                <input type="checkbox" class="form-check-input" id="remark"> 备注
+            </label>
+        </div>
+        <div class="form-check" style="width: 90px; display: inline-block;">
+            <label class="form-check-label text-muted">
+                <input type="checkbox" class="form-check-input" id="fail_pro"> 失败项目
+            </label>
+        </div>
+        <br><button type="submit" class="btn btn-primary" id="export_record" style="width: 140px;height: 10px;line-height: 2px" onclick="export_record()">导出报告</button>
+    </div>
+    <div class="col-md-12 table-responsive" id="history" style="background-color: white">
+        <table class="table table-hover table-bordered text-center">
+            <tr>
+                <th></th>
+                <th>版本</th>
+                <td id="testver" title="点击可编辑" onclick="ed_testver()">{{ requirements.ver }}</td>
                 <th>搭配</th>
+                <td colspan="2" onclick="ed_collocation()" id="match">{{ requirements.match }}</td>
                 <th>卡数量</th>
-                <th>卡片编号</th>
-            </tr>
-            <tr class="history_det">
-                <td>{{ history.match }}</td>
-                <td>{{ history.card_num }}</td>
-                <td>{{ history.card_id }}</td>
-            </tr>
-            <tr class="history_det">
+                <td colspan="2">{{ requirements.sample_quantity }}</td>
                 <th>测试周期</th>
-                <th>兼容性测试版本</th>
-                <th>SN编号</th>
+                <td>{{ requirements.start_time|date:"Y-m-d" }}..{{ requirements.end_time|date:"Y-m-d" }}</td>
             </tr>
-            <tr class="history_det">
-                <td>{{ history.cycle }}</td>
-                <td>{{ history.compatible_ver }}</td>
-                <td>{{ history.SN }}</td>
+            <tr>
+                <th></th>
+                <th colspan="3">兼容性测试版本</th>
+                <td colspan="2">
+                 <label>
+                    <select name="" id="slt" onchange="ed_ver(this.id)">
+                        <option value="" disabled selected>{{ requirements.compatible_ver }}</option>
+                        {% for item in ver %}
+                            <option id="">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </td>
+                <th>平台总数</th>
+                <td colspan="2">{{ dev_num }}</td>
+                <th>Fail平台数</th>
+                <td>{{ fail_num }}</td>
+                <th>SN</th>
+                <td id="sn">{{ requirements.SN }}</td>
             </tr>
-            <table class="mid_table">
-                <tr class="history_det">
-                    <th>平台总数</th>
-                    <th>失败平台数</th>
-                </tr>
-                <tr class="history_det">
-                    <td>{{ history.number }}</td>
-                    <td>{{ history.fail_number }}</td>
-                </tr>
-            </table>
-            <table class="footer_table">
-                <tr class="history_det">
-                    <th style="text-align: left;padding-left: 20px">结果:</th>
-                </tr>
-                <tr class="history_det">
-                    <td style="text-align: left;padding-left: 20px">{{ history.result }}</td>
-                </tr>
-                <tr class="history_det">
-                    <th style="text-align: left;padding-left: 20px">失败项目:</th>
-                </tr>
-                <tr class="history_det">
-                    <td style="text-align: left;padding-left: 20px">{{ history.fail_pro }}</td>
-                </tr>
-                <tr class="history_det">
-                    <th style="text-align: left;padding-left: 20px">备注:</th>
-                </tr>
-                <tr class="history_det">
-                    <td style="text-align: left;padding-left: 20px">{{ history.remark }}</td>
-                </tr>
-                <tr class="history_det">
-                    <th style="text-align: left;padding-left: 20px">竞争对比:</th>
-                </tr>
-                <tr class="history_det">
-                    <td style="text-align: left;padding-left: 20px">{{ history.compete }}</td>
-                </tr>
-                <tr class="history_det">
-                    <th style="text-align: left;padding-left: 20px">记录1:</th>
-                </tr>
-                <tr class="history_det">
-                    <td style="text-align: left;padding-left: 20px">{{ history.record1 }}</td>
-                </tr>
-                <tr class="history_det">
-                    <th style="text-align: left;padding-left: 20px">记录2:</th>
-                </tr>
-                <tr class="history_det">
-                    <td style="text-align: left;padding-left: 20px">{{ history.record2 }}</td>
-                </tr>
-                <tr class="history_det">
-                    <th style="text-align: left;padding-left: 20px">JIRA链接:</th>
-                </tr>
-                <tr class="history_det">
-                    <td style="text-align: left;padding-left: 20px">{{ history.JIRA }}</td>
-                </tr>
-            </table>
         </table>
+        <table class="table table-hover table-bordered text-center" id="table_content">
+            <tr>
+                <th></th>
+                <th>测试设备
+                    <select name="device_type" id="device_type" style="width: 20px" onchange="choose_result(this.id)">
+                        <option value="" style="display: none"> </option>
+                        {% for device_t in device_type %}
+                            <option value={{ device_t }}>&nbsp;{{ device_t }}&nbsp;</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>设备编号</th>
+                <th>设备品牌
+                    <select name="device_brand" id="device_brand" style="width: 20px" onchange="choose_result(this.id)">
+                        <option value="" style="display: none"> </option>
+                        {% for device_b in device_brand %}
+                            <option value={{ device_b }}>&nbsp;{{ device_b }}&nbsp;</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>型号
+                    <select name="device_spec" id="device_spec" style="width: 20px" onchange="choose_result(this.id)">
+                        <option value="" style="display: none"> </option>
+                        {% for device_s in device_spec %}
+                            <option value={{ device_s }}>&nbsp;{{ device_s }}&nbsp;</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>是否支持4k
+                    <select name="support" id="support" style="width: 20px" onchange="choose_result(this.id)">
+                        <option value="" style="display: none"> </option>
+                        <option value='0'>&nbsp;不支持&nbsp;</option>
+                        <option value='1'>&nbsp;支持4K&nbsp;</option>
+                        <option value='2'>&nbsp;支持6K&nbsp;</option>
+                    </select>
+                </th>
+                <th>卡槽
+                    <select name="card_slog" id="card_slog" style="width: 20px" onchange="choose_result(this.id)">
+                        <option value="" style="display: none"> </option>
+                        {% for card_s in card_slog %}
+                            <option value={{ card_s }}>&nbsp;{{ card_s }}&nbsp;</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>卡片数量</th>
+                <th>卡片编号</th>
+                <th>测试结果
+                    <select name="result" id="result" style="width: 20px" onchange="choose_result(this.id)">
+                        <option value="" style="display: none"> </option>
+                        <option value=" ">&nbsp;待测&nbsp;</option>
+                        <option value="0">&nbsp;fail&nbsp;</option>
+                        <option value="1">&nbsp;pass&nbsp;</option>
+                    </select>
+                </th>
+                <th>测试人员
+                    <select name="staff" id="staff" style="width: 20px" onchange="choose_result(this.id)">
+                        <option value="" style="display: none"> </option>
+                        {% for staff in staff_ls %}
+                            <option value={{ staff }}>&nbsp;{{ staff }}&nbsp;</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>备注</th>
+                <th>fail item
+                    <select name="f_pro" id="f_pro" style="width: 20px" onchange="choose_result(this.id)">
+                        <option value="" style="display: none"> </option>
+                        {% for fail_p in fail_ls %}
+                            <option value={{ fail_p.test_step }}>&nbsp;{{ fail_p.test_step }}&nbsp;</option>
+                        {% endfor %}
+                    </select>
+                </th>
+            </tr>
+            {% for h in history %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ h.task.device.device_type }}</td>
+                <td>{{ h.task.device.device_id }}</td>
+                <td>{{ h.task.device.device_brand }}</td>
+                <td>{{ h.task.device.device_spec }}</td>
+                <td>
+                    {% if h.task.device.device_support == 1 %}
+                        是
+                    {% else %}
+                        否
+                    {% endif %}
+                </td>
+                <td>{{ h.task.device.device_card_slog }}</td>
+                <td>{{ h.task.card_num }}</td>
+                <td>{{ h.task.card_id }}</td>
+                {% if h.task.is_NA == True %}
+                    <td>N/A</td>
+                {% else %}
+                    {% if h.task.result == 1 %}
+                        <td style="color: #58d8a3">pass</td>
+                    {% elif h.task.result == 0 %}
+                        <td id="fail" style="color: red;" onclick="check_select('{{ h.task.device.device_type_id }}')">fail</td>
+                    {% else %}
+                        <td style="color: orange">待测</td>
+                    {% endif %}
+                {% endif %}
+                <td>{{ h.task.user }}</td>
+                <td>{{ h.remark }}</td>
+                <td id="{{ h.task.id }}" onclick='fail_step_show("{{ h.fail_step }}")' onmouseleave="fail_step_hide('{{ h.fail_step }}')" title="点击查看测试进度">{{ h.fail_pro }}</td>
+            </tr>
+                <div id="model" class="table-responsive" style="position:fixed;width:500px;display: none;margin-left:20%;top:20%;background-color: rgb(236,240,244);border-radius: 3px;box-shadow: #969696 0 10px 10px;padding: 10px">
+                <div style="margin-left: 50px;font-size: 12px">
+                    <button type="button" class="close" data-dismiss="collocation" aria-label="Close" onclick="check_select();window.location.reload()"><span aria-hidden="true" style="color: black">&times;</span></button>
+                    <h5 style="width: 100px;margin: auto;">选择失败项目</h5>
+                    <hr>
+                    <div style="width: 80%;margin: auto">
+                        <div style="width: 90%">
+                        <div id="camera" style="display: none;font-size: 15px">
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="上盘"> 上盘
+                                </label>
+                            </div>
+                            <div class="form-check" style="width: 90px; display: inline-block;">
+                                <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="拍照"> 拍照
+                                </label>
+                            </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="回放照片"> 回放照片
+                                </label>
+                            </div>
+                            <div class="form-check" style="width: 90px; display: inline-block;">
+                                <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="删除照片"> 删除照片
+                                </label>
+                            </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="冷启动"> 冷启动
+                                </label>
+                            </div>
+                            <div class="form-check" style="width: 90px; display: inline-block;">
+                                <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="录像"> 录像
+                                </label>
+                            </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="回放录像"> 回放录像
+                                </label>
+                            </div>
+                            <div class="form-check" style="width: 90px; display: inline-block;">
+                                <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="休眠唤醒"> 休眠唤醒
+                                </label>
+                            </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="热拔插"> 热拔插
+                                </label>
+                            </div>
+                            <div class="form-check" style="width: 90px; display: inline-block;">
+                                <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="删除录像"> 删除录像
+                                </label>
+                            </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="上PC拷贝"> 上PC拷贝
+                                </label>
+                            </div>
+                            <div class="form-check" style="width: 90px; display: inline-block;">
+                                <label class="form-check-label text-muted">
+                                    <input type="checkbox" class="form-check-input" id="格式化"> 格式化
+                                </label>
+                            </div>
+                          </div>
+                          <div id="video_camera" style="display: none">
+                                {% for i in ver_step %}
+                                    <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="{{ i.test_step }}"> {{ i.test_step }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+
+                          </div>
+                          <div id="surface" style="display: none">
+                                <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="surface"> surface
+                                    </label>
+                                </div>
+                          </div>
+                          <div id="mobile_phone" style="display: none">
+                                {% for i in ver_step %}
+                                    <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="{{ i.test_step }}"> {{ i.test_step }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                          </div>
+                          <div id="tachograph" style="display: none">
+                                {% for i in ver_step %}
+                                    <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="{{ i.test_step }}"> {{ i.test_step }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+
+                          </div>
+                          <div id="monitor" style="display: none">
+                                <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="监控"> 监控
+                                    </label>
+                                </div>
+                          </div>
+                          <div id="uav" style="display: none">
+                                <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="预置条件"> 预置条件
+                                    </label>
+                                </div>
+                                <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="冷启动"> 冷启动
+                                    </label>
+                                </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="连接无人机"> 连接无人机
+                                    </label>
+                                </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="查看卡片"> 查看卡片
+                                    </label>
+                                </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="高拍照清"> 高拍照清
+                                    </label>
+                                </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="回放照片"> 回放照片
+                                    </label>
+                                </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="删除照片"> 删除照片
+                                    </label>
+                                </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="高清录像"> 高清录像
+                                    </label>
+                                </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="回放录像"> 回放录像
+                                    </label>
+                                </div>
+                                <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="热拔插"> 热拔插
+                                    </label>
+                                </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="删除录像"> 删除录像
+                                    </label>
+                                </div>
+                                <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="格式化"> 格式化
+                                    </label>
+                                </div>
+                                <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="读SMART"> 读SMART
+                                    </label>
+                                </div>
+
+                          </div>
+                          <div id="motion_camera" style="display: none">
+                                <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="运动相机"> 运动相机
+                                    </label>
+                                </div>
+                          </div>
+                          <div id="switch" style="display: none">
+                                <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="游戏机"> 游戏机
+                                    </label>
+                                </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="游戏机"> 游戏机
+                                    </label>
+                                </div>
+                              <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="游戏机"> 游戏机
+                                    </label>
+                                </div>
+
+                          </div>
+                          <div id="doorbell" style="display: none">
+                                <div class="form-check" style="width: 90px; display: inline-block;">
+                                    <label class="form-check-label text-muted">
+                                        <input type="checkbox" class="form-check-input" id="智能门铃"> 智能门铃
+                                    </label>
+                                </div>
+                          </div>
+                        </div>
+                        <div class="test_ver text-left" style="padding-left: 10px">
+                            <span style="font-size: 0.875rem;">失败步骤:</span>
+                            <select name="test_ver1" id="test_ver1" style="margin-left: 10px;font-size: 0.875rem;">
+                                <option value="" disabled selected hidden>v1</option>
+                                {% for step in ver_step %}
+                                    <option value={{ step.test_step }}>{{ forloop.counter }}.{{ step.test_step }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-3" style="width: 150px;margin: auto;">
+                        <button type="button" class="btn btn-primary" style="width: 140px;height: 10px;line-height: 2px" onclick="check_select_hide({{ h.task.id }})">确认</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </table>
+        <div class="col-md-12 text-center">
+                <div class="btn-group" role="group" style="margin-top: 20px">
+                        <a style="border: none" href="/history_detail/id/{{ index }}/page/1"><button class="btn btn-outline-dark">返回首页</button></a>
+                    {% if history.has_previous %}
+                        <a href="/history_detail/id/{{ index }}/page/{{ history.previous_page_number }}"><button class="btn btn-outline-dark"><span class="icon-arrow-left">上一页</span></button></a>
+                    {% else %}
+                        <a href="javascript:void(0);" onclick="window.alert('没有上一页哦')"><button class="btn btn-outline-dark"><span class="icon-arrow-left">上一页</span></button></a>
+                    {% endif %}
+                    {% for page in history.paginator.page_range %}
+                        {% if page > history.number|add:-2 and page < history.number|add:2 %}
+                            <a href="/history_detail/id/{{ index }}/page/{{ page }}"><button class="btn btn-outline-dark">{{ page }}</button></a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if history.has_next%}
+                    <a href="/history_detail/id/{{ index }}/page/{{ history.next_page_number }}"><button class="btn btn-outline-dark" >下一页<span class="icon-arrow-right"></span></button></a>
+                    {% else %}
+                        <a href="javascript:void(0);" onclick="window.alert('没有下一页了哦')"><button class="btn btn-outline-dark"><span class="icon-arrow-right">下一页</span></button></a>
+                    {% endif %}
+                </div>
+            </div>
     </div>
+
+    <div id="pg" class="table-responsive" style="position:fixed;width:50%;display: none;margin-left:20%;top:20%;background-color: rgb(236,240,244);border-radius: 3px;box-shadow: #969696 0 10px 10px;padding: 10px">
+     <div style="width: 90%;margin: auto">
+        <h6 style="padding:10px">测试进度:</h6>
+            <div id="progress" style="width:500px;margin:auto;font-size: 12px">
+                {% if compatible_ver == 'DrV1.0.0' %}
+                    <span id="预置条件" style="width: 20%;margin-left: 33%;">预置条件</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="冷启动1" style="width: 20%;">冷启动1</span>→
+                    <span id="连接无人机1" style="width: 20%;">连接无人机1</span>→
+                    <span id="查看卡片1" style="width: 20%;">查看卡片1</span>→
+                    <span id="高清拍照1" style="width: 20%;">高清拍照1</span>→
+                    <span id="回放照片1" style="width: 20%;">回放照片1</span>→
+                    <span id="删除照片1" style="width: 20%;">删除照片1</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="冷启动2" style="width: 20%;">冷启动2</span>→
+                    <span id="连接无人机2" style="width: 20%;">连接无人机2</span>→
+                    <span id="查看卡片2" style="width: 20%;">查看卡片2</span>→
+                    <span id="高清拍照2" style="width: 20%;">高清拍照2</span>→
+                    <span id="回放照片2" style="width: 20%;">回放照片2</span>→
+                    <span id="删除照片2" style="width: 20%;">删除照片2</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="冷启动3" style="width: 20%;">冷启动3</span>→
+                    <span id="连接无人机3" style="width: 20%;">连接无人机3</span>→
+                    <span id="查看卡片3" style="width: 20%;">查看卡片3</span>→
+                    <span id="高清拍照3" style="width: 20%;">高清拍照3</span>→
+                    <span id="回放照片3" style="width: 20%;">回放照片3</span>→
+                    <span id="删除照片3" style="width: 20%;">删除照片3</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="高清录像1" style="width: 20%;margin-left: 20%">高清录像1</span>→
+                    <span id="回放录像1" style="width: 20%;">回放录像1</span>→
+                    <span id="热拔插1" style="width: 20%;">热拔插1</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="高清录像2" style="width: 20%;margin-left: 20%">高清录像2</span>→
+                    <span id="回放录像2" style="width: 20%;">回放录像2</span>→
+                    <span id="热拔插2" style="width: 20%;">热拔插2</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="高清录像3" style="width: 20%;margin-left: 20%">高清录像3</span>→
+                    <span id="回放录像3" style="width: 20%;">回放录像3</span>→
+                    <span id="热拔插3" style="width: 20%;">热拔插3</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="删除录像" style="width: 20%;margin-left: 33%">删除录像</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="格式化" style="width: 20%;margin-left: 33%">格式化</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="读SMART" style="width: 20%;margin-left: 33%">读SMART</span>
+                {% elif compatible_ver == 'CV1.0.0' %}
+                    <span id="预置条件" style="width: 20%;margin-left: 33%;">预置条件</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="冷启动1" style="width: 20%;margin-left: 10%">冷启动1</span>→
+                    <span id="高清拍照1" style="width: 20%;">高清拍照1</span>→
+                    <span id="回放照片1" style="width: 20%;">回放照片1</span>→
+                    <span id="删除照片1" style="width: 20%;">删除照片1</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="冷启动2" style="width: 20%;margin-left: 10%">冷启动2</span>→
+                    <span id="高清拍照2" style="width: 20%;">高清拍照2</span>→
+                    <span id="回放照片2" style="width: 20%;">回放照片2</span>→
+                    <span id="删除照片2" style="width: 20%;">删除照片2</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="冷启动3" style="width: 20%;margin-left: 10%">冷启动3</span>→
+                    <span id="高清拍照3" style="width: 20%;">高清拍照3</span>→
+                    <span id="回放照片3" style="width: 20%;">回放照片3</span>→
+                    <span id="删除照片3" style="width: 20%;">删除照片3</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="休眠唤醒1" style="width: 20%;margin-left: 10%">休眠唤醒1</span>→
+                    <span id="回放录像1" style="width: 20%;">回放录像1</span>→
+                    <span id="高清录像1" style="width: 20%;">高清录像1</span>→
+                    <span id="热拔插1" style="width: 20%;">热拔插1</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="休眠唤醒2" style="width: 20%;margin-left: 10%">休眠唤醒2</span>→
+                    <span id="回放录像2" style="width: 20%;">回放录像2</span>→
+                    <span id="高清录像2" style="width: 20%;">高清录像2</span>→
+                    <span id="热拔插2" style="width: 20%;">热拔插2</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="休眠唤醒3" style="width: 20%;margin-left: 10%">休眠唤醒3</span>→
+                    <span id="回放录像3" style="width: 20%;">回放录像3</span>→
+                    <span id="高清录像3" style="width: 20%;">高清录像3</span>→
+                    <span id="热拔插3" style="width: 20%;">热拔插3</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="删除录像" style="width: 20%;margin-left: 33%">删除录像</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="拷贝资料" style="width: 20%;margin-left: 33%">拷贝资料</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="格式化" style="width: 20%;margin-left: 33%">格式化</span>
+                    <br><h6 style="margin-left: 38%">↓</h6>
+                    <span id="读SMART" style="width: 20%;margin-left: 33%">读SMART</span>
+                {% else %}
+                    {% for step in ver_step %}
+                        {% if step.id == ver_step|length %}
+                            <span id="{{ step.test_step }}" style="width: 20%;margin-left: 33%">{{ step.test_step }}</span>
+                        {% else %}
+                            <span id="{{ step.test_step }}" style="width: 20%;margin-left: 33%">{{ step.test_step }}</span>
+                            <br><h6 style="margin-left: 38%">↓</h6>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+    </div>
+    </div>
+
+    <div id="collocation" class="table-responsive" style="position:fixed;width:500px;display: none;margin-left:20%;top:20%;background-color: rgb(236,240,244);border-radius: 3px;box-shadow: #969696 0 10px 10px;padding: 10px">
+        <div style="width: 90%;margin: auto">
+            <button type="button" class="close" data-dismiss="collocation" aria-label="Close" onclick="ed_collocation()"><span aria-hidden="true" style="color: black">&times;</span></button>
+            <h5 style="width: 100px;margin: auto;">修改搭配</h5>
+            <hr>
+            <div style="width: 80%;margin: auto">
+                    <span style="margin-left: 20px">主控 : &emsp;<select id="master_control" style="margin-bottom: 10px;font-size: 12px">
+                    <option value="" style="display: none;">选择主控</option>
+                    {% for item in master_control %}
+                        <option id="{{ item.num }}" value="{{ item.collocation }}">{{ item.collocation }}</option>
+                    {% endfor %}
+                </select></span><br>
+                    <span style="margin-left: 20px">Flash : &nbsp;&nbsp;<select id="Flash" style="margin-bottom: 10px;font-size: 12px">
+                    <option value="" style="display: none;">选择Flash</option>
+                    {% for item in flash %}
+                        <option id="{{ item.num }}" value="{{ item.abbreviation }}">{{ item.abbreviation }}</option>
+                    {% endfor %}
+                </select></span><br>
+                    <span style="margin-left: 20px">Die : <select id="Die" style="margin-bottom: 10px;font-size: 12px;margin-left: 23px">
+                    <option value="" style="display: none;">选择Die</option>
+                    {% for item in die %}
+                        <option id="{{ item.num }}" value="{{ item.collocation }}">{{ item.collocation }}</option>
+                    {% endfor %}
+                </select></span><br>
+                <span style="margin-left: 20px">容量 : <select id="capacity" style="margin-bottom: 10px;font-size: 12px;margin-left: 16px">
+                    <option value="" style="display: none;">选择容量</option>
+                    {% for item in capacity %}
+                        <option id="{{ item.num }}" value="{{ item.abbreviation }}">{{ item.abbreviation }}</option>
+                    {% endfor %}
+                </select></span><br>
+                </div>
+            <hr>
+            <div class="mt-3" style="width: 150px;margin: auto;">
+                <button type="button" class="btn btn-primary" style="width: 180px;height: 10px;line-height: 2px" onclick="ed_hide()">确认并生成SN</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="ed_t_tver" class="table-responsive" style="position:fixed;width:500px;display: none;margin-left:20%;top:20%;background-color: rgb(236,240,244);border-radius: 3px;box-shadow: #969696 0 10px 10px;padding: 10px">
+        <div style="width: 90%;margin: auto">
+            <button type="button" class="close" data-dismiss="collocation" aria-label="Close" onclick="ed_testver()"><span aria-hidden="true" style="color: black">&times;</span></button>
+            <h5 style="width: 100px;margin: auto;">修改版本</h5>
+            <hr>
+            <div style="width: 80%;margin: auto">
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-lg" id="test_ver" placeholder="版本" name="test_ver" style="height: 20px;width: 300px;margin-left: 20px">
+                </div>
+            </div>
+            <div class="mt-3" style="width: 150px;margin: auto;">
+                <button type="button" class="btn btn-primary" style="width: 140px;height: 10px;line-height: 2px" onclick="test_ver_hide()">确认</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function f1() {
+        $.ajax({
+            url: '{% url 'check_allotted' %}',
+            type: 'post',
+            data: {
+                'data': 'check',
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function (res) {
+                $("#allot").text(res)
+            }
+        });
+        }
+    var check_list = [];
+{#    var id_list = ['card_num','test_cycle','compatible_ver','device_support','device_card_slog','card_num_1','card_id','user','remark','fail_pro'];#}
+    function export_record() {
+        $(".form-check-input:checked").each(function(){
+            check_list.push(this.id)
+        });
+        $.post("/export_record/id/{{ requirements.id }}",{"check_ls":JSON.stringify(check_list),csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
+            $("#export_record").val(data.msg);
+            location.href="/export_record/id/{{ requirements.id }}";
+            });
+            }
+
+    function choose_result(id) {
+        var select = $('#'+id+' option:selected');
+        $.post("/choose_result/id/{{ requirements.id }}",{'flag':id,"sel":select.val(),csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
+            $('#table_content').html(data);
+            });
+    }
+
+    function fail_step_show(fail_step) {
+        if(fail_step!=''){
+            $("#pg"+'>'+'div'+'>'+'div'+'>'+ '#'+fail_step).prevAll("span").css("background-color", "#c7f1c8");
+            $("#pg"+'>'+'div'+'>'+ 'div'+'>'+'#'+fail_step).css('background-color','#ffb4c1');
+        }
+        $("#pg").slideToggle();
+    }
+
+    function fail_step_hide(fail_step) {
+        var fail_t = ''+fail_step
+        $("#pg"+'>'+'div'+'>'+'div'+'>'+ '#'+fail_t).prevAll("span").css("background-color", "white");
+        $("#pg"+'>'+'div'+'>'+ 'div'+'>'+'#'+fail_t).css('background-color','white');
+        $("#pg").hide();
+    }
+
+    function ed_collocation() {
+        $("#collocation").slideToggle();
+    }
+    function ed_hide() {
+        var master_control = $('#master_control'+' option:selected');
+        var Flash = $('#Flash'+' option:selected');
+        var Die = $('#Die'+' option:selected');
+        var capacity = $('#capacity'+' option:selected');
+        if(master_control.val()&&Flash.val()&&Die.val()&&capacity.val()){
+            var match = master_control.val()+'-'+Flash.val()+'-'+Die.val()+'-'+capacity.val();
+            var SN = master_control.attr('id')+Flash.attr('id')+Die.attr('id')+capacity.attr('id');
+            $('#match').html(match);
+            $("#collocation").slideToggle();
+            $.post("/reset_match/",{'flag':'match','id':{{ requirements.id }},"match":match,'SN':SN,csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
+                $('#sn').html(data.msg);
+            });
+        }else {
+            alert('有选项未选择');
+        }
+    }
+
+    function ed_ver(id) {
+        var ver = $('#'+id+' option:selected').val();
+        $.post("/reset_match/",{'flag':'ver','id':{{ requirements.id }},"ver":ver,csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
+
+        });
+    }
+
+    function ed_testver() {
+        $('#ed_t_tver').slideToggle();
+    }
+    function test_ver_hide() {
+        var t_ver = $("#test_ver").val();
+        if(t_ver){
+            $("#testver").html(t_ver);
+            $('#ed_t_tver').slideToggle();
+            $.ajax({
+                    url: '{% url 'reset_ver' %}',
+                    type: 'post',
+                    data: {
+                        'id':{{ requirements.id }},
+                        't_ver':t_ver,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    },
+                success: function (res) {
+                        $('#sn').html(res.msg);
+                    }
+                });
+        }else{
+            alert('版本不能为空');
+        }
+    }
+
+    function check_select(type_id) {
+        if (type_id == 1) {
+            $('#camera').css('display', 'block');
+        }
+        if (type_id == 2) {
+            $('#video_camera').css('display', 'block');
+        }
+        if (type_id == 3) {
+            $('#surface').css('display', 'block');
+        }
+        if (type_id == 4) {
+            $('#mobile_phone').css('display', 'block');
+        }
+        if (type_id == 5) {
+            $('#tachograph').css('display', 'block');
+        }
+        if (type_id == 6) {
+            $('#monitor').css('display', 'block');
+        }
+        if (type_id == 7) {
+            $('#uav').css('display', 'block');
+        }
+        if (type_id == 8) {
+            $('#motion_camera').css('display', 'block');
+        }
+        if (type_id == 9) {
+            $('#switch').css('display', 'block');
+        }
+        if (type_id == 10) {
+            $('#doorbell').css('display', 'block');
+        }
+        $('#model').slideToggle();
+    }
+
+    function check_select_hide(id) {
+        var fail_pro = '';
+            $(".form-check-input:checked").each(function () {
+                if (fail_pro == '') {
+                    fail_pro = fail_pro + this.id
+                } else {
+                    fail_pro = fail_pro + ',' + this.id
+                }
+            });
+            //测试版本
+            var test_ver1 = $('#test_ver1 option:selected').val();
+            if (test_ver1 == '') {
+                is_test_ver = false;
+            } else {
+                is_test_ver = true;
+            }
+            if (fail_pro != '' && is_test_ver) {
+                $('#model').slideToggle();
+                $.post("/record_result/", {
+                    "result": '0',
+                    'id': id,
+                    'fail': fail_pro,
+                    'fail_step': test_ver1,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                }, function (data) {
+                    location.reload();
+                })
+            } else {
+                alert('失败项目和失败步骤不能为空');
+            }
+    }
+    </script>
 {% endblock %}

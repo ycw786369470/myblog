@@ -1,0 +1,329 @@
+{% extends 'device_manage/base/base.html' %}
+<!-- 分为客户/测试者/管理员三种身份，通过登录方式判断身份，客户不用登陆
+客户只能查看基础页面，管理员可以查看所有信息-->
+
+{#修改网页标题title#}
+{% block title %}
+    longsys设备展示
+{% endblock %}
+
+{% block personal %}
+    {% if name == '客户'%}
+        <a href="{% url 'login' %}" class="nav-link">
+    {% else %}
+        <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+    {% endif %}
+{% endblock %}
+
+{# 通过继承在新页面改写用户名 #}
+{% block user %}
+    {{ name }}
+{% endblock %}
+
+{% block job %}
+    身份:{{ job }}
+{% endblock %}
+
+{# 右边个人信息栏 #}
+{% block self %}
+    {{ name }}
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/device_manage/css/parts.css">
+    <style>
+    #add_parts{
+        z-index: 99;
+        position: fixed;
+        right: 45px;
+        bottom: 50px;
+        opacity: 0.3;
+        transition: 0.5s;
+    }
+    #add_parts:hover{
+        opacity: 1;
+    }
+    #add_parts a{
+        text-decoration: none;
+    }
+    #add_parts i{
+        font-size: 70px;
+    }
+    #add_parts p{
+        font-weight: bold;
+        font-size: 18px;
+    }
+    </style>
+{% endblock %}
+
+{# 登录登出图标 #}
+{% block login_logout %}
+    {% if name == '客户'%}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/login/">
+            <i class="icon-badge mx-2"></i>登录
+        </a>
+    {% else %}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/logout/">
+            <i class="icon-badge mx-2"></i>注销
+        </a>
+    {% endif %}
+{% endblock %}
+
+{# 右边选项栏 #}
+{% block option %}
+    {% if name == '客户' %}
+        <a class="dropdown-item" href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'login' %}"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% elif is_admin == 1 %}
+        <a class="dropdown-item" href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% elif is_init == 1 %}
+        <a class="dropdown-item" href="{% url 'sample_info' %}"><i class="dropdown-item-icon icon-plus text-primary"></i> 发起需求 </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% else %}
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% endif %}
+{% endblock %}
+
+{# 管理员-设备管理选项 #}
+{% block admin %}
+    {% if is_admin == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#admin" aria-expanded="false" aria-controls="admin">
+        <span class="menu-title nav-category">管理选项</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+      <div class="collapse" id="admin">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'many_devices' %}">导入系统<i class="icon-bag menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 判断是否为需求发起人 #}
+{% block init %}
+    {% if is_init == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#demand" aria-expanded="false" aria-controls="demand">
+        <span class="menu-title nav-category">需求管理</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="demand">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block staff %}
+    {% if name == '客户' %}
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">更多功能</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title nav-category">公司介绍</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="https://www.longsys.com/">公司官网<i class="icon-home menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">关于我们<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'personal_task' %}">
+        <span class="menu-title">设备测试</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item nav-category" id="self">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title">个人中心</span>
+        <i class="icon-user menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    {% if is_admin == 1 %}
+    <div id="add_parts">
+        <a href="{% url 'add_parts' %}">
+            <i class="icon-plus" ></i>
+            <p style="margin: 0; padding: 0;">添加配件</p>
+        </a>
+    </div>
+    {% endif %}
+    <div class="col-md-11">
+        <div class="row">
+            <div class="col-md-10" style="background-color: white; padding: 10px">
+                <h2 class="text-center">查看配件详情</h2>
+                <div class="table-responsive" style="border-top: #ecf0f4 2px solid">
+                    <table class="table table-hover text-center table-striped" id="show_table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>类型</th>
+                            <th>品牌</th>
+                            <th>代码</th>
+                            <th>配件数量</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        {% for c in all %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ c.parts_type }}</td>
+                            <td>{{ c.brand }}</td>
+                            <td>{{ c.code }}</td>
+                            <td>{{ c.num }}</td>
+                            {% if is_admin == 1 %}
+                            <td><a href="{% url 'modify_parts' %}?id={{ c.id }}">修改</a></td>
+                            {% else %}
+                            <td><a href="javascript: void(0);" onclick="warning()">修改</a></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="col-md-12 text-center" style="margin-top: 20px">
+                    <div class="btn-group" role="group">
+                            <a href="{% url 'parts' %}?page=1"><button class="btn btn-outline-dark">First</button></a>
+                        {% if now_page != 1 %}
+                            <a href="{% url 'parts' %}?page={{ before_next.0 }}"><button class="btn btn-outline-dark"><span class="icon-arrow-left"></span></button></a>
+                        {% else %}
+                            <a href=""><button class="btn btn-outline-dark" disabled><span class="icon-arrow-left"></span></button></a>
+                        {% endif %}
+
+                        {% if now_page != page_nums %}
+                            <a href="{% url 'parts' %}?page={{ before_next.1 }}"><button class="btn btn-outline-dark" ><span class="icon-arrow-right"></span></button></a>
+                        {% else%}
+                            <a href=""><button class="btn btn-outline-dark" disabled><span class="icon-arrow-right"></span></button></a>
+                        {% endif %}
+                                <a href="{% url 'parts' %}?page={{ page_nums }}"><button class="btn btn-outline-dark">Last</button></a>
+                            <button type="button" class="btn btn-outline-dark" disabled>total:{{ page_nums }}</button>
+                    </div>
+                </div>
+            </div>
+                <div class="togglebox">
+                    <input id="toggle1" type="radio" name="toggle" />
+                    <label for="toggle1" id="i1" onclick="change_table(this.id)">相机配件({{ num_ls.0 }}件)</label>
+                    <section id="content1">
+                        {% for i in total.camera_ls %}
+                            <p id="c1-{{ i.parts_type }}" title="点击筛选{{ i.parts_type }}" onclick="screen('i1', '{{ i.parts_type }}', this.id)">
+                                <a href="#"><i class="icon-arrow-right-circle"></i></a>
+                                &nbsp;{{ i.parts_type }}: {{ i.parts_type__count }}</p>
+                        {% endfor %}
+                    </section>
+
+                    <input id="toggle2" type="radio" name="toggle" />
+                    <label for="toggle2" id="i2" onclick="change_table(this.id)">运动相机({{ num_ls.1 }}件)</label>
+                    <section id="content2">
+                        {% for i in total.sport_ls %}
+                            <p id="c2-{{ i.parts_type }}" title="点击筛选{{ i.parts_type }}" onclick="screen('i2', '{{ i.parts_type }}', this.id)">
+                                <a href="#"><i class="icon-arrow-right-circle"></i></a>
+                                &nbsp;{{ i.parts_type }}: {{ i.parts_type__count }}</p>
+                        {% endfor %}
+                    </section>
+
+                    <input id="toggle3" type="radio" name="toggle" />
+                    <label for="toggle3" id="i3" onclick="change_table(this.id)">无人机配件({{ num_ls.2 }}件)</label>
+                    <section id="content3">
+                        {% for i in total.UAV_ls %}
+                            <p id="c3-{{ i.parts_type }}" title="点击筛选{{ i.parts_type }}" onclick="screen('i3', '{{ i.parts_type }}', this.id)">
+                                <a href="#"><i class="icon-arrow-right-circle"></i></a>
+                                &nbsp;{{ i.parts_type }}: {{ i.parts_type__count }}</p>
+                        {% endfor %}
+                    </section>
+
+                    <input id="toggle4" type="radio" name="toggle" />
+                    <label for="toggle4" id="i4" onclick="change_table(this.id)">Switch配件({{ num_ls.3 }}件)</label>
+                    <section id="content4">
+                        {% for i in total.switch_ls %}
+                            <p id="c4-{{ i.parts_type }}" title="点击筛选{{ i.parts_type }}" onclick="screen('i4', '{{ i.parts_type }}', this.id)">
+                                <a href="#"><i class="icon-arrow-right-circle"></i></a>
+                                &nbsp;{{ i.parts_type }}: {{ i.parts_type__count }}</p>
+                        {% endfor %}
+                    </section>
+                </div>
+        </div>
+        <script>
+            $('#self').removeClass('active');
+            function warning() {
+                alert('您无权修改配件信息，若要修改请联系管理员！')
+            }
+            function change_table(id) {
+                $.ajax({
+                    url: '{% url 'parts' %}',
+                    type: 'post',
+                    data: {
+                        'flag': id,
+                        'type': '1',
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    },
+                    success: function (res) {
+                        $('#show_table').html(res);
+                    },
+                    error: function () {
+                        alert('加载错误~请刷新试试')
+                    }
+                })
+            }
+            function screen(id, type, p_id) {
+                $.ajax({
+                    url: '{% url 'parts' %}',
+                    type: 'post',
+                    data: {
+                        'flag': id,
+                        'flag1': type,
+                        'type': '2',
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    },
+                    success: function (res) {
+                        $('#show_table').html(res);
+                    },
+                    error: function () {
+                        alert('加载错误~请刷新试试')
+                    }
+                })
+            }
+        </script>
+    </div>
+
+{% endblock %}
+</a>
+</a>

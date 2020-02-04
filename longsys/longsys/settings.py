@@ -38,7 +38,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'device_manage',
-
 )
 
 MIDDLEWARE_CLASSES = (
@@ -66,16 +65,15 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'device_manage.context_processors.get_msg',
             ],
         },
     },
 ]
 
+
 WSGI_APPLICATION = 'longsys.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -92,7 +90,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'zh-hans'
+LANGUAGE_CODE = 'en-us'
 
 # 设置时区
 TIME_ZONE = 'Asia/Shanghai'
@@ -101,14 +99,24 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
+# 指定样式收集目录
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # 静态目录
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 # 媒体路径
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'   # 这一项是固定的
+EMAIL_HOST = 'smtp.163.com'                 # 对应的邮件服务商的smtp服务器地址 可百度
+EMAIL_PORT = 25                             # smtp服务固定的端口是25
+EMAIL_HOST_USER = 'zgc1448053939@163.com'    # 发送人的邮箱
+EMAIL_HOST_PASSWORD = 'zgc0921'              # 在邮箱中设置的客户端授权密码
+EMAIL_USE_TLS = True
+EMAIL_FROM = '江波龙设备管理系统<zgc1448053939@163.com>'             # 收件人看到的发件人 <此处要和发送邮件的邮箱相同>

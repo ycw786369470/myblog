@@ -29,19 +29,19 @@
                 <div class="brand-logo">
                   <img src="/static/device_manage/images/logo.png">
                 </div>
-                <h4>测试部设备管理系统</h4>
+                <h4 style="font-family: '微软雅黑 Light';">测试部设备管理系统</h4>
                 <h6 class="font-weight-light">Sign in to continue.</h6>
                 <form class="pt-3" method="post" action="">
                     {% csrf_token %}
                   <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" id="exampleInputName" placeholder="工号number" name="staff_number" value={{ satff_number }}>
+                    <input type="email" class="form-control form-control-lg" id="exampleInputEmail" placeholder="邮箱" name="email" value={{ email }}>
                   </div>
                   <div class="form-group">
-                    <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="密码Password" name="password" value={{ pwd }}>
+                    <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="密码" name="password" value={{ pwd }}>
                   </div>
                   <div class="mt-3">
                     <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" id="login_btn" type="submit" value="登录">
-                    <span style="color: red;display: block;font-size: 12%;text-align: center;padding-top: 2%">{{ point_out }}</span>
+                    <span style="color: red;display: block;font-size: 13px;text-align: center;padding-top: 2%">{{ point_out }}</span>
                   </div>
                   <div class="my-2 d-flex justify-content-between align-items-center">
                     <div class="form-check">
@@ -49,10 +49,10 @@
                         <input type="checkbox" class="form-check-input" name="remember"> 记住密码
                       </label>
                     </div>
-                    <a href="#" class="auth-link text-black">忘记密码?</a>
+                    <a href="#" class="auth-link text-black" onclick="forget_psw()">忘记密码?</a>
                   </div>
                   <div class="text-center mt-4 font-weight-light"> 没有账户? <a href="/regist/" class="text-primary">点此创建</a>
-                      or<a href="" class="text-primary">客户展示</a>
+                      or<a href="{% url 'index' %}" class="text-primary">客户展示</a>
                   </div>
                 </form>
               </div>
@@ -73,6 +73,10 @@
     <script src="/static/device_manage/js/off-canvas.js"></script>
     <script src="/static/device_manage/js/misc.js"></script>
     <!-- endinject -->
-
+    <script>
+        function forget_psw() {
+            alert('忘记请联系管理员或钉钉@杨晨蔚/@钟桂成')
+        }
+    </script>
   </body>
 </html>

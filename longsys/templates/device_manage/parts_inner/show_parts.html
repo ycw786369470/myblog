@@ -1,0 +1,31 @@
+<table class="table table-hover text-center table-striped">
+    <thead>
+    <tr>
+        <th></th>
+        <th>类型</th>
+        <th>品牌</th>
+        <th>代码</th>
+        <th>配件数量</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    {% for c in parts %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ c.parts_type }}</td>
+        <td>{{ c.brand }}</td>
+        <td>{{ c.code }}</td>
+        <td>{{ c.num }}</td>
+        {% if is_admin == 1 %}
+        <td><a href="{% url 'modify_parts' %}?id={{ c.id }}">修改</a></td>
+        {% else %}
+        <td><a href="javascript: void(0);" onclick="warning()">修改</a></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+<script>
+function warning() {
+    alert('您无权修改配件信息，若要修改请联系管理员！')
+}
+</script>

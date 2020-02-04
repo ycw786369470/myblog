@@ -7,7 +7,11 @@
 {% endblock %}
 
 {% block personal %}
-    <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+    {% if name == '客户'%}
+        <a href="{% url 'login' %}" class="nav-link">
+    {% else %}
+        <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+    {% endif %}
 {% endblock %}
 
 {# 通过继承在新页面改写用户名 #}
@@ -40,15 +44,26 @@
 {# 右边选项栏 #}
 {% block option %}
     {% if name == '客户' %}
-        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+        <a class="dropdown-item" href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'login' %}"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% elif is_admin == 1 %}
+        <a class="dropdown-item" href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% elif is_init == 1 %}
+        <a class="dropdown-item" href="{% url 'sample_info' %}"><i class="dropdown-item-icon icon-plus text-primary"></i> 发起需求 </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
     {% else %}
-        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-camera text-primary"></i> 查看设备 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-map text-primary"></i> 测试报表 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
     {% endif %}
 {% endblock %}
 
@@ -64,8 +79,8 @@
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="{% url 'user_list' %}?page=1">人员管理<i class="icon-people menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'many_devices' %}">导入系统<i class="icon-bag menu-icon"></i></a></li>
         </ul>
       </div>
     </li>
@@ -82,8 +97,8 @@
       </a>
       <div class="collapse" id="demand">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="{% url 'new_demand' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
         </ul>
       </div>
@@ -114,7 +129,7 @@
     </li>
     {% else %}
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'choose' %}">
+      <a class="nav-link" href="{% url 'personal_task' %}">
         <span class="menu-title">设备测试</span>
         <i class=" icon-wrench menu-icon"></i>
       </a>
@@ -126,9 +141,9 @@
       </a>
       <div class="collapse" id="auth">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="#"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#"> 生成报表 <i class="icon-map menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#"> 关于 <i class="icon-question menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
         </ul>
       </div>
     </li>
@@ -136,6 +151,7 @@
 {% endblock %}
 
 {% block head %}
+    <link rel="stylesheet" href="/static/device_manage/css/alert.css">
     <style>
     .white-box{
         background-color: white;
@@ -145,30 +161,104 @@
         height: 500px;
         position: fixed;
         left: 25%;
-        z-index: 9;
+        z-index: 99;
         margin: 0 auto;
         box-shadow: #969696 0 10px 10px;
+        opacity: 0.95;
+        padding: 5px;
+    }
+    .disable{
+        pointer-events: none;
+    }
+    .table-border{
+        border: 1px solid #e8ecf1;
+        margin-bottom: 5px;
     }
     </style>
 {% endblock %}
 
 {# 修改操作框内容 #}
 {% block content %}
-<div class="col-md-6 d-none" id="top-box">
-
+<div id="alert-box" class="notify bar-top do-show" data-notification-status="success">提示框内容</div>
+<main class="d-none">
+    <div class="wrapper">
+        <nav>
+            <a id="right-bot" rel="nofollow" rel="noreferrer" href="#" class="button" data-type="bottom-right" data-status="error">Bottom Right</a>
+            <a id="left-bot" rel="nofollow" rel="noreferrer" href="#" class="button" data-type="bottom-left" data-status="notice">Bottom Left</a>
+        </nav>
+    </div>
+</main>
+<div class="col-md-6 d-none table-responsive" id="top-box"  style="overflow: auto">
+    <div class="col-md-12">
+        <button class="btn btn-inverse-dark btn-sm" id="cancel" onclick="cancel()">返回</button>
+        <h3 class="text-center">选择测试员</h3>
+    </div>
+    <div class="col-md-12 table-responsive table-border">
+        <table class="table table-hover text-center">
+            <thead>
+            <tr>
+                <th>测试员</th>
+                <th>当前任务</th>
+                <th>分配任务</th>
+            </tr>
+            </thead>
+            {% for t in tester %}
+            <tr>
+                <td>{{ t.name }}</td>
+                <td>待测数量</td>
+                <td><a href="javascript:void (0);" id="{{ t.id }}" onclick="allot(this.id)">分配</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </div>
 <div>
     <button class="btn btn-inverse-dark" onclick='javascript:history.back(-1);'>返回</button>
     <h2 class="text-center">选择需要分配的任务</h2>
 </div>
-<div class="col-md-12 white-box table-responsive" style="padding: 20px 0;">
+    <button type="button" class="btn btn-outline-danger" style="width: 150px;height: 10px;line-height: 2px;margin-bottom: 10px" onclick="reject()" title="未分配的情况下可驳回该需求">拒绝需求</button>
+    <button type="button" class="btn btn-primary" style="width: 150px;height: 10px;line-height: 2px;margin-bottom: 10px">
+        <a href="/static/media/media/{{ requirements.file_path }}" download="{{ requirements.file_path }}" style="color: white;text-decoration: none">下载FW包</a>
+    </button>
+<div class="col-md-12 white-box table-responsive" style="padding: 20px 0;" id="content-box">
+    <table class="table table-hover table-bordered text-center">
+        <tr>
+            <th></th>
+            <th>版本</th>
+            <td>{{ requirements.ver }}</td>
+            <th>搭配</th>
+            <td colspan="2">{{ requirements.match }}</td>
+            <th>卡数量</th>
+            <td colspan="2">{{ requirements.sample_quantity }}</td>
+            <th>测试周期</th>
+            <td>{{ requirements.start_time|date:"Y-m-d" }}..{{ requirements.end_time|date:"Y-m-d" }}</td>
+        </tr>
+        <tr>
+            <th></th>
+            <th colspan="3">兼容性测试版本</th>
+            <td colspan="2">
+                 <label>
+                    <select name="" id="slt">
+                        <option value="" disabled selected>{{ requirements.compatible_ver }}</option>
+                        {% for item in ver %}
+                            <option id="">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </td>
+            <th>平台总数</th>
+            <td colspan="2">--</td>
+            <th>Fail平台数</th>
+            <td>--</td>
+            <th>SN</th>
+            <td>{{ requirements.SN }}</td>
+        </tr>
+    </table>
     <table class="table table-hover text-center">
         <thead>
         <tr>    
-            <th>
-                <a href="javascript:void(0);" id="choose_all" onclick="choose_all()">全选</a>
-            </th>
-            <th>ID</th>
+            <th><a href="javascript:void(0);" id="choose_all" onclick="choose_all()">全选</a></th>
+            <th>设备ID</th>
             <th>设备种类</th>
             <th>设备编号</th>
             <th>设备品牌</th>
@@ -181,7 +271,7 @@
         </tr>
         </thead>
         {% for d in devices %}
-        <tr {% if d.1 != None %} class="table-success" {% endif %}>
+        <tr>
             <td>
                 {% if d.1 == None %}
                 <div class="form-check text-center"  style="margin-top: 0; margin-bottom: 0; left: 40%;">
@@ -193,27 +283,77 @@
             </td>
             <td>{{ d.0.id }}</td>
             <td>{{ d.0.device_type }}</td>
-            <td>{{ d.0.device_id }}</td>
+            <td {% if d.0.is_problem == True %} class="text-danger" {% endif %}>{{ d.0.device_id }}</td>
             <td>{{ d.0.device_brand }}</td>
-            <td>{{ d.0.device_spec }}</td>
+            <td title="{{ d.0.device_spec }}">{{ d.0.device_spec|truncatechars:10 }}</td>
             <td>{{ d.0.device_year }}</td>
             <td>{{ d.0.device_fw_ver }}</td>
-            <td>{{ d.0.device_card }}</td>
-            <td>{{ d.0.device_card_slog }}</td>
+            <td title="{{ d.0.device_card }}">{{ d.0.device_card|truncatechars:10 }}</td>
+            <td title="{{ d.0.device_card_slog }}">{{ d.0.device_card_slog|truncatechars:10 }}</td>
             {% if d.1 == None %}
-            <td><a href="javascript:void(0)">分配</a></td>
+            <td class="text-danger">未分配</td>
             {% else %}
-            <td>{{ d.1 }}</td>
+            <td title="修改分配">
+                <a id="{{ d.0.id }}" class="text-success" href="javascript: void(-1)" onclick="single_choose(this.id, {{ r_id }}, '{{ d.1 }}')">{{ d.1 }}</a>
+            </td>
             {% endif %}
         </tr>
         {% endfor %}
     </table>
 </div>
 <div class="col-md-12 text-center">
-    <button class="btn btn-inverse-dark" style="margin-top: 20px">选择测试员</button>
+    <button class="btn btn-inverse-dark" style="margin-top: 20px" id="btn1" onclick="btn1()">选择测试人员</button>
 </div>
     <script>
-    checked_ls = [];
+    var checked_ls = [];
+    var allot_method = 0;
+    var single_ls = [];
+    var ver = $("#slt");
+    ver.change(function () {
+        $.ajax({
+            url: '{% url 'allot_demand' %}?rid={{ r_id }}',
+            type: 'post',
+            data: {
+                'allot_type': 3,
+                'ver': ver.val(),
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function (res) {
+                alert(res);
+            },
+            error: function (error) {
+                alert(error);
+            }
+        })
+    });
+    function reject() {
+        var res = confirm('确定驳回请求？');
+        if(res === true){
+            var txt = prompt('请填写驳回原因');
+            $.ajax({
+                url: '{% url 'reject_demand' %}',
+                type: 'post',
+                data: {
+                    'txt': txt,
+                    'r_id': {{ r_id }},
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function (res) {
+                    alert(res);
+                    location.href = '{% url 'manage_demand' %}?page=1';
+                },
+                error: function (error) {
+                    alert(error);
+            }
+            })
+        }
+    }
+    function single_choose(id, r_id, tester) {
+        $("#top-box").removeClass('d-none');
+        $("#content-box").addClass('disable');
+        allot_method = 2;
+        single_ls = [id, r_id, tester]
+    }
     function check_box(id) {
         this_box = $("#"+id);
         is_checked = this_box.get(0).checked;
@@ -224,7 +364,6 @@
             checked_ls = delete_element(checked_ls, id);
             this_box.removeAttr("checked", true)
         }
-        console.log(checked_ls)
     }
     function delete_element(ls, element) {
         for(var i=0; ls.length; i++){
@@ -233,22 +372,74 @@
                 return ls;
             }
         }
-     }
+    }
     function choose_all() {
-        {#$("[name='checkbox']").attr('checked', true);#}
         all_box = $('.checkbox-choose');
-        {#checked_ls.length = 0;#}
         for(var i=0; i<all_box.length; i++){
             console.log($.inArray(all_box[i].id, checked_ls));
             if($.inArray(all_box[i].id, checked_ls) !== -1){
-
             }else{
                 checked_ls.push(all_box[i].id);
                 $("#"+all_box[i].id).prop('checked', true);
             }
         }
         console.log(checked_ls);
+    }
+    function btn1() {
+        // 显示顶部弹窗
+        allot_method = 1;
+        if(checked_ls.length === 0){
+            alert('请先选择设备再选择测试员')
+        }else{
+            $("#top-box").removeClass('d-none');
+            $("#content-box").addClass('disable');
+        }
+    }
+    function cancel(){
+        $("#top-box").addClass('d-none');
+        $("#content-box").removeClass('disable')
+    }
+    function allot(id) {
+        if (allot_method === 1){
+            $.ajax({
+                url: '{% url 'allot_demand' %}?rid={{ r_id }}',
+                type: 'post',
+                data: {
+                    'allot_type': 1,
+                    'devices': checked_ls,
+                    'user': id,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function () {
+                    alert('分配完成！');
+                    window.location.reload();
+                },
+                error: function () {
+                    console.log('error')
+                }
+            })
+        }else{
+            $.ajax({
+                url: '{% url 'allot_demand' %}?rid={{ r_id }}',
+                type: 'post',
+                data: {
+                    'allot_type': 2,
+                    'data_ls': single_ls,
+                    'id': id,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function (res) {
+                    alert(res);
+                    cancel();
+                    window.location.reload();
+                },
+                error: function () {
+                    console.log('error')
+                }
+            })
+        }
      }
     </script>
 {% endblock %}
+</a>
 </a>

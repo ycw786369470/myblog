@@ -1,0 +1,35 @@
+<div  class="show_device_info_content" id="scroll_div1" >
+                <table class="tb3" style="width: 100%">
+
+                    {% for device in object_list.queryset %}
+                        <tr class="tb3_tr" style="height: 40px;" >
+                            <td class="tb3_tr_td">
+                                {% if device.pk in object_list.select_list %}
+                                    <label>
+                                        <input class="tb3_int" type="checkbox" id="{{ device.pk }}" checked>
+                                    </label>
+                                {% else %}
+                                    <label>
+                                        <input class="tb3_int" type="checkbox" id="{{ device.pk }}">
+                                    </label>
+                                {% endif %}
+                            </td>
+                            <td class="tb3_tr_td">{{ device.device_id }}</td>
+                            <td class="tb3_tr_td">{{ device.device_brand }}</td>
+                            <td class="tb3_tr_td">{{ device.device_spec }}</td>
+                            <td class="tb3_tr_td">{{ device.device_year }}</td>
+                            {% if device.device_support == 0 %}
+                                <td class="tb3_tr_td">都不支持</td>
+                            {% elif device.device_support == 1 %}
+                                <td class="tb3_tr_td">支持4K</td>
+                            {% elif device.device_support == 2 %}
+                                <td class="tb3_tr_td">支持6K</td>
+                            {% endif %}
+                            <td class="tb3_tr_td">{{ device.device_fw_ver }}</td>
+                            <td class="tb3_tr_td">{{ device.device_card  }}</td>
+                            <td class="tb3_tr_td">{{ device.device_card_slog }}</td>
+                            <td class="tb3_tr_td" style="width: 6.8%">9</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>

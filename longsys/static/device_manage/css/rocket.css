@@ -1,0 +1,33 @@
+.go-top {
+    display: block;
+    width: 40px;
+    height: 40px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 30px;
+    position: fixed;
+    bottom: -40px;
+    right: 20px;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+    background-color: #404040;
+    color: #fff;
+    text-decoration: none;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.go-top.show {
+    bottom: 20px;
+}
+.go-top:hover {
+    background-color: #5dba9d;
+    color: #fff;
+}
+.wrapper {
+    margin: auto;
+    width: 700px;
+    text-align: left;
+}

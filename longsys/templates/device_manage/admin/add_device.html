@@ -8,7 +8,11 @@
 {% endblock %}
 
 {% block personal %}
-    <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+    {% if name == '客户'%}
+        <a href="{% url 'login' %}" class="nav-link">
+    {% else %}
+        <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+    {% endif %}
 {% endblock %}
 
 {# 通过继承在新页面改写用户名 #}
@@ -41,15 +45,26 @@
 {# 右边选项栏 #}
 {% block option %}
     {% if name == '客户' %}
-        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+        <a class="dropdown-item" href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'login' %}"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% elif is_admin == 1 %}
+        <a class="dropdown-item" href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% elif is_init == 1 %}
+        <a class="dropdown-item" href="{% url 'sample_info' %}"><i class="dropdown-item-icon icon-plus text-primary"></i> 发起需求 </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
     {% else %}
-        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-camera text-primary"></i> 查看设备 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-map text-primary"></i> 测试报表 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
     {% endif %}
 {% endblock %}
 
@@ -65,8 +80,8 @@
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="{% url 'user_list' %}?page=1">人员管理<i class="icon-people menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'many_devices' %}">导入系统<i class="icon-bag menu-icon"></i></a></li>
         </ul>
       </div>
     </li>
@@ -83,8 +98,8 @@
       </a>
       <div class="collapse" id="demand">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="{% url 'new_demand' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
         </ul>
       </div>
@@ -115,7 +130,7 @@
     </li>
     {% else %}
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'choose' %}">
+      <a class="nav-link" href="{% url 'personal_task' %}">
         <span class="menu-title">设备测试</span>
         <i class=" icon-wrench menu-icon"></i>
       </a>
@@ -127,9 +142,9 @@
       </a>
       <div class="collapse" id="auth">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="#"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#"> 生成报表 <i class="icon-map menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#"> 关于 <i class="icon-question menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
         </ul>
       </div>
     </li>
@@ -145,230 +160,60 @@
 {% endblock %}
 
 {% block content %}
- <div class="col-sm-6 grid-margin stretch-card" style="margin: 0 auto; position:relative;">
+ <script>
+    $.ajax({
+        url: '{% url 'check_allotted' %}',
+        type: 'post',
+        data: {
+            'data': 'check',
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        success: function (res) {
+            $("#allot").text(res)
+        }
+    });
+</script>
+<div class="col-sm-8 grid-margin stretch-card" style="margin: 0 auto; position:relative;">
     <div class="card">
-      <div class="card-body">
+      <div class="card-body" style="padding: 1.875rem 3.875rem;">
         <h3 class="card-title">新增设备</h3>
         <p class="card-description text-danger">注意: 带*为必填字段</p>
+        <button type="button" class="btn btn-primary" style="width: 200px;height: 10px;line-height: 2px;float: right;"><a href="{% url 'many_devices' %}" style="text-decoration: none;color: white">Excel批量导入</a></button>
         <form class="forms-sample" method="post" action="#" enctype="multipart/form-data">
         {% csrf_token %}
-          <div class="form-group">
-            <label for="exampleInputName1"><i class="text-danger"> * </i>&nbsp;类型</label>
-            <select class="form-control must-choose" name="type">
-                <option value="none">选择类型</option>
-                {% for i in type %}
-                <option value="{{ i.device_type }}">{{ i.device_type }}</option>
-                {% endfor %}
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword4"><i class="text-danger">*</i>&nbsp;品牌</label>
-            <input type="text" class="form-control must-input" name="brand" placeholder="品牌">
-          </div>
-          <div class="form-group">
-            <label for="exampleInputEmail3"><i class="text-danger">*</i>&nbsp;编号</label>
-            <input type="text" class="form-control must-input" name="device_id" placeholder="编号" >
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;型号</label>
-            <input type="text" class="form-control must-input" name="spec" placeholder="型号">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;上市年份</label>
-            <input type="number" class="form-control must-input" name="year" placeholder="上市年份">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;是否支持4K</label>
-            <select class="form-control must-choose" name="support">
-                <option value="none">选择是否支持4K</option>
-                <option value="0">不支持4K</option>
-                <option value="1">支持4K</option>
-                <option value="2">支持6K</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;固件版本</label>
-            <input type="text" class="form-control must-input" name="fw" placeholder="固件版本">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;支持卡片容量</label>
-            <input type="text" class="form-control must-input" name="card_capacity" placeholder="支持卡片容量">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;处理器型号</label>
-            <input type="text" class="form-control must-input" name="CPU" placeholder="处理器型号">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;支持卡型</label>
-            <input type="text" class="form-control must-input" name="card" placeholder="支持卡型(每种卡型之间用/分开)">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;卡槽</label>
-            <input type="text" class="form-control must-input" name="slog" placeholder="卡槽">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;支持文件系统</label>
-            <input type="text" class="form-control must-input" name="sys" placeholder="支持系统">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;图片格式</label>
-            <input type="text" class="form-control must-input" name="img_format" placeholder="图片格式">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;图片平均速率</label>
-            <input type="text" class="form-control must-input" name="img_speed" placeholder="图片平均速度">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;视屏格式</label>
-            <input type="text" class="form-control must-input" name="video_format" placeholder="视频格式">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;视频平均速率</label>
-            <input type="text" class="form-control must-input" name="video_speed" placeholder="视频平均速度">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;最高录制设置</label>
-            <input type="text" class="form-control must-input" name="video_max" placeholder="最高录制设置">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;视频文件分割</label>
-            <input type="text" class="form-control must-input" name="video_cut" placeholder="视频文件分割">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;速度要求</label>
-            <input type="text" class="form-control must-input" name="speed" placeholder="速度要求">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;最大分辨率</label>
-            <input type="text" class="form-control must-input" name="max_reso" placeholder="最大分辨率">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;设备特性</label>
-            <input type="text" class="form-control must-input" name="character" placeholder="设备特性">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender">资产编号</label>
-            <input type="text" class="form-control" name="pro_id" placeholder="资产编号">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender">资产所属</label>
-            <input type="text" class="form-control" name="pro_belong" placeholder="资产所属">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender">启用日期</label>
-            <input type="text" class="form-control" name="begin" placeholder="启用日期">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender">购买价格</label>
-            <input type="number" class="form-control" name="price" placeholder="购买价格" id="price">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender">镜头数量</label>
-            <input type="number" class="form-control" name="camera_num" placeholder="镜头数量" id="camera_num">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender">工作温度</label>
-            <input type="text" class="form-control" name="temper" placeholder="工作温度">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender">电源电压/电流</label>
-            <input type="text" class="form-control" name="vol_ele" placeholder="电源电压/电流">
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender">卡片电压</label>
-            <input type="text" class="form-control" name="card_vol" placeholder="卡片电压">
-          </div>
-          <div class="form-group">
-            <label>上传性能曲线图</label>
-            <input type="file" name="img" id="img" class="file-upload-default">
-            <div class="input-group col-xs-12">
-              <input type="text" class="form-control file-upload-info" disabled placeholder="上传性能曲线图">
-              <span class="input-group-append">
-                <button class="file-upload-browse btn btn-primary" type="button" onclick="upload()">点此上传</button>
-              </span>
+            <div class="form-group">
+                <label for="exampleInputName1"><i class="text-danger"> * </i>&nbsp;类型</label>
+                <select class="form-control" name="type" id="add-type">
+                    <option value="none">选择类型</option>
+                    {% for i in type %}
+                    <option value="{{ i.device_type }}">{{ i.device_type }}</option>
+                    {% endfor %}
+                </select>
             </div>
-          </div>
-            {# 假提交，点击时会检验必填项是否填完 #}
-          <input type="button" class="btn btn-primary mr-2" value="新增设备" onclick="check_all()">
-          <button type="submit" class="btn btn-primary mr-2 d-none" id="submit"></button>
-          <input type="button" class="btn btn-light" value="取消" onclick='javascript:history.back(-1);'>
+          <div id="fix_form"></div>
         </form>
       </div>
     </div>
     <script>
-        var input_ls = [];
-        var choose_ls = [];
-        must_input = $('.must-input');
-        must_choose = $('.must-choose');
-        camera_num = $('#camera_num');
-        price = $("#price");
-        for (var i=0; i<must_input.length; i++){
-            must_input[i].setAttribute('id', 'i-'+i);
-            must_input[i].setAttribute('onclick', 'bluring(this.id)');
-            input_ls.push('i-'+i);
-        }
-        for (var m=0; m<must_choose.length; m++){
-            must_choose[m].setAttribute('id', 'c-'+m);
-            must_choose[m].setAttribute('onclick', 'get_select(this.id)');
-            choose_ls.push('c-'+m);
-        }
-        //必填项
-        function bluring(id) {
-            var box = $('#'+id);
-            box.blur(function () {
-                var input_val = box.val();
-                if(input_val.length===0){
-                    box.addClass('border-danger')
-                }else{
-                    box.removeClass('border-danger')
+        choose_type =  $('#add-type');
+        choose_type.change(function () {
+            type = choose_type.val();
+            $.ajax({
+                url: '{% url 'change_type' %}',
+                type: 'post',
+                data: {
+                    'type': type,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function (res) {
+                    console.log(res);
+                    $("#fix_form").html(res);
+                },
+                error: function () {
+                    alert('出错！')
                 }
             })
-        }
-        //必选框
-        function get_select(id) {
-            var opt = $('#'+id+' option:selected');
-            var sel = $('#'+id);
-            if (opt.val() === 'none'){
-                sel.addClass('border-danger');
-            }else{
-                sel.removeClass('border-danger');
-            }
-        }
-        //上传文件
-        function upload() {
-            $('#img').trigger('click')
-        }
-        // 检查是否必填是否填完
-        function check_all() {
-            var not_filled = 0;
-            for(var n=0; n<input_ls.length; n++){
-                if($('#'+input_ls[n]).val().length < 1){
-                    not_filled++;
-                }
-            }
-            for(var m=0; m<choose_ls.length; m++){
-                if($('#'+choose_ls[m]+' option:selected').val() === 'none'){
-                    not_filled++;
-                }
-            }
-            if(not_filled === 0){
-                if(camera_num.val().length === 0){
-                    camera_num.val(0);
-                }
-                if(price.val().length === 0){
-                    price.val(0);
-                }
-                $('#submit').trigger('click');
-            }else{
-                if(camera_num.val().length === 0){
-                    camera_num.val(0);
-                }
-                if(price.val().length === 0){
-                    price.val(0);
-                }
-                alert('还有'+not_filled+'项必填信息没有填入，请检查填完再提交')
-            }
-        }
+        });
     </script>
   </div>
     </a>

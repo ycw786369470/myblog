@@ -1,0 +1,108 @@
+.main-panel .btn {
+    width: 300px;
+    height: 300px;
+    background: #ddd;
+    position: relative;
+    text-align: center;
+    margin: 15px;
+    overflow: hidden;
+    background: #0399e5;
+    border-radius: 100%;
+    box-shadow: 0 5px 10px #bbb;
+    display: inline-block;
+}
+.cloud {
+    width: 200px;
+    height: 80px;
+    position: relative;
+    background: #fff;
+    display: inline-block;
+    border-radius: 50px;
+    margin: 120px auto 0;
+    box-shadow: 0px 0px #0277b3, 1px 1px #0277b3, 2px 2px #0277b3, 3px 3px #0277b3, 4px 4px #0277b3, 5px 5px #0277b3, 6px 6px #0277b3, 7px 7px #0277b3, 8px 8px #0277b3, 9px 9px #0277b3, 10px 10px #0277b3, 11px 11px #0277b3, 12px 12px #0277b3, 13px 13px #0277b3, 14px 14px #0277b3, 15px 15px #0277b3, 16px 16px #0277b3, 17px 17px #0277b3, 18px 18px #0277b3, 19px 19px #0277b3, 20px 20px #0277b3, 21px 21px #0277b3, 22px 22px #0277b3, 23px 23px #0277b3, 24px 24px #0277b3, 25px 25px #0277b3, 26px 26px #0277b3, 27px 27px #0277b3, 28px 28px #0277b3, 29px 29px #0277b3, 30px 30px #0277b3, 31px 31px #0277b3, 32px 32px #0277b3, 33px 33px #0277b3, 34px 34px #0277b3, 35px 35px #0277b3, 36px 36px #0277b3, 37px 37px #0277b3, 38px 38px #0277b3, 39px 39px #0277b3, 40px 40px #0277b3, 41px 41px #0277b3, 42px 42px #0277b3, 43px 43px #0277b3, 44px 44px #0277b3, 45px 45px #0277b3, 46px 46px #0277b3, 47px 47px #0277b3, 48px 48px #0277b3, 49px 49px #0277b3, 50px 50px #0277b3, 51px 51px #0277b3, 52px 52px #0277b3, 53px 53px #0277b3, 54px 54px #0277b3, 55px 55px #0277b3, 56px 56px #0277b3, 57px 57px #0277b3, 58px 58px #0277b3, 59px 59px #0277b3, 60px 60px #0277b3, 61px 61px #0277b3, 62px 62px #0277b3, 63px 63px #0277b3, 64px 64px #0277b3, 65px 65px #0277b3, 66px 66px #0277b3, 67px 67px #0277b3, 68px 68px #0277b3, 69px 69px #0277b3, 70px 70px #0277b3, 71px 71px #0277b3, 72px 72px #0277b3, 73px 73px #0277b3, 74px 74px #0277b3, 75px 75px #0277b3, 76px 76px #0277b3, 77px 77px #0277b3, 78px 78px #0277b3, 79px 79px #0277b3, 80px 80px #0277b3, 81px 81px #0277b3, 82px 82px #0277b3, 83px 83px #0277b3, 84px 84px #0277b3, 85px 85px #0277b3, 86px 86px #0277b3, 87px 87px #0277b3, 88px 88px #0277b3, 89px 89px #0277b3, 90px 90px #0277b3, 91px 91px #0277b3, 92px 92px #0277b3, 93px 93px #0277b3, 94px 94px #0277b3, 95px 95px #0277b3, 96px 96px #0277b3, 97px 97px #0277b3, 98px 98px #0277b3, 99px 99px #0277b3, 100px 100px #0277b3;
+}
+.cloud:after {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 80px;
+    border-radius: 80px 80px 0 0;
+    top: -40px;
+    background: #fff;
+    left: 40px;
+}
+.cloud:before {
+    content: '';
+    position: absolute;
+    background: #636262;
+    border-radius: 10px;
+    width: 90px;
+    height: 6px;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    bottom: 25px;
+    margin: auto;
+}
+.file {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 5;
+    top: 50px;
+    width: 80px;
+    height: 100px;
+    display: inline-block;
+    overflow: hidden;
+}
+.file:after {
+    content: '';
+    position: absolute;
+    background: #577fc0;
+    width: 80px;
+    height: 80px;
+    left: 0;
+    top: 0;
+    border-radius: 0 0 10px 10px;
+    -webkit-animation: uplaod 3s linear infinite;
+    animation: uplaod 3s linear infinite;
+}
+.file:before {
+    content: '';
+    background: #e2e3e3;
+    color: #e2e3e3;
+    width: 60px;
+    height: 5px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 20px;
+    z-index: 3;
+    margin: auto;
+    -webkit-animation: uplaod 3s linear infinite;
+    animation: uplaod 3s linear infinite;
+    box-shadow: 0 15px, 0 30px;
+}
+@-webkit-keyframes uplaod {
+    0% {
+        -webkit-transform: translateY(0px);
+        transform: translateY(0px);
+    }
+    100% {
+        -webkit-transform: translateY(-100px);
+        transform: translateY(-100px);
+    }
+}
+@keyframes uplaod {
+    0% {
+        -ms-transform: translateY(0px);
+        -webkit-transform: translateY(0px);
+        transform: translateY(0px);
+    }
+    100% {
+        -ms-transform: translateY(-100px);
+        -webkit-transform: translateY(-100px);
+        transform: translateY(-100px);
+    }
+}

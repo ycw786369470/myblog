@@ -1,0 +1,288 @@
+{% extends 'device_manage/base/base.html' %}
+<!-- 分为客户/测试者/管理员三种身份，通过登录方式判断身份，客户不用登陆
+客户只能查看基础页面，管理员可以查看所有信息-->
+
+{#修改网页标题title#}
+{% block title %}
+    导入文件
+{% endblock %}
+
+{% block personal %}
+    {% if name == '客户'%}
+        <a href="{% url 'login' %}" class="nav-link">
+    {% else %}
+        <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+    {% endif %}
+{% endblock %}
+
+{# 通过继承在新页面改写用户名 #}
+{% block user %}
+    {{ name }}
+{% endblock %}
+
+{% block job %}
+    身份:{{ job }}
+{% endblock %}
+
+{# 右边个人信息栏 #}
+{% block self %}
+    {{ name }}
+{% endblock %}
+
+{# 登录登出图标 #}
+{% block login_logout %}
+    {% if name == '客户'%}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/login/">
+            <i class="icon-badge mx-2"></i>登录
+        </a>
+    {% else %}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/logout/">
+            <i class="icon-badge mx-2"></i>注销
+        </a>
+    {% endif %}
+{% endblock %}
+
+{# 右边选项栏 #}
+{% block option %}
+    {% if name == '客户' %}
+        <a class="dropdown-item" href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'login' %}"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% elif is_admin == 1 %}
+        <a class="dropdown-item" href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% elif is_init == 1 %}
+        <a class="dropdown-item" href="{% url 'sample_info' %}"><i class="dropdown-item-icon icon-plus text-primary"></i> 发起需求 </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% else %}
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% endif %}
+{% endblock %}
+
+{# 管理员-设备管理选项 #}
+{% block admin %}
+    {% if is_admin == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#admin" aria-expanded="false" aria-controls="admin">
+        <span class="menu-title nav-category">管理选项</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+      <div class="collapse" id="admin">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'many_devices' %}">导入系统<i class="icon-bag menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 判断是否为需求发起人 #}
+{% block init %}
+    {% if is_init == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#demand" aria-expanded="false" aria-controls="demand">
+        <span class="menu-title nav-category">需求管理</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="demand">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block staff %}
+    {% if name == '客户' %}
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">更多功能</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title nav-category">公司介绍</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="https://www.longsys.com/">公司官网<i class="icon-home menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">关于我们<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'personal_task' %}">
+        <span class="menu-title">设备测试</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title">个人中心</span>
+        <i class="icon-user menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/device_manage/css/upload.css">
+    <link rel="stylesheet" href="/static/device_manage/css/alert.css">
+    <link rel="stylesheet" href="/static/device_manage/css/cloud.css">
+    <style>
+    #help-box img{
+        width: 70%;
+    }
+    #box1{
+        width:100%;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div id="alert-box" class="notify bar-top do-show" data-notification-status="success">提示框内容</div>
+<main class="d-none">
+    <div class="wrapper">
+        <nav>
+            <a id="right-bot" href="#" class="button" data-type="bottom-right" data-status="error">Bottom Right</a>
+            <a id="left-bot" href="#" class="button" data-type="bottom-left" data-status="notice">Bottom Left</a>
+            <a id="bottom" href="#" class="button" data-type="bar-bottom" data-status="plain">Bottom bar</a>
+        </nav>
+    </div>
+</main>
+<div id="content-box" style="text-align: center">
+    <div class="col-md-4" style="margin: 0 auto;">
+        <div class="form-group">
+            <select class="form-control" id="type">
+                <option value="none">请上传文件类型</option>
+                <option value="测试记录">测试记录</option>
+                {% for type in types %}
+                <option value="{{ type.device_type }}">{{ type.device_type }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="container" style="padding: 0 0 100px 0 ">
+        <div class="main-box" style="margin: 0 auto;">
+            <form action="{% url 'many_devices' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="file" class="d-none file-upload-default" id="upload">
+                <input type="submit" class="d-none" id="submit">
+            </form>
+            <div class="box-content" onclick="upload_click()">
+                <div class="svg">
+                    <svg width="66" height="57" viewBox="0 0 66 57" fill="none" xmlns="https://www.w3.org/2000/svg">
+                        <path d="M2.70977 0H19.4194C20.2733 0 21.0742 0.402215 21.5857 1.08315L25.3821 6.14266C25.8937 6.82361 26.6946 7.22581 27.5484 7.22581H62.3226C63.8185 7.22581 65.0323 8.43956 65.0323 9.93548V53.2903C65.0323 54.7862 63.8185 56 62.3226 56H2.70968C1.21376 56 0 54.7862 0 53.2903V2.70968C0 1.21375 1.21385 0 2.70977 0Z" transform="translate(0.0177612 0.740387)" fill="#4F8AFE" />
+                    </svg>
+                </div>
+                <div class="text">
+                    <p class="title" style="margin-bottom: 5px;" id="tip"> 选择文件 </p>
+                    <span id="file_name">暂未上传</span>
+                </div>
+                <div class="dots">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-8 text-center" style="background-color: white; margin: 0 auto;box-shadow: 0 5px 5px darkgray; padding: 20px;" >
+    <h2 class="text-left">上传步骤说明：</h2>
+    <div id="help-box">
+        <img src="/static/device_manage/images/help/choose_type2.png" alt="">
+        <p>1、首先选择上传的excel内容属于哪种设备类型</p>
+        <img src="/static/device_manage/images/help/choose_type3.png" alt="">
+        <p>2、第一次点击上传按钮选择excel文件，选择之后再次点击为上传功能</p>
+        <img src="/static/device_manage/images/help/choose_type5.png" alt="">
+        <p>3、excel文件格式一定要规范，不能一个表内包含多个表，正确方式如上图(相机表内只有Sheet1)</p>
+        <img src="/static/device_manage/images/help/choose_type4.png" alt="">
+        <p>4、上传之后右下角会提示正在分析文件。请等待完成，完成后会刷新该页面。若遇到bug请顶顶联系 <a href="#">@杨晨蔚/@钟桂成</a></p>
+    </div>
+</div>
+<script>
+    var times = 0;
+    var upload = $("#upload");
+    var submit = $("#submit");
+    var type = $("#type");
+    type.change(function () {
+        var now_type = type.val();
+        $.ajax({
+            url: "{% url 'many_devices' %}",
+            type: 'post',
+            data:{
+                'choose_type': now_type,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function (res) {
+            },
+            error: function () {
+                alert('出错了，请刷新试试~')
+            }
+        })
+    });
+    // 提示框
+    $('.button').on('click', function(event) {
+        var type = $(this).data('type');
+        var status = $(this).data('status');
+        $('.button').removeClass('is-active');
+        $(this).addClass('is-active');
+        $('.notify')
+            .removeClass()
+            .attr('data-notification-status', status)
+            .addClass(type + ' notify')
+            .addClass('do-show');
+        event.preventDefault();
+    });
+    // 提示框结束
+
+    upload.change(function (data) {
+        var file_msg = data.currentTarget.files;
+        var file_name = file_msg[0].name;
+        $("#file_name").text(file_name);
+        $("#tip").text('确定上传');
+        $("#alert-box").text('选择文件成功！请点击确认上传。');
+        $("#left-bot").trigger('click');
+        times = 1;
+    });
+    function upload_click() {
+        if (times === 0){
+            upload.trigger('click');
+        }
+        if (times === 1){
+            submit.trigger('click');
+            $("#alert-box").text('文件已上传，正在解析中，请耐心等待...');
+            $("#right-bot").trigger('click');
+            $("#content-box").html('<div class="btn download" style="margin-bottom: 20px;"><div class="cloud"><div class="file"></div></div></div>')
+        }
+    }
+</script>
+{% endblock %}
+</a></a>

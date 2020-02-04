@@ -1,0 +1,53 @@
+<table class="table table-hover table-striped text-center" id="user_list">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>姓名</th>
+                <th>工号</th>
+                <th>岗位</th>
+                <th>分组</th>
+                <th>管理员</th>
+                <th>需求发起人</th>
+                <th>最近登录</th>
+            </tr>
+            </thead>
+            {% for user in user_list%}
+                <tr onclick="showId(this.id)" id="{{ user.id }}" title="点击查看详情">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user.name}}</td>
+                    <td>{{ user.staff_number}}</td>
+                    <td>{{ user.job }}</td>
+                    <td>{{ user.group }}</td>
+                    {% if user.is_admin %}
+                        <td>是</td>
+                    {% else %}
+                        <td>否</td>
+                    {% endif %}
+                    {% if user.is_init %}
+                        <td>是</td>
+                    {% else %}
+                        <td>否</td>
+                    {% endif %}
+                    <td>{{ user.last_login|date:"Y-m-d H:i:s" }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+<script>
+         function showId(id){
+            location.href="/user_detail/id/"+id;
+        }
+        function f1() {
+        $.ajax({
+            url: '{% url 'check_allotted' %}',
+            type: 'post',
+            data: {
+                'data': 'check',
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+
+            },
+            success: function (res) {
+                $("#allot").text(res)
+            }
+        });
+    }
+        </script>

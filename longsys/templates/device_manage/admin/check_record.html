@@ -1,0 +1,299 @@
+{% extends 'device_manage/base/base.html' %}
+<!-- 分为客户/测试者/管理员三种身份，通过登录方式判断身份，客户不用登陆
+客户只能查看基础页面，管理员可以查看所有信息-->
+
+{#修改网页标题title#}
+{% block title %}
+    longsys设备展示
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block personal %}
+    <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+{% endblock %}
+
+{# 通过继承在新页面改写用户名 #}
+{% block user %}
+    {{ name }}
+{% endblock %}
+
+{% block job %}
+    身份:{{ job }}
+{% endblock %}
+
+{# 右边个人信息栏 #}
+{% block self %}
+    {{ name }}
+{% endblock %}
+
+{# 登录登出图标 #}
+{% block login_logout %}
+    {% if name == '客户'%}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/login/">
+            <i class="icon-badge mx-2"></i>登录
+        </a>
+    {% else %}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/logout/">
+            <i class="icon-badge mx-2"></i>注销
+        </a>
+    {% endif %}
+{% endblock %}
+
+{# 右边选项栏 #}
+{% block option %}
+    {% if name == '客户' %}
+        <a class="dropdown-item" href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'login' %}"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% elif name == '管理员' %}
+        <a class="dropdown-item" href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% else %}
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% endif %}
+{% endblock %}
+
+{# 管理员-设备管理选项 #}
+{% block admin %}
+    {% if is_admin == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#admin" aria-expanded="false" aria-controls="admin">
+        <span class="menu-title nav-category">管理选项</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+      <div class="collapse" id="admin">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'user_list' %}?page=1">人员管理<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 判断是否为需求发起人 #}
+{% block init %}
+    {% if is_init == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#demand" aria-expanded="false" aria-controls="demand">
+        <span class="menu-title nav-category">需求管理</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="demand">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block staff %}
+    {% if name == '客户' %}
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">更多功能</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title nav-category">公司介绍</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="https://www.longsys.com/">公司官网<i class="icon-home menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">关于我们<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'personal_task' %}">
+        <span class="menu-title">设备测试</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title">个人中心</span>
+        <i class="icon-user menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 修改操作框内容 #}
+{% block content %}
+    <div class="back">
+        <a href="javascript:history.back(-1)"><button class="btn btn-outline-dark" style="font-family: 微软雅黑">&lt;&lt;返回</button></a>
+    </div>
+    <div class="export_record" style="padding: 20px;background-color: #cbd3da">
+        <br><button type="submit" class="btn btn-primary" id="export_record" style="width: 140px;height: 10px;line-height: 2px" onclick="export_record()">下载报告</button>
+    </div>
+    <div class="col-md-12 table-responsive" id="history" style="background-color: white">
+        <table class="table table-hover table-bordered text-center" id="table2excel">
+            <tr>
+                <th></th>
+                <th><strong>版本</strong></th>
+                <td>{{ requirements.ver }}</td>
+                <th><strong>搭配</strong></th>
+                <td colspan="2">{{ requirements.match }}</td>
+                {% if 'card_num' in check_ls %}
+                <th><strong>卡数量</strong></th>
+                <td colspan="2">{{ requirements.card_num }}</td>
+                {% endif %}
+                {% if 'test_cycle' in check_ls %}
+                <th><strong>测试周期</strong></th>
+                <td>{{ requirements.start_time|date:"Y-m-d" }}..{{ requirements.end_time|date:"Y-m-d" }}</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th></th>
+                {% if 'compatible_ver' in check_ls %}
+                <th colspan="3"><strong>兼容性测试版本</strong></th>
+                <td colspan="2">{{ requirements.compatible_ver }}</td>
+                {% endif %}
+                <th><strong>平台总数</strong></th>
+                <td colspan="2">{{ dev_num }}</td>
+                <th><strong>Fail平台数</strong></th>
+                <td>{{ fail_num }}</td>
+                <th><strong>SN</strong></th>
+                <td>{{ requirements.SN }}</td>
+            </tr>
+            <tr>
+                <th></th>
+                <th><strong>测试设备</strong></th>
+                <th><strong>设备编号</strong></th>
+                <th><strong>设备品牌</strong></th>
+                <th><strong>型号</strong></th>
+                {% if 'device_support' in check_ls %}
+                <th><strong>是否支持4k</strong></th>
+                {% endif %}
+                {% if 'device_card_slog' in check_ls %}
+                <th><strong>卡槽</strong></th>
+                {% endif %}
+                {% if 'card_num' in check_ls %}
+                <th><strong>卡片数量</strong></th>
+                {% endif %}
+                {% if 'card_id' in check_ls %}
+                <th><strong>卡片编号</strong></th>
+                {% endif %}
+                <th><strong>测试结果</strong></th>
+                {% if 'user' in check_ls %}
+                <th><strong>测试人员</strong></th>
+                {% endif %}
+                {% if 'remark' in check_ls %}
+                <th><strong>备注</strong></th>
+                {% endif %}
+                {% if 'fail_pro' in check_ls %}
+                <th><strong>失败项目</strong></th>
+                {% endif %}
+            </tr>
+            {% for h in history %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ h.task.device.device_type }}</td>
+                <td>{{ h.task.device.device_id }}</td>
+                <td>{{ h.task.device.device_brand }}</td>
+                <td>{{ h.task.device.device_spec }}</td>
+                {% if 'device_support' in check_ls %}
+                <td>
+                    {% if h.task.device.device_support == 1 %}
+                        是
+                    {% else %}
+                        否
+                    {% endif %}
+                </td>
+                {% endif %}
+                {% if 'device_card_slog' in check_ls %}
+                <td>{{ h.task.device.device_card_slog }}</td>
+                {% endif %}
+                {% if 'card_num_1' in check_ls %}
+                <td>{{ h.task.card_num }}</td>
+                {% endif %}
+                {% if 'card_id' in check_ls %}
+                <td>{{ h.task.card_id }}</td>
+                {% endif %}
+                {% if h.task.result == 1 %}
+                    <td style="color: #58d8a3">pass</td>
+                {% elif h.task.result == 0 %}
+                    <td style="color: red">fail</td>
+                {% else %}
+                    <td style="color: orange">待测</td>
+                {% endif %}
+                {% if 'user' in check_ls %}
+                <td>{{ h.task.user }}</td>
+                {% endif %}
+                {% if 'remark' in check_ls %}
+                <td>{{ h.remark }}</td>
+                {% endif %}
+                {% if 'fail_pro' in check_ls %}
+                <td>{{ h.fail_pro }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <script src="/static/device_manage/jquery-table2excel-master/dist/jquery.table2excel.js"></script>
+    <script>
+    function f1() {
+        $.ajax({
+            url: '{% url 'check_allotted' %}',
+            type: 'post',
+            data: {
+                'data': 'check',
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+
+            },
+            success: function (res) {
+                $("#allot").text(res)
+            }
+        });
+        }
+
+    function export_record() {
+        var myDate = new Date();
+        //获取当前年
+        var year=myDate.getFullYear();
+        //获取当前月
+        var month=myDate.getMonth();
+        //获取当前日
+        var date=myDate.getDate();
+        var hours=myDate.getHours();       //获取当前小时数(0-23)
+        var minutes=myDate.getMinutes();     //获取当前分钟数(0-59)
+
+        //拼接：
+        var nowDayTime = year + "." + (month+1) + "."  + date + " " +hours + ":" + minutes;
+        $("#table2excel").table2excel({
+                    exclude: ".noExl",
+                    name: "Excel Document Name",
+                    filename: '{{ requirements.match }}-'+nowDayTime+".xls",
+                    exclude_img: true,
+                    exclude_links: true,
+                    exclude_inputs: true
+                });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,347 @@
+body {
+    color: #444;
+    font-size: 1.6em;
+    background: #ccc;
+}
+.container {
+    width: 90%;
+    margin: 20px 3%;
+    padding: 25px;
+    min-height: 400px;
+    height: auto;
+    background: #FFF;
+}
+section {
+    float: left;
+    width: 30%;
+    margin: 20px 20px;
+}
+hr {
+    clear: both;
+}
+/**
+* Start by hiding the checkboxes
+*/
+
+input[type=checkbox] {
+    visibility: hidden;
+}
+/**
+* Create the slider bar
+*/
+
+.checkboxOne {
+    width: 40px;
+    height: 10px;
+    background: #555;
+    margin: 20px 80px;
+    position: relative;
+    border-radius: 3px;
+}
+/**
+* Create the slider from the label
+*/
+
+.checkboxOne label {
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    transition: all .5s ease;
+    cursor: pointer;
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    background: #ccc;
+}
+/**
+* Move the slider in the correct position if the checkbox is clicked
+*/
+
+.checkboxOne input[type=checkbox]:checked + label {
+    left: 27px;
+}
+/**
+* Checkbox Two
+*/
+
+.checkboxTwo {
+    width: 120px;
+    height: 40px;
+    background: #333;
+    margin: 20px 60px;
+    border-radius: 50px;
+    position: relative;
+}
+/**
+* Create the line for the circle to move across
+*/
+
+.checkboxTwo:before {
+    content: '';
+    position: absolute;
+    top: 19px;
+    left: 14px;
+    height: 2px;
+    width: 90px;
+    background: #111;
+}
+/**
+* Create the circle to click
+*/
+
+.checkboxTwo label {
+    display: block;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    transition: all .5s ease;
+    cursor: pointer;
+    position: absolute;
+    top: 9px;
+    z-index: 1;
+    left: 12px;
+    background: #ddd;
+}
+/**
+* Create the click event for the checkbox
+*/
+
+.checkboxTwo input[type=checkbox]:checked + label {
+    left: 84px;
+    background: #26ca28;
+}
+/**
+* Checkbox Three
+*/
+
+.checkboxThree {
+    width: 120px;
+    height: 40px;
+    background: #333;
+    margin: 20px 60px;
+    border-radius: 50px;
+    position: relative;
+}
+/**
+* Create the text for the On position
+*/
+
+.checkboxThree:before {
+    content: 'On';
+    position: absolute;
+    top: 12px;
+    left: 13px;
+    height: 2px;
+    color: #26ca28;
+    font-size: 16px;
+}
+/**
+* Create the label for the off position
+*/
+
+.checkboxThree:after {
+    content: 'Off';
+    position: absolute;
+    top: 12px;
+    left: 84px;
+    height: 2px;
+    color: #ddd;
+    font-size: 16px;
+}
+/**
+* Create the pill to click
+*/
+
+.checkboxThree label {
+    display: block;
+    width: 52px;
+    height: 22px;
+    border-radius: 50px;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    transition: all .5s ease;
+    cursor: pointer;
+    position: absolute;
+    top: 9px;
+    z-index: 1;
+    left: 12px;
+    background: #ddd;
+}
+/**
+* Create the checkbox event for the label
+* @type {[type]}
+*/
+
+.checkboxThree input[type=checkbox]:checked + label {
+    left: 60px;
+    background: #26ca28;
+}
+/**
+* Checkbox Four
+*/
+
+.checkboxFour {
+    width: 40px;
+    height: 40px;
+    background: #ddd;
+    margin: 20px 90px;
+    border-radius: 100%;
+    position: relative;
+    -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+/**
+* Create the checkbox button
+*/
+
+.checkboxFour label {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 100px;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    transition: all .5s ease;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1;
+    background: #333;
+    -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+/**
+* Create the checked state
+*/
+
+.checkboxFour input[type=checkbox]:checked + label {
+    background: #26ca28;
+}
+/**
+* Checkbox Five
+*/
+
+.checkboxFive {
+    width: 90%;
+    position: relative;
+}
+/**
+* Create the box for the checkbox
+*/
+
+.checkboxFive label {
+    cursor: pointer;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 0;
+    left: 0;
+    background: #eee;
+    border: 1px solid #ddd;
+}
+/**
+* Display the tick inside the checkbox
+*/
+
+.checkboxFive label:after {
+    opacity: 0.2;
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 5px;
+    background: transparent;
+    top: 6px;
+    left: 7px;
+    border: 3px solid #333;
+    border-top: none;
+    border-right: none;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+/**
+* Create the hover event of the tick
+*/
+
+.checkboxFive label:hover::after {
+    opacity: 0.5;
+}
+/**
+* Create the checkbox state for the tick
+*/
+
+.checkboxFive input[type=checkbox]:checked + label:after {
+    opacity: 1;
+}
+
+.span-text{
+    font-size: 15px;
+    position: relative;
+    left: 20px;
+    top: -7px;
+}
+
+        /*<section>*/
+            /*<!-- 样式一 -->*/
+            /*<h3>样式一</h3>*/
+            /*<div class="checkboxOne">*/
+                /*<input type="checkbox" value="1" id="checkboxOneInput" name="" />*/
+                /*<label for="checkboxOneInput"></label>*/
+            /*</div>*/
+        /*</section>*/
+
+        /*<section>*/
+            /*<!-- 样式二 -->*/
+            /*<h3>样式二</h3>*/
+            /*<div class="checkboxTwo">*/
+                /*<input type="checkbox" value="1" id="checkboxTwoInput" name="" />*/
+                /*<label for="checkboxTwoInput"></label>*/
+            /*</div>*/
+        /*</section>*/
+
+        /*<section>*/
+            /*<!-- 样式三 -->*/
+            /*<h3>样式三</h3>*/
+            /*<div class="checkboxThree">*/
+                /*<input type="checkbox" value="1" id="checkboxThreeInput" name="" />*/
+                /*<label for="checkboxThreeInput"></label>*/
+            /*</div>*/
+        /*</section>*/
+
+        /*<section>*/
+            /*<!-- 样式四 -->*/
+            /*<h3>样式四</h3>*/
+            /*<div class="checkboxFour">*/
+                /*<input type="checkbox" value="1" id="checkboxFourInput" name="" />*/
+                /*<label for="checkboxFourInput"></label>*/
+            /*</div>*/
+        /*</section>*/
+
+        /*<section>*/
+            /*<!-- 样式五 -->*/
+            /*<h3>样式五</h3>*/
+            /*<div class="checkboxFive">*/
+                /*<input type="checkbox" value="1" id="checkboxFiveInput" name="" />*/
+                /*<label for="checkboxFiveInput"></label>*/
+            /*</div>*/
+        /*</section>*/
+
+

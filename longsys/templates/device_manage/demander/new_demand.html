@@ -1,0 +1,110 @@
+<div class="new_container1" id="new_container1" style="display: none">
+        <h2 class="text-center">需求发布</h2><br>
+        <div>
+            <table class="table text-center">
+                <tr>
+                    <td>
+                        <label >
+                            <em>任务周期:</em>
+                            {{ object_list.start_time }} — {{ object_list.end_time }}
+                        </label>
+                    </td>
+                    <td >
+                        <div >
+                            <button id="wait_select" class="btn btn-outline-dark" style="margin-left: 10%" >
+                                &lt;&lt;待选设备
+                            </button>
+                        </div>
+                        <script src="/static/device_manage/lib/jquery-2.1.4.js"></script>
+                    </td>
+                    <td>
+                        <div>
+                            <button id="release_task" class="btn btn-outline-dark">
+                                发布>>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="background-color: #b2b2b2">
+            <table class="tb4 text-center " style="width: 100%;">
+                <thead>
+                <tr class="tb4_tr" >
+                    {% for item in object_list.demand_list %}
+                    <th class="tb4_tr_th" >{{ item|safe }}</th>
+                    {% endfor %}
+                    <th class="tb4_tr_th" >操作</th>
+                </tr>
+                </thead>
+
+            </table>
+        </div>
+        <div class="show_device_info_content" style="height: 650px;border: 1px solid pink;">
+            <table class="tb5 table-hover text-center" style="width: 100%;">
+                {% for item in object_list.select_queryset %}
+                    <tr class="tb5_tr" style="width: 100%" >
+                        <td class="tb4_tr_th" >{{ forloop.counter }}</td>
+                        <td class="tb4_tr_th" >{{ item.device_id }}</td>
+                        <td class="tb4_tr_th" >{{ item.device_brand }}</td>
+                        <td class="tb4_tr_th" >{{ item.device_spec }}</td>
+                        <td class="tb4_tr_th" >{{ item.device_card_slog  }}</td>
+                        <td class="tb4_tr_th" >{{ item.device_fw_ver }}</td>
+                        <td class="tb4_tr_th" >88</td>
+                        <td class="tb4_tr_th" >{{ item.device_support }}</td>
+                        <td class="tb4_tr_th" >撤销</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <script src="/static/device_manage/lib/jquery-2.1.4.js"></script>
+    <script>
+        $(function () {
+            {#加载待选设备#}
+            $('#wait_select').click(function () {
+                $('#new_container').css('display', 'block');
+                $('#new_container1').css('display', 'none');
+            });
+             {#发布任务#}
+            $('#release_task').click(function () {
+                var device_id_list = {{ object_list.select_list|safe}};
+                if(device_id_list.length >0){
+                     var res = confirm('是否确定发布？');
+                     if (res === true){
+                         $.ajax({
+                            url: '{% url 'release_task' %}',
+                            type: 'get',
+                            data: {
+                                'pk': JSON.stringify(device_id_list),
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            success:function (res) {
+                                window.location.href = '/'
+                            }
+                         });
+                     }
+                }
+                else {
+                    alert('未选择设备')
+                }
+
+
+            });
+        });
+        function f1() {
+            $.ajax({
+                url: '{% url 'check_allotted' %}',
+                type: 'post',
+                data: {
+                    'data': 'check',
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+
+                },
+                success: function (res) {
+                    $("#allot").text(res)
+                }
+            });
+        }
+    </script>
+

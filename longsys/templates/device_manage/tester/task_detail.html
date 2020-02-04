@@ -1,0 +1,613 @@
+{% extends 'device_manage/base/base.html' %}
+<!-- 分为客户/测试者/管理员三种身份，通过登录方式判断身份，客户不用登陆
+客户只能查看基础页面，管理员可以查看所有信息-->
+
+{#修改网页标题title#}
+{% block title %}
+    测试任务
+{% endblock %}
+
+{% block personal %}
+    {% if name == '客户'%}
+        <a href="{% url 'login' %}" class="nav-link">
+    {% else %}
+        <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+    {% endif %}
+{% endblock %}
+
+{# 通过继承在新页面改写用户名 #}
+{% block user %}
+    {{ name }}
+{% endblock %}
+
+{% block job %}
+    身份:{{ job }}
+{% endblock %}
+
+{# 右边个人信息栏 #}
+{% block self %}
+    {{ name }}
+{% endblock %}
+
+{# 登录登出图标 #}
+{% block login_logout %}
+    {% if name == '客户'%}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/login/">
+            <i class="icon-badge mx-2"></i>登录
+        </a>
+    {% else %}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/logout/">
+            <i class="icon-badge mx-2"></i>注销
+        </a>
+    {% endif %}
+{% endblock %}
+
+{# 右边选项栏 #}
+{% block option %}
+    {% if name == '客户' %}
+        <a class="dropdown-item" href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'login' %}"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% elif is_admin == 1 %}
+        <a class="dropdown-item" href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% elif is_init == 1 %}
+        <a class="dropdown-item" href="{% url 'sample_info' %}"><i class="dropdown-item-icon icon-plus text-primary"></i> 发起需求 </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% else %}
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% endif %}
+{% endblock %}
+
+{# 管理员-设备管理选项 #}
+{% block admin %}
+    {% if is_admin == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#admin" aria-expanded="false" aria-controls="admin">
+        <span class="menu-title nav-category">管理选项</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+      <div class="collapse" id="admin">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'many_devices' %}">导入系统<i class="icon-bag menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 判断是否为需求发起人 #}
+{% block init %}
+    {% if is_init == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#demand" aria-expanded="false" aria-controls="demand">
+        <span class="menu-title nav-category">需求管理</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="demand">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block staff %}
+    {% if name == '客户' %}
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">更多功能</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title nav-category">公司介绍</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="https://www.longsys.com/">公司官网<i class="icon-home menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">关于我们<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'personal_task' %}">
+        <span class="menu-title">设备测试</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title">个人中心</span>
+        <i class="icon-user menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="back" style="padding-bottom: 20px">
+        <a href="javascript:history.back(-1)"><button class="btn btn-outline-dark" style="font-family: 微软雅黑">&lt;&lt;返回</button></a>
+    </div>
+    <button type="button" class="btn btn-primary" style="width: 150px;height: 10px;line-height: 2px;margin-bottom: 10px">
+    <a href="/static/media/media/{{ requirements.file_path }}" download="{{ requirements.file_path }}" style="color: white;text-decoration: none">下载FW包</a></button>
+    <div class="col-md-12 table-responsive" id="task" style="background-color: white">
+    {% csrf_token %}
+    <table class="table table-hover">
+            <thead>
+            <tr>
+                <th></th>
+                <th>测试设备</th>
+                <th>设备编号</th>
+                <th>设备品牌</th>
+                <th>型号</th>
+                <th>固件版本</th>
+                <th>卡槽</th>
+                <th><i class="text-danger">*</i>卡片编号</th>
+                <th>记录</th>
+                <th>测试结果</th>
+            </tr>
+            </thead>
+            {% for i in task_ls%}
+                <tr id="{{ i.0.id}}"
+                {% if i.0.test_result == 1 %}
+                    style="background-color: #c7f1c8;"
+                {% elif i.0.test_result == 0 %}
+                    style = "background-color: #ffb4c1"
+                {% endif %}
+                >
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.0.test_device.device_type}}</td>
+                    <td>{{ i.0.test_device.device_id}}</td>
+                    <td>{{ i.0.test_device.device_brand}}</td>
+                    <td title="{{ i.0.test_device.device_spec}}">{{ i.0.test_device.device_spec|truncatechars:10}}</td>
+                    <td>{{ i.0.test_device.device_fw_ver}}</td>
+                    <td>{{ i.0.test_device.device_card_slog}}</td>
+                    <td>
+                        <textarea title="{{ i.1.card_id }}" class="form-control must-input" rows="1" id="card_id{{ i.0.id }}" style="width: 200px;height: 40px" onblur="card_id({{ i.0.id }})">{{ i.1.card_id }}</textarea>
+                    </td>
+                    <td>
+                        <textarea title="{{ i.0.record }}" class="form-control" rows="1" id="record{{ i.0.id }}" placeholder="暂无记录" style="width: 200px;height: 40px" onblur="record({{ i.0.id }})">{{ i.0.record }}</textarea>
+                        <span style="color: grey;font-size: 10px">
+                            {% if not i.0.record == '' and not i.0.record_time == '' %}
+                                {{ i.0.record_time|date:"Y-m-d H:i:s" }}
+                            {% endif %}
+                        </span>
+                    </td>
+
+                    <td><select class="form-control" name="result" id="{{ i.0.id }}" onchange="check_select(this.id,{{ i.0.test_device.device_type_id }})" style="width: 80px;height: 30px">
+                        {% if i.0.test_result == 1 %}
+                            <option value="1">pass</option>
+                            <option value="0">fail</option>
+                            <option value="">待测</option>
+                        {% elif i.0.test_result == 0 %}
+                            <option value="0">fail</option>
+                            <option value="1">pass</option>
+                            <option value="">待测</option>
+                        {% else %}
+                            <option value="">待测</option>
+                            <option value="1">pass</option>
+                            <option value="0">fail</option>
+                        {% endif %}
+                    </select></td>
+                </tr>
+            {% endfor %}
+        </table>
+    <div class="mt-3" style="width: 200px;margin: auto;">
+        <input class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" id="submit_btn" type="submit" value="提交任务" onclick="c_finish()">
+    </div>
+    <!-- Modal -->
+    <div class="modal text-center" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document" style="display: inline-block;width: auto">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: grey;height: 40px">
+            <h4 class="modal-title" id="myModalLabel" style="color: white;line-height: 5px">选择失败项目</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color: white">&times;</span></button>
+          </div>
+          <div class="modal-body text-left" id="modal_content" style="padding: 10px">
+              <div id="camera" style="display: none;font-size: 15px">
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                    <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input" id="上盘"> 上盘
+                    </label>
+                </div>
+                <div class="form-check" style="width: 90px; display: inline-block;">
+                    <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input" id="拍照"> 拍照
+                    </label>
+                </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                    <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input" id="回放照片"> 回放照片
+                    </label>
+                </div>
+                <div class="form-check" style="width: 90px; display: inline-block;">
+                    <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input" id="删除照片"> 删除照片
+                    </label>
+                </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                    <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input" id="冷启动"> 冷启动
+                    </label>
+                </div>
+                <div class="form-check" style="width: 90px; display: inline-block;">
+                    <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input" id="录像"> 录像
+                    </label>
+                </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                    <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input" id="回放录像"> 回放录像
+                    </label>
+                </div>
+                <div class="form-check" style="width: 90px; display: inline-block;">
+                    <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input" id="休眠唤醒"> 休眠唤醒
+                    </label>
+                </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                    <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input" id="热拔插"> 热拔插
+                    </label>
+                </div>
+                <div class="form-check" style="width: 90px; display: inline-block;">
+                    <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input" id="删除录像"> 删除录像
+                    </label>
+                </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                    <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input" id="上PC拷贝"> 上PC拷贝
+                    </label>
+                </div>
+                <div class="form-check" style="width: 90px; display: inline-block;">
+                    <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input" id="格式化"> 格式化
+                    </label>
+                </div>
+              </div>
+              <div id="video_camera" style="display: none">
+                    {% for i in ver_step1 %}
+                        <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="{{ i.test_step }}"> {{ i.test_step }}
+                        </label>
+                    </div>
+                    {% endfor %}
+
+              </div>
+              <div id="surface" style="display: none">
+                    <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="surface"> surface
+                        </label>
+                    </div>
+              </div>
+              <div id="mobile_phone" style="display: none">
+                    {% for i in ver_step1 %}
+                        <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="{{ i.test_step }}"> {{ i.test_step }}
+                        </label>
+                    </div>
+                    {% endfor %}
+              </div>
+              <div id="tachograph" style="display: none">
+                    {% for i in ver_step1 %}
+                        <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="{{ i.test_step }}"> {{ i.test_step }}
+                        </label>
+                    </div>
+                    {% endfor %}
+
+              </div>
+              <div id="monitor" style="display: none">
+                    <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="监控"> 监控
+                        </label>
+                    </div>
+              </div>
+              <div id="uav" style="display: none">
+                    <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="预置条件"> 预置条件
+                        </label>
+                    </div>
+                    <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="冷启动"> 冷启动
+                        </label>
+                    </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="连接无人机"> 连接无人机
+                        </label>
+                    </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="查看卡片"> 查看卡片
+                        </label>
+                    </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="高拍照清"> 高拍照清
+                        </label>
+                    </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="回放照片"> 回放照片
+                        </label>
+                    </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="删除照片"> 删除照片
+                        </label>
+                    </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="高清录像"> 高清录像
+                        </label>
+                    </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="回放录像"> 回放录像
+                        </label>
+                    </div>
+                    <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="热拔插"> 热拔插
+                        </label>
+                    </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="删除录像"> 删除录像
+                        </label>
+                    </div>
+                    <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="格式化"> 格式化
+                        </label>
+                    </div>
+                    <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="读SMART"> 读SMART
+                        </label>
+                    </div>
+
+
+              </div>
+              <div id="motion_camera" style="display: none">
+                    <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="运动相机"> 运动相机
+                        </label>
+                    </div>
+              </div>
+              <div id="switch" style="display: none">
+                    <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="游戏机"> 游戏机
+                        </label>
+                    </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="游戏机"> 游戏机
+                        </label>
+                    </div>
+                  <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="游戏机"> 游戏机
+                        </label>
+                    </div>
+
+              </div>
+              <div id="doorbell" style="display: none">
+                    <div class="form-check" style="width: 90px; display: inline-block;">
+                        <label class="form-check-label text-muted">
+                            <input type="checkbox" class="form-check-input" id="智能门铃"> 智能门铃
+                        </label>
+                    </div>
+              </div>
+          </div>
+            <div class="test_ver text-left" style="padding-left: 10px">
+            <span style="font-size: 0.875rem;">失败步骤:</span>
+                <select name="test_ver1" id="test_ver1" style="margin-left: 10px;font-size: 0.875rem;">
+                    <option value="" disabled selected hidden>v1</option>
+                    {% for step in ver_step1 %}
+                        <option value={{ step.test_step }}>{{ forloop.counter }}.{{ step.test_step }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+          <div class="modal-footer" style="height: 45px">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" style="height: 20px;line-height: 2px">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+    <script>
+        var is_test_ver = false;
+        function check_select(id,type_id) {
+            var select = $('#'+id+' option:selected');
+            var tr = $('#'+id);
+            var card_id = $("#card_id"+id).val();
+
+            if (card_id != ''){
+                if(select.val()==""){
+                    tr.css('background-color','white');
+                    $.post("/record_result/",{"result":select.val(),'id':id,csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
+                        return true;
+                    })
+                }else if(select.val()=="1"){
+                    tr.css('background-color','#c7f1c8');
+                    $.post("/record_result/",{"result":select.val(),'id':id,csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
+                        return true;
+                    })
+                }else {
+                    //绑定模态框展示的方法
+                    $('#myModal').on('show.bs.modal', function (event) {
+                       if(type_id == 1){
+                           $('#camera').css('display','block');
+                       }
+                       if(type_id == 2){
+                           $('#video_camera').css('display','block');
+                       }
+                       if(type_id == 3){
+                           $('#surface').css('display','block');
+                       }
+                       if(type_id == 4){
+                           $('#mobile_phone').css('display','block');
+                       }
+                       if(type_id == 5){
+                           $('#tachograph').css('display','block');
+                       }
+                       if(type_id == 6){
+                           $('#monitor').css('display','block');
+                       }
+                       if(type_id == 7){
+                           $('#uav').css('display','block');
+                       }
+                       if(type_id == 8){
+                           $('#motion_camera').css('display','block');
+                       }
+                       if(type_id == 9){
+                           $('#switch').css('display','block');
+                       }
+                       if(type_id == 10){
+                           $('#doorbell').css('display','block');
+                       }
+                    }).modal({
+                       backdrop:false,
+                       keyboard:false,
+                       show:true,
+                    });
+
+                    //模态框关闭前触发校验
+                    $('#myModal').on('hidden.bs.modal',function () {
+                        var fail_pro = '';
+                        $(".form-check-input:checked").each(function(){
+                            if(fail_pro == ''){
+                                fail_pro = fail_pro + this.id
+                            }else{
+                                fail_pro = fail_pro + ',' + this.id
+                            }
+                        });
+                        //测试版本
+                        var test_ver1 = $('#test_ver1 option:selected').val();
+                        if (test_ver1 == ''){
+                            is_test_ver = false;
+                        }else{
+                            is_test_ver = true;
+                        }
+                        if (fail_pro != '' && is_test_ver){
+                            tr.css('background-color','#ffb4c1');
+                            $.post("/record_result/",{"result":'0','id':id,'fail':fail_pro,'fail_step':test_ver1,csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
+                                location.reload();
+                                })
+                        }else{
+                            alert('失败项目和失败步骤不能为空');
+                            location.reload();
+                        }
+                    })
+                }
+            }else {
+                alert('请填写卡片编号');
+                location.reload();
+            }
+        }
+
+        function c_finish() {
+            $.post("/check_finish/",{'id':{{ task_id }},'flag':'0',csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
+                if (data.msg == 0){
+                    var c = confirm('是否确认提交?');
+                    if (c==true){
+                        $.post("/check_finish/",{'id':{{ task_id }},'flag':'1',csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
+                            alert(data.msg)
+                        });
+                        location.href='{% url 'personal_task' %}'
+                    }else{
+                        return false;
+                    }
+                }else{
+                    alert('还有'+data.msg+'个设备未测试!')
+                }
+            })
+        }
+        //测试过程记录
+        function record(id) {
+            rec = $("#record"+id).val();
+            var myDate = new Date();
+
+            //获取当前年
+            var year=myDate.getFullYear();
+
+            //获取当前月
+            var month=myDate.getMonth();
+
+            //获取当前日
+            var date=myDate.getDate();
+            var hours=myDate.getHours();       //获取当前小时数(0-23)
+            var minutes=myDate.getMinutes();     //获取当前分钟数(0-59)
+
+            //拼接：
+            var nowDayTime = year + "年" + (month+1) + "月"  + date + "日 " +hours + ":" + minutes;
+            $.post("/check_finish/",{'id':{{ task_id }},'p_id':id,'flag':'r1','rec':rec,csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
+                $("#record"+id).next().html(nowDayTime);
+                })
+        }
+
+        //填写卡片编号
+        function card_id(id) {
+            c_id = $("#card_id"+id).val();
+            $.post("/check_finish/",{'id':{{ task_id }},'p_id':id,'flag':'card_id','c_id':c_id,csrfmiddlewaretoken:'{{ csrf_token }}'},function () {
+                    return true;
+                })
+
+        }
+        function f1() {
+            $.ajax({
+                url: '{% url 'check_allotted' %}',
+                type: 'post',
+                data: {
+                    'data': 'check',
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function (res) {
+                    $("#allot").text(res)
+                }
+            });
+        }
+    </script>
+    <script src="/static/device_manage/js/bootstrap.min.js"></script>
+{% endblock %}
+</a>

@@ -1,0 +1,139 @@
+<style>
+    .select-box{
+        width: 20px;
+    }
+</style>
+<table class="table table-hover table-striped" id="table_data">
+    <thead>
+    <tr>
+        <th></th>
+        <th>
+            设备种类
+            <select class="choose-btn select-box" name="type" id="type" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for type in options.type %}
+                    <option value="{{ type }}">{{ type }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th>
+            设备编号
+            <select class="choose-btn select-box" name="spec" id="spec" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for spec in options.spec %}
+                    <option value="{{ spec }}">{{ spec }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th style="width: 175px">
+            设备品牌
+            <select class="choose-btn select-box" name="brand" id="brand" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for brand in options.brand %}
+                    <option value="{{ brand }}">{{ brand }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th style="padding: 0;line-height: 51px;">设备型号</th>
+        <th style="padding: 0;line-height: 51px; width: 100px;">上市年份</th>
+        <th style="padding: 0;line-height: 51px; width: 100px;">数量</th>
+        <th>
+            是否支持4K
+            <select class="choose-btn select-box" name="support" id="support" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                <option value="0">不支持4K</option>
+                <option value="1">支持4K</option>
+                <option value="2">高性能(6K)</option>
+            </select>
+        </th>
+        <th>
+            固件版本
+            <select class="choose-btn select-box" name="ver" id="ver" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for ver in options.ver %}
+                    <option value="{{ ver }}">{{ ver }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th>
+            卡片形态
+            <select class="choose-btn select-box" name="card" id="card" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for card in options.card %}
+                    <option value="{{ card }}">{{ card }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th>
+            卡槽
+            <select class="choose-btn select-box" name="slog" id="slog" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for slog in options.brand %}
+                    <option value="{{ slog }}">{{ slog }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th>
+            状态
+            <select class="choose-btn select-box" name="state" id="state" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for state in options.state %}
+                    <option value="{{ state }}">{{ state }}</option>
+                {% endfor %}
+            </select>
+        </th>
+    </tr>
+    </thead>
+    {% for d in data_list %}
+    <tr id="{{ d.1.id }}" onclick="check_choose({{ d.1.id }})">
+        <td>{{ forloop.counter }}</td>
+        <td>{{ d.0.device_type }}</td>
+        <td {% if d.0.is_problem == True %} class="text-danger" {% endif %}>{{ d.0.device_id }}</td>
+        <td>{{ d.0.device_brand }}</td>
+        <td title="{{ d.0.device_spec }}">{{ d.0.device_spec|truncatechars:15 }}</td>
+        <td>{{ d.0.device_year }}</td>
+        <td>{{ d.1 }}</td>
+        <td>
+            {% if d.0.device_support == 0 %}
+                不支持4K
+            {% elif d.0.device_support == 1 %}
+                支持4K
+            {% elif d.0.device_support == 2 %}
+                支持4K、6K
+            {% endif %}
+        </td>
+        <td>{{ d.0.device_fw_ver }}</td>
+        <td title="{{ d.0.device_card }}">{{ d.0.device_card|truncatechars:10 }}</td>
+        <td title="{{ d.0.device_card_slog}}">{{ d.0.device_card_slog|truncatechars:10 }}</td>
+        {% if d.0.device_state.state == '可使用' %}
+            <td><label class="badge badge-success">{{ d.0.device_state.state }}</label></td>
+        {% else %}
+            <td><label class="badge badge-dark">{{ d.0.device_state.state }}</label></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+    <script>
+         function check_choose(id) {
+            location.href="/device_detail/?d_id="+id;
+         }
+         function filt_data(id){
+            var value = $("#"+id).val();
+            $.ajax({
+                url: '{% url 'filter' %}',
+                type: 'post',
+                data: {
+                    'way': id,
+                    'value': value,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function (res) {
+                    var data = eval(res);
+                    $("#table_data").html(data.data);
+                },
+                error: function () {
+                    alert('发生未知错误，请刷新试试~');
+                }
+            })
+         }
+    </script>
+</table>

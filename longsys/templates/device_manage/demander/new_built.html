@@ -1,0 +1,804 @@
+{% extends 'device_manage/base/base.html' %}
+<!-- 分为客户/测试者/管理员三种身份，通过登录方式判断身份，客户不用登陆
+客户只能查看基础页面，管理员可以查看所有信息-->
+
+{% block personal %}
+    <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+{% endblock %}
+
+{#修改网页标题title#}
+{% block title %}
+    Longsys设备管理系统
+{% endblock %}
+
+{% block search %}
+    {# 不继承父模板的搜索功能 此处为空 #}
+{% endblock %}
+
+{# 通过继承在新页面改写用户名 #}
+{% block user %}
+    {{ name }}
+{% endblock %}
+
+{% block job %}
+    身份:{{ job }}
+{% endblock %}
+
+{# 右边个人信息栏 #}
+{% block self %}
+    {{ name }}
+{% endblock %}
+
+{# 右边选项栏 #}
+{% block option %}
+    {% if name == '客户' %}
+        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% else %}
+        <a class="dropdown-item"  href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-map text-primary"></i> 测试报表 </a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% endif %}
+{% endblock %}
+
+{# 登录登出图标 #}
+{% block login_logout %}
+    {% if name == '客户'%}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/login/">
+            <i class="icon-badge mx-2"></i>登录
+        </a>
+    {% else %}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/logout/">
+            <i class="icon-badge mx-2"></i>注销
+        </a>
+    {% endif %}
+{% endblock %}
+
+{# 管理员-设备管理选项 #}
+{% block admin %}
+    {% if is_admin == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#admin" aria-expanded="false" aria-controls="admin">
+        <span class="menu-title nav-category">管理选项</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+      <div class="collapse" id="admin">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'many_devices' %}">导入系统<i class="icon-bag menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 判断是否为需求发起人 #}
+{% block init %}
+    {% if is_init == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#demand" aria-expanded="false" aria-controls="demand">
+        <span class="menu-title nav-category">需求管理</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="demand">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block staff %}
+    {% if name == '客户' %}
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">更多功能</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title nav-category">公司介绍</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="https://www.longsys.com/">公司官网<i class="icon-home menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">关于我们<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'personal_task' %}">
+        <span class="menu-title">设备测试</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title">个人中心</span>
+        <i class="icon-user menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/static/device_manage/css/new_built.css" />
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="new_container" id="new_container" style="display: block" >
+        <h2 class="text-center" >选择待测设备</h2>
+
+        <a href="javascript:history.back(-1)"><button class="btn btn-outline-dark" style="margin-left: 10%" >&lt;&lt;返回</button></a>
+
+        <div style="float: right;margin-right: 10%;"><button class="btn btn-outline-dark" id="new_head_btn">需求发布>></button></div>
+        {% csrf_token %}
+        <div class="checkbox_list1" >
+            <table class="tb1" style="width: 100%;margin-top: 5px">
+                <tr class="tb1_tr1" >
+                    <td class="tb1_tr1_td" id="td1" >
+                        <i>类&emsp;&emsp;别：</i>
+                        <label >
+                            <input id="new_int1" class="new_int" type="checkbox" value="1">
+                            <select name="category" class="form-control" id="new_select1" style="width: 150px;height: 40px;padding-left: 50px;border: none;outline: none;">
+                            </select>
+                        </label>
+                    </td>
+                    <td class="tb1_tr1_td" id="td2">
+                        <i>品&emsp;&emsp;牌：</i>
+                        <label for="device_category">
+                            <input id="new_int2" class="new_int" type="checkbox"  value="2">
+                            <select name="brand"  class="form-control" id="new_select2" style="width: 150px;height: 40px;padding-left: 50px;outline: none;">
+
+                            </select>
+                        </label>
+                    </td>
+                    <td class="tb1_tr1_td" id="td3">
+                        <i>&emsp;分辨率：</i>
+                        <label for="device_category">
+                            <input id="new_int3" class="new_int" type="checkbox" value="3">
+                            <select  class="form-control" name="name" id="new_select3" style="width: 150px;height: 40px;padding-left: 50px;outline: none;">
+                                <option selected="selected" value="0">都不支持</option>
+                                <option value="1">支持4k</option>
+                                <option value="2">支持6k</option>
+                            </select>
+                        </label>
+                    </td>
+                    <td class="tb1_tr1_td" id="td4">
+                        <i>上市年份：</i>
+                        <label for="device_category">
+                            <input id="new_int4" class="new_int" type="checkbox" value="4">
+                            <select  class="form-control" name="name" id="new_select4" style="width: 150px;height: 40px;padding-left: 50px;outline: none;">
+                            </select>
+                        </label>
+                    </td>
+                </tr>
+                <tr style="margin-top: 5px">
+                    <td class="tb1_tr1_td" id="td5">
+                        <i>排&emsp;&emsp;序：</i>
+                        <label for="device_category">
+                            <input id="new_int5" class="new_int" type="checkbox" value="5">
+                            <select  class="form-control" name="sort" id="new_select5" style="width: 150px;height: 40px;padding-left: 50px;outline: none;">
+                                <option selected="selected" value="0">按id排序</option>
+                                <option value="1">按年份排序</option>
+
+                        </select>
+                        </label>
+                    </td>
+                    <td class="tb1_tr1_td" id="td6">
+                        <i>卡&emsp;&emsp;槽：</i>
+                        <label for="device_category">
+                            <input id="new_int6"  class="new_int" type="checkbox" value="6">
+                            <select  class="form-control" name="name" id="new_select6" style="width: 150px;height: 40px;padding-left: 50px;outline: none;">
+                            </select>
+                        </label>
+                    </td>
+                    <td class="tb1_tr1_td" id="td7">
+                        <i>支持卡型：</i>
+                        <label for="device_category">
+                            <input id="new_int7" class="new_int" type="checkbox" value="7">
+                            <select  class="form-control new_select" name="name" id="new_select7" style="width: 150px;height: 40px;padding-left: 50px;outline: none;">
+                            </select>
+                        </label>
+                    </td>
+                    <td class="tb1_tr1_td" id="td8">
+                        <i>问题设备：</i>
+                        <label for="device_category">
+                            <input id="new_int8" class="new_int" type="checkbox" value="8">
+                            <select  class="form-control new_select" name="trouble" id="new_select8" style="width: 150px;height: 40px;padding-left: 50px;outline: none;">
+                                <option style="width: 50px" value="1" selected="selected">problem</option>
+
+                            </select>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="new_search">
+            <div class="search_s">
+                <label class="search_label">
+                     <input type="search" class="form-control" id="search_box" placeholder="查找设备型号/编号" required>
+                     <input type="submit" value="" class="search_btn " id="search_btn">
+                </label>
+
+            </div>
+            <div id="clearDiv"></div>
+        </div>
+        <div class="show_device_info_container" id="select_list">
+            <div class="show_device_info" id="show_device_info">
+                <div class="show_device_info_head" >
+                    <table class="tb2 text-center" style="width: 100%">
+                        <thead>
+                        <tr class="tb2_tr" style="height: 40px;background-color: #b2b2b2;">
+                            <th class="tb2_tr_th" >
+                                <input id="tb2_int" class="tb2_int" type="button" value="全选">
+                            </th>
+                            {% for column_name in object_list.column_names %}
+                                <th class="tb2_tr_th">{{ column_name }}</th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div  class="show_device_info_content " id="scroll_div" >
+                    <table class="tb3 table-hover text-center" style="width: 100%" id="tb3">
+                        {% for device in object_list.queryset %}
+                            <tr class="tb3_tr" style="height: 40px;"  >
+                                <td class="tb3_tr_td">
+                                    <label>
+                                        <input class="tb3_int" type="checkbox" id="{{ device.pk }}">
+                                    </label>
+                                </td>
+                                <td class="tb3_tr_td">{{ device.device_id }}</td>
+                                <td class="tb3_tr_td">{{ device.device_brand }}</td>
+                                <td class="tb3_tr_td">{{ device.device_spec }}</td>
+                                <td class="tb3_tr_td">{{ device.device_year }}</td>
+                                {% if device.device_support == 0 %}
+                                    <td class="tb3_tr_td">都不支持</td>
+                                {% elif device.device_support == 1 %}
+                                    <td class="tb3_tr_td">支持4K</td>
+                               {% elif device.device_support == 2 %}
+                                    <td class="tb3_tr_td">支持6K</td>
+                                {% endif %}
+                                <td class="tb3_tr_td">{{ device.device_fw_ver }}</td>
+                                <td class="tb3_tr_td">{{ device.device_card  }}</td>
+                                <td class="tb3_tr_td">{{ device.device_card_slog }}</td>
+                                <td class="tb3_tr_td" style="width: 6.8%">8</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            <div id="clearDiv"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{% block footer %}
+    <script>
+        {# 动态添加类别 #}
+        var category = {{ object_list.category|safe}};
+        var cate_list = [];
+        if (category){
+            for(var item in category){
+                cate_list.push(item);
+            }
+        }
+        else {
+            cate_list.push('无');
+        }
+
+        for(var cate in cate_list){
+            {#console.log("cate:", cate);#}
+            $('#new_select1').append("<option value="+ (parseInt(cate) + 1)+">"+ cate_list[cate]+ "</option>")
+        }
+
+        var new_select1 = '#new_select1';
+
+        {# 品牌默认加载相机品牌 #}
+        $(new_select1).each(function () {
+            var default_list= category[cate_list[0]];
+            for(var de in default_list){
+                $('#new_select2').append("<option value="+ (de)+">"+ default_list[de]+ "</option>")
+            }
+        });
+
+        $(new_select1).change(function () {
+            var select = $(this).children('option:selected').text();
+            var brand_list = category[select];
+            var options = $('#new_select2 option');
+            if(options.length){
+                 options.remove();
+            }
+            console.log('options:',options);
+            if(brand_list.length){
+                for(var brand in brand_list){
+                     $('#new_select2').append("<option value="+ (brand)+">"+ brand_list[brand]+ "</option>");
+                }
+            }
+            else {
+                $('#new_select2').append("<option value="+ (brand)+">"+ "无" + "</option>");
+            }
+
+        });
+
+        {# 加载年份 #}
+        var years = {{ object_list.years|safe}};
+        if(years){
+            for(var year in years){
+                $('#new_select4').append("<option value="+ (years[year])+">"+ years[year] + '年'  + "</option>")
+            }
+        }
+        else {
+            $('#new_select4').append("<option value="+ (0)+">"+ "无" + "</option>");
+        }
+
+        {# 加载卡型 #}
+        var cards = {{ object_list.card|safe}};
+        if(cards){
+            for(var card in cards){
+                $('#new_select7').append("<option value="+ (card)+">"+ cards[card]  + "</option>")
+            }
+        }
+        else {
+            $('#new_select7').append("<option value="+ (0)+">"+ "无" + "</option>");
+        }
+
+        {# 加载卡槽 #}
+        var card_slogs = {{ object_list.card_slog|safe}};
+        if(card_slogs){
+            for(var card_slog in card_slogs){
+                $('#new_select6').append("<option value="+ (card_slog)+">"+ card_slogs[card_slog] + "</option>")
+            }
+        }
+        else {
+            $('#new_select6').append("<option value="+ (0)+">"+ "无" + "</option>");
+        }
+
+        {# 监测 #}
+        $(function () {
+            var select_list = []; //选择的设备列表
+            {#全选/单选 #}
+            // 监测全选按钮是否被点击
+            var i = 0;
+            $('#tb2_int').click(function () {
+                var tb3_int = '.tb3 td :checkbox';
+               if(i === 0){
+                   $(tb3_int).prop('checked',true);
+                   $(tb3_int).each(function () {
+                       var id = $(this).attr('id');
+                       select_list.push(String(id));
+                       console.log(select_list);
+                       i = 1;
+                   });
+               }
+               else {
+                   $('.tb3 td :checkbox').prop('checked',false);
+                   select_list = [];
+                   console.log(select_list);
+                   i = 0;
+               }
+            });
+            //单选
+            $(':checkbox[class="tb3_int"]').each(function () {
+                $(this).click(function () {
+                    var num = $(this).attr('id');
+                    if ($(this).is(':checked')){
+                        select_list.push(num);
+                        console.log(select_list);
+                    }
+                    else {
+                        var index = select_list.indexOf(num);
+                        select_list.splice(index,1);
+                        console.log(select_list);
+                    }
+                });
+            });
+
+            {#加载需求页面 #}
+            $('#new_head_btn').click(function () {
+                loadData2(select_list);
+            });
+
+            {# 搜索 #}
+            // 监测搜索按钮是否被点击
+            $('#search_btn').click(function () {
+                var device_id = $('#search_box').val();
+                if (device_id){
+                    loadData1(device_id);
+                }
+            });
+            
+            var search_box = '#search_box';
+            // 监测搜所框是否被点击
+            $(search_box).click(function(){
+                $(this).css('border','1px solid #ff6700');
+                $('#search_btn').css('border','1px solid #ff6700');
+            });
+
+            $(document).click(function(){
+                $('#search_box').css('border','1px solid darkgrey');
+                {#console.log("1");#}
+                $('#search_btn').css('border','1px solid darkgrey');
+            });
+
+            $(search_box).click(function(event){
+                {#console.log("2");#}
+                event.stopPropagation();
+            });
+
+
+            //监测回车键
+            document.addEventListener("keydown",keydown);
+            function keydown(event) {
+                if (event.keyCode === 13) {
+                    if ($('#search_box').val()) {
+                        var device_id = $(this).val();
+                        if (device_id) {
+                            loadData1(device_id);
+                        }
+                    }
+                }
+            }
+
+            {# 获取select被选中的option并发送到后台 #}
+            var list = {};
+            var new_int = '.new_int';
+            $('select').change(function () {
+                var s_id = $(this).attr('id');
+                var int_id = s_id.replace('select','int');
+                int_id = '#' + int_id;
+                if($(int_id).is(':checked')){
+                    var value = $(int_id).val();
+                    //类别
+                    if (value === '1') {
+                        list['selected_txt1'] = $('#new_select1 option:selected').val();
+                        if($('#new_int2').is(':checked')){
+                            list['selected_txt2'] = $('#new_select2 option:selected').text();
+                        }
+                        loadData(list);
+                    }
+                    //品牌
+                    else if (value === '2') {
+                        list['selected_txt2'] = $('#new_select2 option:selected').text();
+                        loadData(list)
+
+                    }
+                    //分辨率
+                    else if (value === '3') {
+                        list['selected_txt3'] = $('#new_select3 option:selected').val();
+                        loadData(list)
+
+                    }
+                    //年份
+                    else if (value === '4') {
+                        list['selected_txt4'] = $('#new_select4 option:selected').val();
+                        loadData(list)
+
+                    }
+                    //排序
+                    else if (value === '5') {
+                        list['selected_txt5'] = $('#new_select5 option:selected').val();
+                        loadData(list)
+
+                    }
+                    //卡槽
+                    else if (value === '6') {
+                        list['selected_txt6'] = $('#new_select6 option:selected').text();
+                        loadData(list)
+
+                    }
+                    //支持卡型
+                    else if (value === '7') {
+                        list['selected_txt7'] = $('#new_select7 option:selected').text();
+                        loadData((list))
+
+                    }
+                    //问题相机
+                    else if (value === '8') {
+                        list['selected_txt8'] = $('#new_select8 option:selected').text();
+                        loadData(list)
+
+                    }
+                }
+                 //取消选择(想办法用循环)
+                else {
+                    //类别
+                    if (value === '1') {
+                        delete list['selected_txt1'];
+                        console.log(list);
+                        loadData(list);
+
+                    }
+                    //品牌
+                    else if (value === '2') {
+                        delete list['selected_txt2'];
+                        console.log(list);
+                        loadData(list)
+
+                    }
+                    //分辨率
+                    else if (value === '3') {
+                        delete list['selected_txt3'];
+                        console.log(list);
+                        loadData(list)
+
+                    }
+                    //年份
+                    else if (value === '4') {
+                        delete list['selected_txt4'];
+                        console.log(list);
+                        loadData(list)
+
+                    }
+                    //排序
+                    else if (value === '5') {
+                        delete list['selected_txt5'];
+                        console.log(list);
+                        loadData(list)
+
+                    }
+                    //卡槽
+                    else if (value === '6') {
+                        delete list['selected_txt6'];
+                        console.log(list);
+                        loadData(list)
+
+                    }
+                    //支持卡型
+                    else if (value === '7') {
+                        delete list['selected_txt7'];
+                        console.log(list);
+                        loadData((list))
+
+                    }
+                    //问题相机
+                    else if (value === '8') {
+                        delete list['selected_txt8'];
+                        console.log(list);
+                        loadData(list)
+                    }
+                }
+             });
+            $(new_int).click(function () {
+                var value = $(this).val();
+
+                if($(this).is(':checked')){
+                    //类别
+                    if (value==='1'){
+                        list['selected_txt1'] = $('#new_select1 option:selected').val();
+                        loadData(list);
+                    }
+                    //品牌
+                    else if(value==='2'){
+                        list['selected_txt2'] = $('#new_select2 option:selected').text();
+                        loadData(list)
+
+                    }
+                    //分辨率
+                    else if(value==='3'){
+                        list['selected_txt3'] = $('#new_select3 option:selected').val();
+                        loadData(list)
+
+                    }
+                     //年份
+                    else if(value==='4'){
+                        list['selected_txt4'] = $('#new_select4 option:selected').val();
+                        console.log(list);
+                        loadData(list)
+
+                    }
+                    //排序
+                    else if(value==='5'){
+                        list['selected_txt5'] = $('#new_select5 option:selected').val();
+                        loadData(list)
+
+                    }
+                    //卡槽
+                    else if(value==='6'){
+                        list['selected_txt6'] = $('#new_select6 option:selected').text();
+                        loadData(list)
+
+                    }
+                    //支持卡型
+                    else if(value==='7'){
+                        list['selected_txt7'] = $('#new_select7 option:selected').text();
+                        loadData((list))
+
+                    }
+                    //问题相机
+                    else if(value==='8'){
+                        list['selected_txt8'] = $('#new_select8 option:selected').text();
+                        loadData(list)
+
+                    }
+                }
+                //取消选择(想办法用循环)
+                else {
+                    //类别
+                    if (value==='1'){
+                        delete list['selected_txt1'];
+                        console.log(list);
+                        loadData(list);
+
+                    }
+                    //品牌
+                    else if(value==='2'){
+                        delete list['selected_txt2'];
+                        console.log(list);
+                        loadData(list)
+
+                    }
+                    //分辨率
+                    else if(value==='3'){
+                        delete list['selected_txt3'];
+                        console.log(list);
+                        loadData(list)
+
+                    }
+                    //年份
+                    else if(value==='4'){
+                        delete list['selected_txt4'];
+                        console.log(list);
+                        loadData(list)
+
+                    }
+                    //排序
+                    else if(value==='5'){
+                        delete list['selected_txt5'];
+                        console.log(list);
+                        loadData(list)
+
+                    }
+                    //卡槽
+                    else if(value==='6'){
+                        delete list['selected_txt6'];
+                        console.log(list);
+                        loadData(list)
+
+                    }
+                    //支持卡型
+                    else if(value==='7'){
+                        delete list['selected_txt7'];
+                        console.log(list);
+                        loadData((list))
+
+                    }
+                    //问题相机
+                    else if(value==='8'){
+                        delete list['selected_txt8'];
+                        console.log(list);
+                        loadData(list)
+                    }
+                }
+            });
+
+            /**
+             * 复选框异步
+             * 封装函数，异步取数据
+             * @param list
+             */
+            function loadData(list) {
+                console.log(list);
+                $.ajax({
+                    method:'get',
+                    url:'{% url 'new_load_list' %}',
+                    data:{
+                        list:JSON.stringify(list),
+                        select_list:select_list,
+
+                    },
+                    success: function(rest) {
+                        // 添加HTML片段到内容区
+                        $('.show_device_info_content').remove();
+                        $('#show_device_info').append(rest);
+
+                        //单选
+                        $(':checkbox[class="tb3_int"]').each(function () {
+                            $(this).click(function () {
+                                var num = $(this).attr('id');
+                                if ($(this).is(':checked')){
+                                    select_list.push(num);
+                                    console.log(select_list);
+                                }
+                                else {
+                                    var index = select_list.indexOf(num);
+                                    select_list.splice(index,1);
+                                    console.log(select_list);
+                                }
+                            });
+                         });
+
+                    }
+                })
+            }
+
+            /**
+             * 搜索异步
+             * 封装函数，异步取数据
+             * @param device
+             */
+            function loadData1(device) {
+                console.log(device);
+                $.ajax({
+                    method:'get',
+                    url:'{% url 'new_load_list' %}',
+                    data:{
+                        device:device,
+                        select_list:select_list,
+                    },
+                    success: function(rest) {
+                        // 添加HTML片段到内容区
+                        $('.show_device_info_content').remove();
+                        $('#show_device_info').append(rest);
+                    }
+                })
+            }
+
+            /**
+             * 勾选异步
+             * 封装函数，异步取数据
+             *@param select_list
+             */
+            function loadData2(select_list) {
+                $('#new_container1').remove();
+                console.log(select_list);
+                $.ajax({
+                    method:'get',
+                    url:'{% url 'new_demand' %}',
+                    data:{
+                       select_list:select_list
+                    },
+                    success: function(rest) {
+                        $('.container').append(rest);
+                        $('#new_container').css('display', 'none');
+                        $('#new_container1').css('display', 'block');
+                    }
+                })
+            }
+
+            function f1() {
+                $.ajax({
+                    url: '{% url 'check_allotted' %}',
+                    type: 'post',
+                    data: {
+                        'data': 'check',
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+
+                    },
+                    success: function (res) {
+                        $("#allot").text(res)
+                    }
+                });
+            }
+       });
+
+
+
+
+    </script>
+{% endblock %}
+</a>

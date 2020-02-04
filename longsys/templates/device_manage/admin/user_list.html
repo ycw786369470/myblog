@@ -41,15 +41,20 @@
 {# 右边选项栏 #}
 {% block option %}
     {% if name == '客户' %}
-        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
-    {% else %}
-        <a class="dropdown-item"  href="{% url 'index' %}"><i class="dropdown-item-icon icon-camera text-primary"></i> 查看设备 </a>
+        <a class="dropdown-item" href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'login' %}"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% elif name == '管理员' %}
+        <a class="dropdown-item" href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
         <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-map text-primary"></i> 测试报表 </a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
-        <a class="dropdown-item"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% else %}
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
     {% endif %}
 {% endblock %}
 
@@ -65,8 +70,8 @@
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="{% url 'user_list' %}?page=1">人员管理<i class="icon-people menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'many_devices' %}">导入系统<i class="icon-bag menu-icon"></i></a></li>
         </ul>
       </div>
     </li>
@@ -83,8 +88,8 @@
       </a>
       <div class="collapse" id="demand">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="{% url 'new_demand' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
           <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
         </ul>
       </div>
@@ -115,7 +120,7 @@
     </li>
     {% else %}
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'choose' %}">
+      <a class="nav-link" href="{% url 'personal_task' %}">
         <span class="menu-title">设备测试</span>
         <i class=" icon-wrench menu-icon"></i>
       </a>
@@ -127,9 +132,9 @@
       </a>
       <div class="collapse" id="auth">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="#"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#"> 生成报表 <i class="icon-map menu-icon"></i></a></li>
-          <li class="nav-item"> <a class="nav-link" href="#"> 关于 <i class="icon-question menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
         </ul>
       </div>
     </li>
@@ -138,11 +143,19 @@
 
 {# 修改操作框内容 #}
 {% block content %}
+    <div class="col-md-8" style="margin:auto"  onload="f1()">
+        <div class="input-group col-md-5" style="margin:auto;padding: 20px;">
+            <span class="input-group-append">
+            <input type="text" class="form-control file-upload-info" style="width: 150px; height: 35px; margin: 0 auto;" placeholder="用户名" id="inp_name">
+            <button class="file-upload-browse btn btn-primary" id="search" style="height: 35px;width: 110px" onclick="search_user()">搜索</button>
+            </span>
+        </div>
+    </div>
     <div class="col-md-12" style="background-color: white">
-        <table class="table table-hover table-striped">
+        <table class="table table-hover table-striped text-center" id="user_list">
             <thead>
             <tr>
-                <th></th>
+                <th>序号</th>
                 <th>姓名</th>
                 <th>工号</th>
                 <th>岗位</th>
@@ -169,22 +182,17 @@
                     {% else %}
                         <td>否</td>
                     {% endif %}
-                    <td>{{ user.last_login }}</td>
+                    <td>{{ user.last_login|date:"Y-m-d H:i:s" }}</td>
                 </tr>
-                <script>
-                 function showId(id){
-                    location.href="/user_detail/id/"+id;
-                }
-                </script>
             {% endfor %}
         </table>
         <div class="col-md-12 text-center">
             <div class="btn-group" role="group" style="padding-top: 20px">
-                    <a style="border: none" href="{% url 'user_list' %}?page=1"><button class="btn btn-outline-dark">返回首页</button></a>
+                    <a style="border: none" href="{% url 'user_list' %}?page=1"><button class="btn btn-outline-dark">First</button></a>
                 {% if user_list.has_previous %}
-                    <a href="{% url 'user_list' %}?page={{ user_list.previous_page_number }}"><button class="btn btn-outline-dark"><span class="icon-arrow-left">上一页</span></button></a>
+                    <a href="{% url 'user_list' %}?page={{ user_list.previous_page_number }}"><button class="btn btn-outline-dark"><span class="icon-arrow-left"></span></button></a>
                 {% else %}
-                    <a href="javascript:void(0);" onclick="window.alert('没有上一页哦')"><button class="btn btn-outline-dark"><span class="icon-arrow-left">上一页</span></button></a>
+                    <a href="javascript:void(0);" onclick="window.alert('没有上一页哦')"><button class="btn btn-outline-dark"><span class="icon-arrow-left"></span></button></a>
                 {% endif %}
                 {% for page in user_list.paginator.page_range %}
                     {% if page > user_list.number|add:-2 and page < user_list.number|add:2 %}
@@ -192,12 +200,45 @@
                     {% endif %}
                 {% endfor %}
                 {% if user_list.has_next%}
-                <a href="{% url 'user_list' %}?page={{ user_list.next_page_number }}"><button class="btn btn-outline-dark">下一页<span class="icon-arrow-right"></span></button></a>
+                <a href="{% url 'user_list' %}?page={{ user_list.next_page_number }}"><button class="btn btn-outline-dark"><span class="icon-arrow-right"></span></button></a>
                 {% else%}
-                    <a href="javascript:void(0);" onclick="window.alert('没有下一页了哦')"><button class="btn btn-outline-dark">下一页<span class="icon-arrow-right"></span></button></a>
+                    <a href="javascript:void(0);" onclick="window.alert('没有下一页了哦')"><button class="btn btn-outline-dark"><span class="icon-arrow-right"></span></button></a>
                 {% endif %}
-                <a href="{% url 'user_list' %}?page={{ user_list.paginator.num_pages }}"><button class="btn btn-outline-dark">尾页</button></a>
+                <a href="{% url 'user_list' %}?page={{ user_list.paginator.num_pages }}"><button class="btn btn-outline-dark">Last</button></a>
             </div>
         </div>
     </div>
+    <script>
+     function showId(id){
+        location.href="/user_detail/id/"+id;
+    }
+    function f1() {
+        $.ajax({
+            url: '{% url 'check_allotted' %}',
+            type: 'post',
+            data: {
+                'data': 'check',
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+
+            },
+            success: function (res) {
+                $("#allot").text(res)
+            }
+        });
+    }
+    function search_user() {
+        var name = $('#inp_name').val();
+        $.ajax({
+            url: '{% url 'search_user' %}',
+            type: 'post',
+            data: {
+                'data': name,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function (res) {
+                $("#user_list").html(res)
+            }
+        });
+    }
+    </script>
 {% endblock %}

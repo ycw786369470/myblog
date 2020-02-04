@@ -1,0 +1,63 @@
+<div id="history" class="table-responsive">
+    <table class="table table-hover table-striped">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>测试任务id</th>
+            <th>完成度</th>
+            <th>测试周期</th>
+            <th>发起人</th>
+        </tr>
+        </thead>
+        {% for i in history_ls%}
+            <tr id="{{ i.0 }}" onclick="showId(this.id)"  title="点击查看详情" class="dd">
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.0 }}</td>
+                {% if i.1 == i.2 %}
+                <td>{{ i.1 }}/{{ i.2 }}</td>
+                {% else %}
+                <td class="text-danger">{{ i.1 }}/{{ i.2 }}</td>
+                {% endif %}
+                <td>{{ i.3|date:"Y-m-d H:i:s" }}—{{ i.4|date:"Y-m-d H:i:s" }}</td>
+                <td>{{ i.5 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+        {% csrf_token %}
+        <script>
+        $('#card_num').click(function(){
+            $.ajax({
+                        url: '{% url 'card_num_sort' %}',
+                        type: 'post',
+                        data: {
+                            'types': 1,
+                            'csrfmiddlewaretoken': $("[name='csrfmiddlewaretoken']").val(),
+                        },
+                        success: function (res) {
+                            $('#history').html(res);
+                            $("#card_num").html('卡数量▼').css('color','red');
+                        },
+                        error: function (err) {
+                            alert('error')
+                        }
+                    })
+        });
+        $('#card_id').click(function(){
+            $.ajax({
+                        url: '{% url 'card_num_sort' %}',
+                        type: 'post',
+                        data: {
+                            'types': 2,
+                            'csrfmiddlewaretoken': $("[name='csrfmiddlewaretoken']").val(),
+                        },
+                        success: function (res) {
+                            $('#history').html(res);
+                            $("#card_id").html('卡片编号▼').css('color','red');
+                        },
+                        error: function (err) {
+                            alert('error')
+                        }
+                    })
+        });
+        </script>

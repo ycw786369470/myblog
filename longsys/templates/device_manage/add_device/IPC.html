@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="/static/device_manage/css/checkbox_style.css">
+    <link rel="stylesheet" href="/static/device_manage/css/radio.css">
+</head>
+
+<div>
+    <div class="form-group">
+        <label for="exampleInputPassword4"><i class="text-danger">*</i>&nbsp;品牌</label>
+        <input type="text" class="form-control must-input" name="brand" placeholder="品牌">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail3"><i class="text-danger">*</i>&nbsp;编号</label>
+        <input type="text" class="form-control must-input" name="device_id" placeholder="编号" >
+    </div>
+    <div class="form-group">
+        <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;型号</label>
+        <input type="text" class="form-control must-input" name="spec" placeholder="型号">
+    </div>
+    <div class="form-group">
+        <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;购买日期</label>
+        <input type="number" class="form-control must-input" name="year" placeholder="购买日期">
+    </div>
+    <div class="form-group">
+        <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;工作温度</label>
+        <input type="text" class="form-control must-input" name="temper" placeholder="工作温度">
+    </div>
+    <div class="form-group">
+        <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;支持扩展容量</label>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <select class="form-control" name="min_extra">
+                    <option value="none">最低值</option>
+                    <option value="0">0</option>
+                    <option value="4G">4G</option>
+                    <option value="8G">8G</option>
+                    <option value="16G">16G</option>
+                    <option value="32G">32G</option>
+                </select>
+            </div>
+            —
+            <div class="col-md-4">
+                <select class="form-control" name="max_extra">
+                    <option value="none">最高值</option>
+                    <option value="+">+</option>
+                    <option value="32G">32G</option>
+                    <option value="64G">64G</option>
+                    <option value="128G">128G</option>
+                    <option value="258G">258G</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;速度级别</label>
+        <input type="text" class="form-control must-input" name="speed" placeholder="速度要求">
+    </div>
+    <div class="form-group">
+        <label for="exampleSelectGender"><i class="text-danger">*</i>&nbsp;支持卡型</label>
+        <input type="text" class="form-control must-input" name="card" placeholder="如:SD/MicroSD/
+CF/XQD">
+    </div>
+    <div class="form-group d-none">
+        <label for="exampleSelectGender">是否支持4K</label>
+        <select class="form-control" name="support">
+            <option value="none">选择是否支持4K</option>
+            <option value="0">不支持4K</option>
+            <option value="1">支持4K</option>
+            <option value="2">支持6K</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleSelectGender">设备特性</label>
+        <input type="text" class="form-control" name="character" placeholder="设备特性">
+    </div>
+    <div class="form-group d-none">
+        <label for="exampleSelectGender">镜头数量</label>
+        <input type="number" class="form-control" name="camera_num" placeholder="镜头数量" id="camera_num">
+    </div>
+    <div class="form-group">
+        <label for="exampleSelectGender">资产编号</label>
+        <input type="text" class="form-control" name="pro_id" placeholder="资产编号">
+    </div>
+    <div class="form-group">
+        <label for="exampleSelectGender">资产所属</label>
+        <input type="text" class="form-control" name="pro_belong" placeholder="资产所属">
+    </div>
+    <div class="form-group">
+        <label for="exampleSelectGender">启用日期</label>
+        <input type="text" class="form-control" name="begin" placeholder="启用日期">
+    </div>
+    <div class="form-group">
+        <label for="exampleSelectGender">购买价格</label>
+        <input type="number" class="form-control" name="price" placeholder="购买价格" id="price">
+    </div>
+    <div class="form-group">
+        <label>上传性能曲线图</label>
+        <input type="file" name="img" id="img" class="file-upload-default">
+        <div class="input-group col-xs-12">
+            <input type="text" class="form-control file-upload-info" disabled placeholder="上传性能曲线图">
+                <span class="input-group-append">
+                <button class="file-upload-browse btn btn-primary" type="button" onclick="upload()">点此上传</button>
+            </span>
+        </div>
+    </div>
+    {# 假提交，点击时会检验必填项是否填完 #}
+    <input type="button" class="btn btn-primary mr-2" value="新增设备" onclick="check_all()">
+    <button type="submit" class="btn btn-primary mr-2 d-none" id="submit"></button>
+    <input type="button" class="btn btn-light" value="取消" onclick='javascript:history.back(-1);'>
+
+</div>
+<script>
+    var input_ls = [];
+    var choose_ls = [];
+    must_input = $('.must-input');
+    must_choose = $('.must-choose');
+    camera_num = $('#camera_num');
+    price = $("#price");
+    for (var i=0; i<must_input.length; i++){
+        must_input[i].setAttribute('id', 'i-'+i);
+        must_input[i].setAttribute('onclick', 'bluring(this.id)');
+        input_ls.push('i-'+i);
+    }
+    for (var m=0; m<must_choose.length; m++){
+        must_choose[m].setAttribute('id', 'c-'+m);
+        must_choose[m].setAttribute('onclick', 'get_select(this.id)');
+        choose_ls.push('c-'+m);
+    }
+    function single() {
+        $('#single-choose').removeClass('d-none');
+        $('#double-choose').addClass('d-none');
+    }
+    function double() {
+        $('#single-choose').addClass('d-none');
+        $('#double-choose').removeClass('d-none');
+    }
+    //必填项
+    function bluring(id) {
+        var box = $('#'+id);
+        box.blur(function () {
+            var input_val = box.val();
+            if(input_val.length===0){
+                box.addClass('border-danger')
+            }else{
+                box.removeClass('border-danger')
+            }
+        })
+    }
+    //必选框
+    function get_select(id) {
+        var opt = $('#'+id+' option:selected');
+        var sel = $('#'+id);
+        if (opt.val() === 'none'){
+            sel.addClass('border-danger');
+        }else{
+            sel.removeClass('border-danger');
+        }
+    }
+    //上传文件
+    function upload() {
+        $('#img').trigger('click')
+    }
+    // 检查是否必填是否填完
+    function check_all() {
+        var not_filled = [];
+        for(var n=0; n<input_ls.length; n++){
+            if($('#'+input_ls[n]).val().length < 1){
+                not_filled.push('#'+input_ls[n]);
+            }
+        }
+        for(var m=0; m<choose_ls.length; m++){
+            if($('#'+choose_ls[m]+' option:selected').val() === 'none'){
+                not_filled.push('#'+choose_ls[m]);
+            }
+        }
+        if(not_filled.length === 0){
+            if(camera_num.val().length === 0){
+                camera_num.val(0);
+            }
+            if(price.val().length === 0){
+                price.val(0);
+            }
+            $('#submit').trigger('click');
+        }else{
+            alert('还有'+not_filled.length+'项必填信息没有填入，请检查填完再提交')
+            var tTop = jQuery(not_filled[0]).offset().top;  //得到控件Top
+            var tWindowHeight = jQuery(window).height(); //浏览器可视窗口高度
+            var tElementHeight = jQuery(not_filled[0]).height(); //控件高度
+            var tScrollTop = tTop-tWindowHeight*0.3-tElementHeight*0.5; //让控件中心位于可视窗口3分之1处
+            jQuery('html, body').animate({
+                    scrollTop: tScrollTop
+            }, 300);
+        }
+    }
+</script>

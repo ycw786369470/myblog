@@ -1,0 +1,495 @@
+{% extends 'device_manage/base/base.html' %}
+<!-- 分为客户/测试者/管理员三种身份，通过登录方式判断身份，客户不用登陆
+客户只能查看基础页面，管理员可以查看所有信息-->
+
+{#修改网页标题title#}
+{% block title %}
+    longsys设备展示
+{% endblock %}
+
+{% block personal %}
+    {% if name == '客户'%}
+        <a href="{% url 'login' %}" class="nav-link">
+    {% else %}
+        <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+    {% endif %}
+{% endblock %}
+
+{# 通过继承在新页面改写用户名 #}
+{% block user %}
+    {{ name }}
+{% endblock %}
+
+{% block job %}
+    身份:{{ job }}
+{% endblock %}
+
+{# 右边个人信息栏 #}
+{% block self %}
+    {{ name }}
+{% endblock %}
+
+{# 登录登出图标 #}
+{% block login_logout %}
+    {% if name == '客户'%}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="{% url 'regist' %}">
+            <i class="icon-badge mx-2"></i>登录
+        </a>
+    {% else %}
+        <a class="btn btn-block px-0 btn-rounded btn-upgrade" href="/logout/">
+            <i class="icon-badge mx-2"></i>注销
+        </a>
+    {% endif %}
+{% endblock %}
+
+{# 右边选项栏 #}
+{% block option %}
+    {% if name == '客户' %}
+        <a class="dropdown-item" href="{% url 'index' %}"><i class="dropdown-item-icon icon-speech text-primary"></i> 查看设备</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'login' %}"><i class="dropdown-item-icon icon-login text-primary"></i>登录</a>
+    {% elif is_admin == 1 %}
+        <a class="dropdown-item" href="{% url 'manage_demand' %}?page=1"><i class="dropdown-item-icon icon-camera text-primary"></i>待分配<span class="badge badge-pill badge-danger" id="allot" onload="f1()">-</span> </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% elif is_init == 1 %}
+        <a class="dropdown-item" href="{% url 'sample_info' %}"><i class="dropdown-item-icon icon-plus text-primary"></i> 发起需求 </a>
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% else %}
+        <a class="dropdown-item" href="{% url 'test_history' %}?page=1"><i class="dropdown-item-icon icon-calendar text-primary"></i> 测试记录 </a>
+        <a class="dropdown-item" href="{% url 'parts' %}"><i class="dropdown-item-icon icon-map text-primary"></i>查看配件</a>
+        <a class="dropdown-item" href="{% url 'about' %}"><i class="dropdown-item-icon icon-question text-primary"></i>关于</a>
+        <a class="dropdown-item" href="{% url 'logout' %}"><i class="dropdown-item-icon icon-power text-primary"></i> 注销</a>
+    {% endif %}
+{% endblock %}
+
+{# 管理员-设备管理选项 #}
+{% block admin %}
+    {% if is_admin == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#admin" aria-expanded="false" aria-controls="admin">
+        <span class="menu-title nav-category">管理选项</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+      <div class="collapse" id="admin">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'test_history' %}?page=1">测试记录汇总<i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_devices' %}">设备管理<i class="icon-camera menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'manage_demand' %}?page=1">需求分配<i class="icon-bag menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'many_devices' %}">导入系统<i class="icon-bag menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{# 判断是否为需求发起人 #}
+{% block init %}
+    {% if is_init == 1 %}
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#demand" aria-expanded="false" aria-controls="demand">
+        <span class="menu-title nav-category">需求管理</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="demand">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{% url 'sample_info' %}">发起需求<i class="icon-plus menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'demand_recoder' %}">需求记录<i class="icon-hourglass menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block staff %}
+    {% if name == '客户' %}
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <span class="menu-title">更多功能</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title nav-category">公司介绍</span>
+        <i class="icon-list menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="https://www.longsys.com/">公司官网<i class="icon-home menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">关于我们<i class="icon-people menu-icon"></i></a></li>
+          <li class="nav-item"> <a class="nav-link" href="#">帮助<i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'personal_task' %}">
+        <span class="menu-title">设备测试</span>
+        <i class=" icon-wrench menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+        <span class="menu-title">个人中心</span>
+        <i class="icon-user menu-icon"></i>
+      </a>
+      <div class="collapse" id="auth">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{% url 'test_history' %}?page=1"> 个人记录 <i class="icon-calendar menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'parts' %}"> 查看配件 <i class="icon-map menu-icon"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}"> 关于 <i class="icon-question menu-icon"></i></a></li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block head %}
+    <style>
+    .white-box{
+        background-color: white;
+    }
+    #top-box{
+        background-color: white;
+        height: 500px;
+        position: fixed;
+        left: 25%;
+        z-index: 99;
+        margin: 0 auto;
+        box-shadow: #969696 0 10px 10px;
+        opacity: 0.95;
+        padding: 5px;
+    }
+    .disable{
+        pointer-events: none;
+    }
+    .table-border{
+        border: 1px solid #e8ecf1;
+        margin-bottom: 5px;
+    }
+    .left-border{
+        height: 40px;
+        border-left: red 1px solid;
+        position: relative;
+        left: 25px;
+        margin-bottom: 5px;
+    }
+    #detail{
+        border-left: solid 5px #ecf0f4;
+        height: 425px;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="col-md-6 d-none" id="top-box"  style="overflow: auto">
+    <div class="col-md-12" style="padding-bottom: 10px; height: 40px; position:relative;">
+        <button class="btn btn-inverse-dark btn-sm" id="cancel" onclick="cancel()" style="position:fixed;">返回</button>
+    </div>
+    <div id="modal-content" class="row">
+        <div class="col-md-5" style="padding: 20px">
+            <div>
+                <div style="display: inline-block;">
+                    <img class="img-xs rounded-circle ml-2" src="/static/device_manage/images/faces-clipart/pic-1.png" alt="Profile image">
+                    <span style="font-size: 13px"><a href="javascript: void(0);">{{ demand.initiator }}</a>发起</span>
+                    <div>
+                        <span style="font-size: 10px">{{ demand.init_time|date:"Y-m-d H:i:s" }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="left-border"></div>
+            {% if state == '被驳回' %}
+                <div>
+                    <div style="display: inline-block;">
+                        <img class="img-xs rounded-circle ml-2" src="/static/device_manage/images/faces-clipart/pic-1.png" alt="Profile image">
+                        <span style="font-size: 13px"><a href="javascript: void(0);">{{ demand.rejecter }}</a>驳回</span>
+                        <div>
+                            <span class="text-danger" style="font-size: 10px">{{ demand.finish_time|date:"Y-m-d H:i:s" }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% elif state == '待分配'%}
+                <div>
+                    <div style="display: inline-block;">
+                        <img class="img-xs rounded-circle ml-2" src="/static/device_manage/images/faces-clipart/pic-1.png" alt="Profile image">
+                        <span style="font-size: 13px">需求待分配</span>
+                        <div>
+                            <span style="font-size: 10px"><a href="#">联系管理员</a></span>
+                        </div>
+                    </div>
+                </div>
+            {% elif state == '测试中' %}
+                <div>
+                    <div style="display: inline-block;">
+                        <img class="img-xs rounded-circle ml-2" src="/static/device_manage/images/faces-clipart/pic-1.png" alt="Profile image">
+                        <span style="font-size: 13px"><a href="javascript: void(0);">{{ distributor.user }}</a>分配</span>
+                        <div>
+                            <span style="font-size: 10px">
+                                {% if distributor.tester|length > 2 %}
+                                    <a href="#">{{ distributor.tester.0 }}</a>&nbsp;
+                                    等{{ distributor.tester|length }}名测试员
+                                {% else %}
+                                    {% for t in distributor.tester %}
+                                        <a href="#">{{ t }}</a>&nbsp;
+                                    {% endfor %}
+                                    {{ distributor.tester|length }}人
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="left-border"></div>
+                <div>
+                    <div style="display: inline-block;">
+                        <img class="img-xs rounded-circle ml-2" src="/static/device_manage/images/faces-clipart/pic-1.png" alt="Profile image">
+                        <span style="font-size: 13px">测试中({{ finished }}/{{ total_num }})</span>
+                        <div>
+                            <span style="font-size: 10px"><a href="#">查看详情</a></span>
+                        </div>
+                    </div>
+                </div>
+            {% elif state == '已完成' %}
+                <div>
+                    <div style="display: inline-block;">
+                        <img class="img-xs rounded-circle ml-2" src="/static/device_manage/images/faces-clipart/pic-1.png" alt="Profile image">
+                        <span style="font-size: 13px"><a href="javascript: void(0);">{{ distributor.user }}</a>分配</span>
+                        <div>
+                            <span style="font-size: 10px">
+                                {% if distributor.tester|length > 2 %}
+                                    <a href="#">{{ distributor.tester.0 }}</a>&nbsp;
+                                    等{{ distributor.tester|length }}名测试员
+                                {% else %}
+                                    {% for t in distributor.tester %}
+                                        <a href="#">{{ t }}</a>&nbsp;
+                                    {% endfor %}
+                                    {{ distributor.tester|length }}人
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="left-border"></div>
+                <div>
+                    <div style="display: inline-block;">
+                        <img class="img-xs rounded-circle ml-2" src="/static/device_manage/images/faces-clipart/pic-1.png" alt="Profile image">
+                        <span style="font-size: 13px">已完成</span>
+                        <div>
+                            <span style="font-size: 10px"><a href="#">PASS数:{{ pass }}|FAIL数:{{ fail }}</a></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="left-border"></div>
+                <div>
+                    <div style="display: inline-block;">
+                        <img class="img-xs rounded-circle ml-2" src="/static/device_manage/images/faces-clipart/pic-1.png" alt="Profile image">
+                        <span style="font-size: 13px">可输出报告</span>
+                        <div>
+                            <span style="font-size: 10px"><a href="/history_detail/id/{{ demand.id }}">查看测试报告</a></span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-7" id="detail">
+            {% if state == '测试中'%}
+            <div>
+                <h4 class="text-center">测试进度</h4>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>测试员</th>
+                        <th>完成进度</th>
+                    </tr>
+                    </thead>
+                    {% for foo in record %}
+                    <tr>
+                        <td>{{ foo.0 }}</td>
+                        <td>
+                            <div class="progress">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ foo.3 }}%" ></div>
+                            </div>
+                            {{ foo.1 }}/{{ foo.2 }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% elif state == '待分配' %}
+            <div>
+                <div class="js-donut-container">
+                    <h2 class="text-center">管理员尚未分配该任务需求</h2>
+                    <p class="text-center">您可以联系:{% for admin in admins %}
+                        <a href="#">&nbsp;{{ admin.name }}</a>
+                    {% endfor %}
+                    </p>
+                </div>
+            </div>
+            {% elif state == '已完成' %}
+            <div>
+                <h4 style="padding-left: 20px;"><span class="text-success">Pass:{{ pass }}台</span>&nbsp;<span class="text-danger">Fail：{{ fail }}台</span></h4>
+                <div class="js-donut-container"></div>
+                <table class="table table-hover" style="width: 400px">
+                    <thead>
+                    <tr>
+                        <th>设备id</th>
+                        <th>Fail环节</th>
+                        <th>Fail项目</th>
+                    </tr>
+                    </thead>
+                    {% for foo in fail_device %}
+                    <tr>
+                        <td>{{ foo.test_device.id }}</td>
+                        <td>{{ foo.fail_step }}</td>
+                        <td>{{ foo.fail_project }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% elif state == '被驳回' %}
+            <div>
+                <h4 class="text-center">驳回原因：{{ demand.reject_reason }}</h4>
+                <p class="text-center">请修改需求后重新发起</p>
+            </div>
+            {% else %}
+            <div>
+                <h4 class="text-center">暂无信息</h4>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="container" style="background-color: white;padding: 20px">
+    <a href="javascript:history.back(-1)"><button class="btn btn-outline-dark" style="margin-left: 1%" >&lt;&lt;返回</button></a>
+    <h2 style="text-align: center;margin-top: 20px">需求记录详情-00{{ demand.id }}</h2><br>
+    <table class="table table-hover" style="width: 100%;">
+        <tr>
+            <td style=" width: 50%;font-size: 20px;">SN：{{ demand.SN }}</td>
+            <td style=" width: 50%;font-size: 20px;">版本：{{ demand.ver}}</td>
+        </tr>
+        <tr>
+            <td style=" width: 50%;font-size: 20px;">搭配：{{ demand.match }}</td>
+            <td style=" width: 50%;font-size: 20px;">料号：{{ demand.P_N}}</td>
+        </tr>
+        <tr>
+            <td style=" width: 50%;font-size: 20px;">发起人：{{ demand.initiator }}</td>
+            <td style=" width: 50%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size: 20px;">
+                测试设备：{{ demand_num }}台
+            </td>
+        </tr>
+        <tr>
+            <td style=" width: 50%;font-size: 20px;">开始时间：{{ demand.start_time|date:"Y-m-d H:i:s" }}</td>
+            <td style=" width: 50%;font-size: 20px;">结束时间：{{ demand.end_time|date:"Y-m-d H:i:s"}}</td>
+        </tr>
+        <tr>
+            <td style=" width: 50%;font-size: 20px;">样品数量：{{ demand.sample_quantity}}</td>
+            <td style=" width: 50%;font-size: 20px;">兼容性测试版本：{{ demand.compatible_ver}}</td>
+        </tr>
+        <tr>
+            {% if state == '被驳回' %}
+                <td style=" width: 50%;font-size: 20px;" title="点击查看详情">测试进度：<a href="#" class="text-danger" onclick="open_modal()">{{ state }}({{ demand.rejecter }})</a></td>
+            {% elif state == '待分配' %}
+                <td style=" width: 50%;font-size: 20px;">测试进度：<a href="javascript: void(0);" onclick="open_modal()">{{ state }}</a></td>
+            {% elif state == '测试中' %}
+                <td style=" width: 50%;font-size: 20px;" title="点击查看详情">测试进度：<a href="javascript: void(0);" onclick="open_modal()">{{ state }}({{ finished }}/{{ total_num }})</a></td>
+            {% elif state == '已完成' %}
+                <td style=" width: 50%;font-size: 20px;" title="点击查看详情">测试进度：<a href="javascript: void(0);" onclick="open_modal()">{{ state }}(PASS率：{{ pass_ratio }}%)</a></td>
+            {% endif %}
+                <td style=" width: 50%;font-size: 20px;">备注：{{ demand.remark }}</td>
+        </tr>
+    </table>
+    {% if demand.reject_reason %}
+    <table class="table table-hover">
+        <tr>
+            <td class="text-danger" style=" width: 50%;font-size: 20px;">驳回原因：{{ demand.reject_reason }}</td>
+            <td style=" width: 50%;font-size: 20px;" ><button id="restart" style="border: none;width: 20%;height: 40px;background-color: white">重新修改</button></td>
+            <script>
+                $('#restart').click(function () {
+                    console.log({{ demand.id }});
+                    window.location.href = '/sample/info/?id='+ {{ demand.id }};
+                })
+            </script>
+        </tr>
+    </table>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block footer %}
+    {# 饼状图 #}
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/britecharts@1/dist/bundled/britecharts.min.js'></script>
+    <script>
+        const data = [
+            {% for f in fail_data %}
+            { name: '{{ f.fail_project }}-{{ f.fail_project__count }}台', id: {{ forloop.counter }}, quantity: {{ f.fail_project__count }}, percentage: {{ f.percent }} },
+            {% endfor %}
+        ];
+
+        function createHorizontalBarChart() {
+            let barChart = new britecharts.bar(),
+                margin = {
+                        left: 120,
+                        right: 20,
+                        top: 20,
+                        bottom: 30
+                },
+                barContainer = d3.select('.js-bar-container'),
+                containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false;
+
+            barChart
+               .horizontal(true)
+               .margin(margin)
+               .width(containerWidth)
+               .colorSchema(britecharts.colors.colorSchemas.britechartsColorSchema)
+               .valueLabel('percentage')
+               .height(300);
+
+            barContainer.datum(data).call(barChart);
+        }
+
+        function createDonutChart() {
+          let donutChart = britecharts.donut();
+
+          donutChart
+            .width(400)
+            .height(300);
+
+          d3.select('.js-donut-container').datum(data).call(donutChart);
+
+        }
+        createHorizontalBarChart();
+        createDonutChart();
+    </script>
+    <script>
+        function open_modal() {
+            $("#top-box").removeClass('d-none');
+            $(".container").addClass('disable')
+        }
+        function cancel() {
+            $("#top-box").addClass('d-none');
+            $(".container").removeClass('disable')
+        }
+        $.ajax({
+            url: '{% url 'check_allotted' %}',
+            type: 'post',
+            data: {
+                'data': 'check',
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function (res) {
+                $("#allot").text(res)
+            }
+        });
+        function showId(id){
+            location.href="/?id="+id;
+        }
+    </script>
+{% endblock %}
+</a>
