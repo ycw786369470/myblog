@@ -145,7 +145,7 @@ class UserActionRecord(models.Model):
 
 
 class TestRequirements(models.Model):
-    """ 测试需求 """
+    """ SD测试需求 """
     SN = models.CharField('SN编号', max_length=200, null=True)
     ver = models.CharField(max_length=30, default='暂未填写')                               # 版本
     match = models.CharField(max_length=50, default='暂未填写')                             # 搭配
@@ -171,7 +171,7 @@ class TestRequirements(models.Model):
         ordering = ['-reorder']
 
 
-# 测试记录表
+# SD测试记录表
 class TestRecord(models.Model):
     device = models.ForeignKey(Device)                                         # 设备
     user = models.ForeignKey(User)                                             # 测试人
@@ -211,7 +211,7 @@ class RequirementsRecord(models.Model):
 
 
 class AllotTasks(models.Model):
-    """ 任务分配 """
+    """ SD任务分配 """
     # 复合关联
     task = models.ForeignKey(TestRequirements)
     user = models.ForeignKey(User)                  # 分配人
@@ -225,7 +225,7 @@ class AllotTasks(models.Model):
 
 
 class PersonalTask(models.Model):
-    """ 个人任务表 """
+    """ SD个人任务表 """
     task = models.ForeignKey(TestRequirements)
     test_user = models.ForeignKey(User)
     test_device = models.ForeignKey(Device)
@@ -258,13 +258,15 @@ class Parts(models.Model):
 
 
 class Collocation(models.Model):
-    """ 搭配表 """
+    """ SD搭配表 """
     collocation = models.CharField('主控/flash/die', max_length=50)
     num = models.CharField('编号', max_length=20)
     abbreviation = models.CharField('简称', max_length=50, null=True, blank=True)
-    category = models.IntegerField('类别',
-                                    choices=constants.COLLO_TYPES_CHOICES,
-                                    default=constants.MASTER_CONTROL)
+    category = models.IntegerField(
+        '类别',
+        choices=constants.COLLO_TYPES_CHOICES,
+        default=constants.MASTER_CONTROL
+    )
 
     @classmethod
     def add(cls, args):
@@ -275,85 +277,10 @@ class Collocation(models.Model):
         db_table = 'task_collocation'
 
 
-# 测试版本CV1.0.0
-class CV100(models.Model):
-    test_step = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.test_step
-
-    class Meta:
-        verbose_name_plural = '测试版本CV1.0.0'
-
-
-# 测试版本CV1.0.0
-class CV110(models.Model):
-    test_step = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.test_step
-
-    class Meta:
-        verbose_name_plural = '测试版本CV1.1.0'
-
-
-# 测试版本DV1.0.0
-class DV100(models.Model):
-    test_step = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.test_step
-
-    class Meta:
-        verbose_name_plural = '测试版本DV1.0.0'
-
-
-# 测试版本DV1.0.0
-class IV100(models.Model):
-    test_step = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.test_step
-
-    class Meta:
-        verbose_name_plural = '测试版本IV1.0.0'
-
-
-# 测试版本DV1.0.0
-class RV100(models.Model):
-    test_step = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.test_step
-
-    class Meta:
-        verbose_name_plural = '测试版本RV1.0.0'
-
-
-# 测试版本DV1.0.0
-class MV100(models.Model):
-    test_step = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.test_step
-
-    class Meta:
-        verbose_name_plural = '测试版本MV1.0.0'
-
-
-# 测试版本DV1.0.0
-class DrV100(models.Model):
-    test_step = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.test_step
-
-    class Meta:
-        verbose_name_plural = '测试版本DrV1.0.0'
-
-
+# 兼容性测试版本
 class CompatibleVer(models.Model):
     ver = models.CharField(max_length=30)
+    step = models.CharField(max_length=300)
 
     def __str__(self):
         return self.ver
@@ -374,3 +301,103 @@ class ExcelRecord(models.Model):
     filename = models.CharField(max_length=50)
     time = models.DateTimeField(auto_created=True)
 
+
+# ============================================================
+# 嵌入式组设备表
+class FlushDevice(models.Model):
+    platform = models.CharField('平台编号', max_length=30)
+    num = models.IntegerField('序号', default=0)      # 用于在类型内部的排序，加在型号之后作区分
+    speed = models.CharField('速度模式', max_length=20)
+    OEM = models.CharField('OEM品牌', max_length=20)
+    ROM = models.CharField('ROM类型', max_length=20)
+    SOC = models.CharField('SOC方案商', max_length=20)
+    SOC_spec = models.CharField('SOC型号', max_length=20)
+    sample_type = models.CharField('样机类型', max_length=20)
+    system = models.CharField('操作系统', max_length=30)
+    state = models.ForeignKey(State)
+
+    def __str__(self):
+        return self.platform
+
+
+# 外借清单
+class Borrow(models.Model):
+    device = models.ForeignKey(FlushDevice)
+    user = models.ForeignKey(User)
+    out_date = models.DateTimeField()
+    back_date = models.DateTimeField()
+    reason = models.CharField(max_length=50)
+
+
+# 报废清单
+class ScrapDevices(models.Model):
+    device = models.ForeignKey(FlushDevice)
+    scrap_date = models.DateTimeField(auto_now_add=True)
+    reason = models.CharField(max_length=100)
+
+
+# 送测平台清单
+class Send2Test(models.Model):
+    device = models.ForeignKey(FlushDevice)
+    remark = models.CharField('备注', max_length=50)
+
+
+# 嵌入式主控表
+class Control(models.Model):
+    control = models.CharField('主控', max_length=20)
+
+
+# Flash表
+class Flash(models.Model):
+    flash = models.CharField('flash', max_length=20)
+
+
+# FW表
+class FW(models.Model):
+    fw = models.CharField('fw版本', max_length=20)
+
+
+# 测试类别
+class TestType(models.Model):
+    test_type = models.CharField(max_length=10)
+
+
+# 测试项目
+class TestProject(models.Model):
+    test_item_id = models.CharField(max_length=30)
+    test_item = models.CharField(max_length=30)
+
+
+# 嵌入式需求表
+class FlushDemand(models.Model):
+    device = models.ForeignKey(FlushDevice)
+    initiator = models.ForeignKey(User)
+    recipient = models.CharField('需求接收人', max_length=20)
+    control = models.ForeignKey(Control)
+    flash = models.ForeignKey(Flash)
+    fw = models.ForeignKey(FW)
+    capacity = models.CharField('容量', max_length=20)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    test_type = models.ForeignKey(TestType)         # 测试类别
+    remark = models.CharField(max_length=50, blank=True, null=True)
+    test_project = models.CharField(max_length=50)
+
+
+# 嵌入式测试记录表
+class FlushTestRecord(models.Model):
+    task = models.ForeignKey(FlushDevice)                                           # 需求ID
+    device = models.ForeignKey(Device)                                              # 设备
+    system_burning = models.CharField(max_length=20,blank=True,default='')          # 系统烧录
+    reset = models.CharField(max_length=20,blank=True,default='')                   # 恢复出厂设置
+    cold_boot = models.CharField(max_length=20,blank=True,default='')               # 冷启动
+    hot_boot = models.CharField(max_length=20,blank=True,default='')                # 热启动
+    dormancy = models.CharField(max_length=20,blank=True,default='')                # 休眠唤醒
+    start_cw = models.CharField(max_length=20,blank=True,default='')                # 启动超稳
+    rw_cw = models.CharField(max_length=20,blank=True,default='')                   # 读写超稳
+    rw_ageing = models.CharField(max_length=20,blank=True,default='')               # 读写老化
+    video_ageing = models.CharField(max_length=20,blank=True,default='')            # 视频老化
+    filetest = models.CharField(max_length=20,blank=True,default='')                # FileTest
+    monkeyTest = models.CharField(max_length=20,blank=True,default='')              # MonkeyTest
+    apk_upgrade = models.CharField(max_length=20,blank=True,default='')             # apk升级
+    exe_upgrade = models.CharField(max_length=20,blank=True,default='')             # exe升级

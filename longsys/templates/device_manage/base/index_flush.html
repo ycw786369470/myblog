@@ -4,7 +4,7 @@
 
 {#修改网页标题title#}
 {% block title %}
-    导入文件
+    longsys设备展示
 {% endblock %}
 
 {% block personal %}
@@ -27,6 +27,14 @@
 {# 右边个人信息栏 #}
 {% block self %}
     {{ name }}
+{% endblock %}
+
+{% block head %}
+    <style>
+    .select-box{
+        width: 20px;
+    }
+    </style>
 {% endblock %}
 
 {# 登录登出图标 #}
@@ -135,7 +143,7 @@
         <i class=" icon-wrench menu-icon"></i>
       </a>
     </li>
-    <li class="nav-item nav-category">
+    <li class="nav-item nav-category" id="self">
       <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
         <span class="menu-title">个人中心</span>
         <i class="icon-user menu-icon"></i>
@@ -151,139 +159,170 @@
     {% endif %}
 {% endblock %}
 
-{% block head %}
-    <link rel="stylesheet" href="/static/device_manage/css/upload.css">
-    <link rel="stylesheet" href="/static/device_manage/css/alert.css">
-    <link rel="stylesheet" href="/static/device_manage/css/cloud.css">
-    <style>
-    #help-box img{
-        width: 70%;
-    }
-    #box1{
-        width:100%;
-    }
-    </style>
-{% endblock %}
 
 {% block content %}
-<div id="alert-box" class="notify bar-top do-show" data-notification-status="success">提示框内容</div>
-<main class="d-none">
-    <div class="wrapper">
-        <nav>
-            <a id="right-bot" href="#" class="button" data-type="bottom-right" data-status="error">Bottom Right</a>
-            <a id="left-bot" href="#" class="button" data-type="bottom-left" data-status="notice">Bottom Left</a>
-            <a id="bottom" href="#" class="button" data-type="bar-bottom" data-status="plain">Bottom bar</a>
-        </nav>
-    </div>
-</main>
-<div id="content-box" style="text-align: center">
-    <div class="col-md-4" style="margin: 0 auto;">
-        <div class="form-group">
-            <select class="form-control" id="type">
-                <option value="none">请上传文件类型</option>
-                <option value="测试记录">测试记录</option>
-                <option value="嵌入式设备">嵌入式设备</option>
-                {% for type in types %}
-                <option value="{{ type.device_type }}">{{ type.device_type }}</option>
+<div class="col-md-12 table-responsive-sm" style="background-color: white; padding-top: 10px;">
+    <h2 class="text-center">嵌入式平台设备</h2>
+    <div class="table-responsive" style="border-top: 2px solid #ecf0f4">
+        <table class="table table-hover" id="table_data">
+            <thead>
+            <tr>
+                <th>
+                    平台编号
+                </th>
+                <th>
+                    速度模式
+                    <select class="choose-btn select-box" name="speed" id="speed" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for speed in options.speed %}
+                            <option value="{{ speed }}">{{ speed }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>
+                    OEM方案商
+                    <select class="choose-btn select-box" name="OEM" id="OEM" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for OEM in options.OEM %}
+                            <option value="{{ OEM }}">{{ OEM }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>
+                    ROM类型
+                    <select class="choose-btn select-box" name="ROM" id="ROM" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for ROM in options.ROM %}
+                            <option value="{{ ROM }}">{{ ROM }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>
+                    SOC方案商
+                    <select class="choose-btn select-box" name="SOC" id="SOC" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for SOC in options.SOC %}
+                            <option value="{{ SOC }}">{{ SOC }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>
+                    SOC型号
+                    <select class="choose-btn select-box" name="SOC_spec" id="SOC_spec" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for SOC_spec in options.SOC_spec %}
+                            <option value="{{ SOC_spec }}">{{ SOC_spec }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>
+                    样机类型
+                    <select class="choose-btn select-box" name="sample" id="sample" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for sample in options.sample %}
+                            <option value="{{ sample }}">{{ sample }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>
+                    操作系统
+                    <select class="choose-btn select-box" name="system" id="system" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for sys in options.system %}
+                            <option value="{{ sys }}">{{ sys }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>
+                    总数量
+                    <select class="choose-btn select-box" name="num" id="num" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        <option value="升序">升序</option>
+                        <option value="降序">降序</option>
+                    </select>
+                </th>
+                <th>
+                    状态
+                    <select class="choose-btn select-box" name="state" id="state" onchange="filt_data(this.id)">
+                        <option value="none"></option>
+                        {% for state in options.state %}
+                            <option value="{{ state }}">{{ state }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+            </tr>
+            </thead>
+            {% for platform, devices in devices.items %}
+            <tr id="{{ platform }}" onclick="action(this.id)">
+                <td>{{ platform }}</td>
+                <td>{{ devices.0.speed }}</td>
+                <td>{{ devices.0.OEM }}</td>
+                <td>{{ devices.0.ROM }}</td>
+                <td>{{ devices.0.SOC }}</td>
+                <td>{{ devices.0.SOC_spec }}</td>
+                <td>{{ devices.0.sample_type }}</td>
+                <td>{{ devices.0.system }}</td>
+                <td>{{ devices|length }}</td>
+                <td id="{{ platform }}-state">点击展开>></td>
+            </tr>
+                {% for d in devices %}
+                <tr class="{{ platform }} d-none table-secondary" style="padding: 0 5px">
+                    <td>{{ d.platform }}_{{ d.num }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>测试次数</td>
+                    <td><a href="#">历史测试</a></td>
+                    {% if devices.0.state.state == '可使用' %}
+                        <td><label class="badge badge-success">{{ devices.0.state.state }}</label></td>
+                    {% else %}
+                        <td><label class="badge badge-dark">{{ devices.0.state.state }}</label></td>
+                    {% endif %}
+                </tr>
                 {% endfor %}
-            </select>
-        </div>
-    </div>
-    <div class="container" style="padding: 0 0 100px 0 ">
-        <div class="main-box" style="margin: 0 auto;">
-            <form action="{% url 'many_devices' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="file" name="file" class="d-none file-upload-default" id="upload">
-                <input type="submit" class="d-none" id="submit">
-            </form>
-            <div class="box-content" onclick="upload_click()">
-                <div class="svg">
-                    <svg width="66" height="57" viewBox="0 0 66 57" fill="none" xmlns="https://www.w3.org/2000/svg">
-                        <path d="M2.70977 0H19.4194C20.2733 0 21.0742 0.402215 21.5857 1.08315L25.3821 6.14266C25.8937 6.82361 26.6946 7.22581 27.5484 7.22581H62.3226C63.8185 7.22581 65.0323 8.43956 65.0323 9.93548V53.2903C65.0323 54.7862 63.8185 56 62.3226 56H2.70968C1.21376 56 0 54.7862 0 53.2903V2.70968C0 1.21375 1.21385 0 2.70977 0Z" transform="translate(0.0177612 0.740387)" fill="#4F8AFE" />
-                    </svg>
-                </div>
-                <div class="text">
-                    <p class="title" style="margin-bottom: 5px;" id="tip"> 选择文件 </p>
-                    <span id="file_name">暂未上传</span>
-                </div>
-                <div class="dots">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="col-md-8 text-center" style="background-color: white; margin: 0 auto;box-shadow: 0 5px 5px darkgray; padding: 20px;" >
-    <h2 class="text-left">上传步骤说明：</h2>
-    <div id="help-box">
-        <img src="/static/device_manage/images/help/choose_type2.png" alt="">
-        <p>1、首先选择上传的excel内容属于哪种设备类型</p>
-        <img src="/static/device_manage/images/help/choose_type3.png" alt="">
-        <p>2、第一次点击上传按钮选择excel文件，选择之后再次点击为上传功能</p>
-        <img src="/static/device_manage/images/help/choose_type5.png" alt="">
-        <p>3、excel文件格式一定要规范，不能一个表内包含多个表，正确方式如上图(相机表内只有Sheet1)</p>
-        <img src="/static/device_manage/images/help/choose_type4.png" alt="">
-        <p>4、上传之后右下角会提示正在分析文件。请等待完成，完成后会刷新该页面。若遇到bug请顶顶联系 <a href="#">@杨晨蔚/@钟桂成</a></p>
+            {% endfor %}
+        </table>
     </div>
 </div>
 <script>
-    var times = 0;
-    var upload = $("#upload");
-    var submit = $("#submit");
-    var type = $("#type");
-    type.change(function () {
-        var now_type = type.val();
-        $.ajax({
-            url: "{% url 'many_devices' %}",
-            type: 'post',
-            data:{
-                'choose_type': now_type,
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-            },
-            success: function (res) {
-            },
-            error: function () {
-                alert('出错了，请刷新试试~')
-            }
-        })
-    });
-    // 提示框
-    $('.button').on('click', function(event) {
-        var type = $(this).data('type');
-        var status = $(this).data('status');
-        $('.button').removeClass('is-active');
-        $(this).addClass('is-active');
-        $('.notify')
-            .removeClass()
-            .attr('data-notification-status', status)
-            .addClass(type + ' notify')
-            .addClass('do-show');
-        event.preventDefault();
-    });
-    // 提示框结束
-
-    upload.change(function (data) {
-        var file_msg = data.currentTarget.files;
-        var file_name = file_msg[0].name;
-        $("#file_name").text(file_name);
-        $("#tip").text('确定上传');
-        $("#alert-box").text('选择文件成功！请点击确认上传。');
-        $("#left-bot").trigger('click');
-        times = 1;
-    });
-    function upload_click() {
-        if (times === 0){
-            upload.trigger('click');
+function action(class_name){
+    var data = $("."+class_name);
+    if (data.eq(0).hasClass('d-none')){
+        for (i=0; i<data.length; i++ ){
+            data.eq(i).removeClass('d-none');
         }
-        if (times === 1){
-            submit.trigger('click');
-            $("#alert-box").text('文件已上传，正在解析中，请耐心等待...');
-            $("#right-bot").trigger('click');
-            $("#content-box").html('<div class="btn download" style="margin-bottom: 20px;"><div class="cloud"><div class="file"></div></div></div>')
+        $("#"+class_name+'-state').text('点击关闭<<')
+    }else{
+        for (i=0; i<data.length; i++ ){
+            data.eq(i).addClass('d-none');
         }
+        $("#"+class_name+'-state').text('点击展开>>')
     }
+}
+function filt_data(id){
+    var value = $("#"+id).val();
+    $.ajax({
+        url: '{% url 'index_flush' %}',
+        type: 'post',
+        data: {
+            'way': id,
+            'value': value,
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        success: function (res) {
+            var data = eval(res);
+            console.log(data);
+            $("#table_data").html(data.data);
+        },
+        error: function () {
+            alert('发生未知错误，请刷新试试~');
+        }
+    })
+ }
 </script>
 {% endblock %}
-</a></a>
+</a>
+</a>

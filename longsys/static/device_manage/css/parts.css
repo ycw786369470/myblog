@@ -1,12 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
 @import url('https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css');
 .togglebox {
-    width: 22%;
+    width: 100%;
     background: #fff;
     transform: translateZ(0);
     box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
-    position: fixed;
-    right: 0;
     border-left: #ecf0f4 2px solid;
 }
 .togglebox input[type="radio"] {
@@ -52,6 +50,7 @@
 #toggle2:checked ~ #content2,
 #toggle3:checked ~ #content3,
 #toggle4:checked ~ #content4 {
+    padding: 0 5%;
     height: 200px;
 }
 .togglebox p {

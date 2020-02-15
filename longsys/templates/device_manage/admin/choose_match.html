@@ -1,0 +1,64 @@
+<div class="col-md-12 table-responsive" id="history" style="background-color: white; padding: 20px">
+        <table class="table table-hover table-striped text-center">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>测试任务id</th>
+            <th>搭配</th>
+            <th>完成度</th>
+            {% if is_admin == 1 %}
+                <th>测试周期</th>
+            {% else %}
+                <th>提交时间</th>
+            {% endif %}
+            <th>发起人</th>
+        </tr>
+        </thead>
+        {% if is_admin == 1 %}
+            {% for i in task%}
+                <tr id="{{ i.1.id }}" onclick="showId(this.id)"  title="点击查看详情" class="dd">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.1.id }}</td>
+                    <td>{{ i.1.match }}</td>
+                    {% if i.2 == i.0 %}
+                    <td>{{ i.2 }}/{{ i.0 }}</td>
+                    {% else %}
+                    <td class="text-danger">{{ i.2 }}/{{ i.0 }}</td>
+                    {% endif %}
+                    <td>{{ i.1.start_time|date:"Y-m-d H:i:s" }}—{{ i.1.end_time|date:"Y-m-d H:i:s" }}</td>
+                    <td>{{ i.1.initiator }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            {% for i in task%}
+                <tr onclick="showId(this.id)" id="{{ i.1.task_id}}" title="点击查看详情" class="dd">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.1.task_id }}</td>
+                    <td>{{ i.2 }}</td>
+                    <td>{{ i.0 }}</td>
+                    <td>
+                        {% if i.1.finish_time %}
+                            {{ i.1.finish_time|date:"Y-m-d H:i:s" }}
+                        {% else %}
+                            未提交
+                        {% endif %}
+                    </td>
+                    <td>{{ i.1.user }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>暂无</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+            <script>
+                 function showId(id){
+                    location.href="/history_detail/id/"+id+'/page/1';
+                }
+            </script>
+        </table>
+</div>

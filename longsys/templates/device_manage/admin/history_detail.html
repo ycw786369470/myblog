@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block personal %}
-    <a href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
+    <div href="{% url 'personal_home' %}?id={{ staff_number }}" class="nav-link">
 {% endblock %}
 
 {# 通过继承在新页面改写用户名 #}
@@ -148,9 +148,9 @@
             border-radius: 5px;
         }
 
-        select{
-            border-radius: 3px;
-            box-shadow: #969696 0 3px 3px;
+        #f_s select{
+            border:0;
+            width: 15px;
         }
 
         #export_record:hover {
@@ -164,8 +164,12 @@
 {% endblock %}
 {# 修改操作框内容 #}
 {% block content %}
+    <div id="content">
+{#    <div class="back">#}
+{#        <a href="{% url 'test_history' %}?page=1"><button class="btn btn-outline-dark" style="font-family: 微软雅黑">&lt;&lt;返回</button></a>#}
+{#    </div>#}
     <div class="back">
-        <a href="{% url 'test_history' %}?page=1"><button class="btn btn-outline-dark" style="font-family: 微软雅黑">&lt;&lt;返回</button></a>
+        <a href="javascript:history.back(-1)"><button class="btn btn-outline-dark" style="font-family: 微软雅黑">&lt;&lt;返回</button></a>
     </div>
     <div class="export_record" style="padding: 20px;background-color: #cbd3da">
         <span>选择报告导出内容(不勾选默认导出所有信息):</span><br>
@@ -239,7 +243,7 @@
                 <th colspan="3">兼容性测试版本</th>
                 <td colspan="2">
                  <label>
-                    <select name="" id="slt" onchange="ed_ver(this.id)">
+                    <select name="" id="slt" onchange="ed_ver(this.id)" style="width: 100px;border-radius: 5px;">
                         <option value="" disabled selected>{{ requirements.compatible_ver }}</option>
                         {% for item in ver %}
                             <option id="">{{ item }}</option>
@@ -322,7 +326,7 @@
                     <select name="f_pro" id="f_pro" style="width: 20px" onchange="choose_result(this.id)">
                         <option value="" style="display: none"> </option>
                         {% for fail_p in fail_ls %}
-                            <option value={{ fail_p.test_step }}>&nbsp;{{ fail_p.test_step }}&nbsp;</option>
+                            <option value={{ fail_p }}>&nbsp;{{ fail_p }}&nbsp;</option>
                         {% endfor %}
                     </select>
                 </th>
@@ -357,230 +361,31 @@
                 {% endif %}
                 <td>{{ h.task.user }}</td>
                 <td>{{ h.remark }}</td>
-                <td id="{{ h.task.id }}" onclick='fail_step_show("{{ h.fail_step }}")' onmouseleave="fail_step_hide('{{ h.fail_step }}')" title="点击查看测试进度">{{ h.fail_pro }}</td>
+                <td id="{{ h.task.id }}" onclick='fail_step_show("{{ h.fail_step }}")' title="点击查看测试进度">{{ h.fail_pro }}</td>
             </tr>
-                <div id="model" class="table-responsive" style="position:fixed;width:500px;display: none;margin-left:20%;top:20%;background-color: rgb(236,240,244);border-radius: 3px;box-shadow: #969696 0 10px 10px;padding: 10px">
-                <div style="margin-left: 50px;font-size: 12px">
+                <div id="model" class="table-responsive" style="position:fixed;width:50%;display: none;margin-left:15%;top:20%;background-color: rgb(236,240,244);border-radius: 3px;box-shadow: #969696 0 10px 10px;padding: 10px">
+                <div style="margin-left: 10px;font-size: 12px">
                     <button type="button" class="close" data-dismiss="collocation" aria-label="Close" onclick="check_select();window.location.reload()"><span aria-hidden="true" style="color: black">&times;</span></button>
-                    <h5 style="width: 100px;margin: auto;">选择失败项目</h5>
+                    <h5 style="width: 100%;margin: auto;">选择失败项目</h5>
                     <hr>
-                    <div style="width: 80%;margin: auto">
-                        <div style="width: 90%">
-                        <div id="camera" style="display: none;font-size: 15px">
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                <label class="form-check-label text-muted">
-                                    <input type="checkbox" class="form-check-input" id="上盘"> 上盘
-                                </label>
-                            </div>
-                            <div class="form-check" style="width: 90px; display: inline-block;">
-                                <label class="form-check-label text-muted">
-                                    <input type="checkbox" class="form-check-input" id="拍照"> 拍照
-                                </label>
-                            </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                <label class="form-check-label text-muted">
-                                    <input type="checkbox" class="form-check-input" id="回放照片"> 回放照片
-                                </label>
-                            </div>
-                            <div class="form-check" style="width: 90px; display: inline-block;">
-                                <label class="form-check-label text-muted">
-                                    <input type="checkbox" class="form-check-input" id="删除照片"> 删除照片
-                                </label>
-                            </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                <label class="form-check-label text-muted">
-                                    <input type="checkbox" class="form-check-input" id="冷启动"> 冷启动
-                                </label>
-                            </div>
-                            <div class="form-check" style="width: 90px; display: inline-block;">
-                                <label class="form-check-label text-muted">
-                                    <input type="checkbox" class="form-check-input" id="录像"> 录像
-                                </label>
-                            </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                <label class="form-check-label text-muted">
-                                    <input type="checkbox" class="form-check-input" id="回放录像"> 回放录像
-                                </label>
-                            </div>
-                            <div class="form-check" style="width: 90px; display: inline-block;">
-                                <label class="form-check-label text-muted">
-                                    <input type="checkbox" class="form-check-input" id="休眠唤醒"> 休眠唤醒
-                                </label>
-                            </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                <label class="form-check-label text-muted">
-                                    <input type="checkbox" class="form-check-input" id="热拔插"> 热拔插
-                                </label>
-                            </div>
-                            <div class="form-check" style="width: 90px; display: inline-block;">
-                                <label class="form-check-label text-muted">
-                                    <input type="checkbox" class="form-check-input" id="删除录像"> 删除录像
-                                </label>
-                            </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                <label class="form-check-label text-muted">
-                                    <input type="checkbox" class="form-check-input" id="上PC拷贝"> 上PC拷贝
-                                </label>
-                            </div>
-                            <div class="form-check" style="width: 90px; display: inline-block;">
-                                <label class="form-check-label text-muted">
-                                    <input type="checkbox" class="form-check-input" id="格式化"> 格式化
-                                </label>
-                            </div>
-                          </div>
-                          <div id="video_camera" style="display: none">
-                                {% for i in ver_step %}
-                                    <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="{{ i.test_step }}"> {{ i.test_step }}
-                                    </label>
-                                </div>
-                                {% endfor %}
-
-                          </div>
-                          <div id="surface" style="display: none">
-                                <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="surface"> surface
-                                    </label>
-                                </div>
-                          </div>
-                          <div id="mobile_phone" style="display: none">
-                                {% for i in ver_step %}
-                                    <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="{{ i.test_step }}"> {{ i.test_step }}
-                                    </label>
-                                </div>
-                                {% endfor %}
-                          </div>
-                          <div id="tachograph" style="display: none">
-                                {% for i in ver_step %}
-                                    <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="{{ i.test_step }}"> {{ i.test_step }}
-                                    </label>
-                                </div>
-                                {% endfor %}
-
-                          </div>
-                          <div id="monitor" style="display: none">
-                                <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="监控"> 监控
-                                    </label>
-                                </div>
-                          </div>
-                          <div id="uav" style="display: none">
-                                <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="预置条件"> 预置条件
-                                    </label>
-                                </div>
-                                <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="冷启动"> 冷启动
-                                    </label>
-                                </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="连接无人机"> 连接无人机
-                                    </label>
-                                </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="查看卡片"> 查看卡片
-                                    </label>
-                                </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="高拍照清"> 高拍照清
-                                    </label>
-                                </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="回放照片"> 回放照片
-                                    </label>
-                                </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="删除照片"> 删除照片
-                                    </label>
-                                </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="高清录像"> 高清录像
-                                    </label>
-                                </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="回放录像"> 回放录像
-                                    </label>
-                                </div>
-                                <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="热拔插"> 热拔插
-                                    </label>
-                                </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="删除录像"> 删除录像
-                                    </label>
-                                </div>
-                                <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="格式化"> 格式化
-                                    </label>
-                                </div>
-                                <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="读SMART"> 读SMART
-                                    </label>
-                                </div>
-
-                          </div>
-                          <div id="motion_camera" style="display: none">
-                                <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="运动相机"> 运动相机
-                                    </label>
-                                </div>
-                          </div>
-                          <div id="switch" style="display: none">
-                                <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="游戏机"> 游戏机
-                                    </label>
-                                </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="游戏机"> 游戏机
-                                    </label>
-                                </div>
-                              <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="游戏机"> 游戏机
-                                    </label>
-                                </div>
-
-                          </div>
-                          <div id="doorbell" style="display: none">
-                                <div class="form-check" style="width: 90px; display: inline-block;">
-                                    <label class="form-check-label text-muted">
-                                        <input type="checkbox" class="form-check-input" id="智能门铃"> 智能门铃
-                                    </label>
-                                </div>
-                          </div>
-                        </div>
-                        <div class="test_ver text-left" style="padding-left: 10px">
-                            <span style="font-size: 0.875rem;">失败步骤:</span>
-                            <select name="test_ver1" id="test_ver1" style="margin-left: 10px;font-size: 0.875rem;">
-                                <option value="" disabled selected hidden>v1</option>
-                                {% for step in ver_step %}
-                                    <option value={{ step.test_step }}>{{ forloop.counter }}.{{ step.test_step }}</option>
+                    <div id="f_s" style="margin: auto">
+                        {% for pro in fail_ls %}
+                          <div class="form-check" style="margin-left:10px;display: inline-block;">
+                            <label class="form-check-label text-muted">
+                                <input type="checkbox" class="form-check-input" id={{ pro }}> {{ pro }}
+                            </label>
+                            <select name='step{{ pro }}' id='step{{ pro }}' style="font-size: 0.875rem;width: 15px;height: 15px;border: 0;">
+                                <option value="" disabled selected hidden></option>
+                                {% for i in cnt_ls %}
+                                    {% if i == 1 %}
+                                        <option value=''>第{{ i }}次</option>
+                                    {% else %}
+                                        <option value={{ i }}>第{{ i }}次</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
-                        </div>
+                          </div>
+                        {% endfor %}
                     </div>
                     <div class="mt-3" style="width: 150px;margin: auto;">
                         <button type="button" class="btn btn-primary" style="width: 140px;height: 10px;line-height: 2px" onclick="check_select_hide({{ h.task.id }})">确认</button>
@@ -589,7 +394,8 @@
             </div>
             {% endfor %}
         </table>
-        <div class="col-md-12 text-center">
+    </div>
+    <div class="col-md-12 text-center">
                 <div class="btn-group" role="group" style="margin-top: 20px">
                         <a style="border: none" href="/history_detail/id/{{ index }}/page/1"><button class="btn btn-outline-dark">返回首页</button></a>
                     {% if history.has_previous %}
@@ -609,103 +415,22 @@
                     {% endif %}
                 </div>
             </div>
-    </div>
 
-    <div id="pg" class="table-responsive" style="position:fixed;width:50%;display: none;margin-left:20%;top:20%;background-color: rgb(236,240,244);border-radius: 3px;box-shadow: #969696 0 10px 10px;padding: 10px">
-     <div style="width: 90%;margin: auto">
-        <h6 style="padding:10px">测试进度:</h6>
-            <div id="progress" style="width:500px;margin:auto;font-size: 12px">
-                {% if compatible_ver == 'DrV1.0.0' %}
-                    <span id="预置条件" style="width: 20%;margin-left: 33%;">预置条件</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="冷启动1" style="width: 20%;">冷启动1</span>→
-                    <span id="连接无人机1" style="width: 20%;">连接无人机1</span>→
-                    <span id="查看卡片1" style="width: 20%;">查看卡片1</span>→
-                    <span id="高清拍照1" style="width: 20%;">高清拍照1</span>→
-                    <span id="回放照片1" style="width: 20%;">回放照片1</span>→
-                    <span id="删除照片1" style="width: 20%;">删除照片1</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="冷启动2" style="width: 20%;">冷启动2</span>→
-                    <span id="连接无人机2" style="width: 20%;">连接无人机2</span>→
-                    <span id="查看卡片2" style="width: 20%;">查看卡片2</span>→
-                    <span id="高清拍照2" style="width: 20%;">高清拍照2</span>→
-                    <span id="回放照片2" style="width: 20%;">回放照片2</span>→
-                    <span id="删除照片2" style="width: 20%;">删除照片2</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="冷启动3" style="width: 20%;">冷启动3</span>→
-                    <span id="连接无人机3" style="width: 20%;">连接无人机3</span>→
-                    <span id="查看卡片3" style="width: 20%;">查看卡片3</span>→
-                    <span id="高清拍照3" style="width: 20%;">高清拍照3</span>→
-                    <span id="回放照片3" style="width: 20%;">回放照片3</span>→
-                    <span id="删除照片3" style="width: 20%;">删除照片3</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="高清录像1" style="width: 20%;margin-left: 20%">高清录像1</span>→
-                    <span id="回放录像1" style="width: 20%;">回放录像1</span>→
-                    <span id="热拔插1" style="width: 20%;">热拔插1</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="高清录像2" style="width: 20%;margin-left: 20%">高清录像2</span>→
-                    <span id="回放录像2" style="width: 20%;">回放录像2</span>→
-                    <span id="热拔插2" style="width: 20%;">热拔插2</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="高清录像3" style="width: 20%;margin-left: 20%">高清录像3</span>→
-                    <span id="回放录像3" style="width: 20%;">回放录像3</span>→
-                    <span id="热拔插3" style="width: 20%;">热拔插3</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="删除录像" style="width: 20%;margin-left: 33%">删除录像</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="格式化" style="width: 20%;margin-left: 33%">格式化</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="读SMART" style="width: 20%;margin-left: 33%">读SMART</span>
-                {% elif compatible_ver == 'CV1.0.0' %}
-                    <span id="预置条件" style="width: 20%;margin-left: 33%;">预置条件</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="冷启动1" style="width: 20%;margin-left: 10%">冷启动1</span>→
-                    <span id="高清拍照1" style="width: 20%;">高清拍照1</span>→
-                    <span id="回放照片1" style="width: 20%;">回放照片1</span>→
-                    <span id="删除照片1" style="width: 20%;">删除照片1</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="冷启动2" style="width: 20%;margin-left: 10%">冷启动2</span>→
-                    <span id="高清拍照2" style="width: 20%;">高清拍照2</span>→
-                    <span id="回放照片2" style="width: 20%;">回放照片2</span>→
-                    <span id="删除照片2" style="width: 20%;">删除照片2</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="冷启动3" style="width: 20%;margin-left: 10%">冷启动3</span>→
-                    <span id="高清拍照3" style="width: 20%;">高清拍照3</span>→
-                    <span id="回放照片3" style="width: 20%;">回放照片3</span>→
-                    <span id="删除照片3" style="width: 20%;">删除照片3</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="休眠唤醒1" style="width: 20%;margin-left: 10%">休眠唤醒1</span>→
-                    <span id="回放录像1" style="width: 20%;">回放录像1</span>→
-                    <span id="高清录像1" style="width: 20%;">高清录像1</span>→
-                    <span id="热拔插1" style="width: 20%;">热拔插1</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="休眠唤醒2" style="width: 20%;margin-left: 10%">休眠唤醒2</span>→
-                    <span id="回放录像2" style="width: 20%;">回放录像2</span>→
-                    <span id="高清录像2" style="width: 20%;">高清录像2</span>→
-                    <span id="热拔插2" style="width: 20%;">热拔插2</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="休眠唤醒3" style="width: 20%;margin-left: 10%">休眠唤醒3</span>→
-                    <span id="回放录像3" style="width: 20%;">回放录像3</span>→
-                    <span id="高清录像3" style="width: 20%;">高清录像3</span>→
-                    <span id="热拔插3" style="width: 20%;">热拔插3</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="删除录像" style="width: 20%;margin-left: 33%">删除录像</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="拷贝资料" style="width: 20%;margin-left: 33%">拷贝资料</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="格式化" style="width: 20%;margin-left: 33%">格式化</span>
-                    <br><h6 style="margin-left: 38%">↓</h6>
-                    <span id="读SMART" style="width: 20%;margin-left: 33%">读SMART</span>
-                {% else %}
-                    {% for step in ver_step %}
-                        {% if step.id == ver_step|length %}
-                            <span id="{{ step.test_step }}" style="width: 20%;margin-left: 33%">{{ step.test_step }}</span>
-                        {% else %}
-                            <span id="{{ step.test_step }}" style="width: 20%;margin-left: 33%">{{ step.test_step }}</span>
-                            <br><h6 style="margin-left: 38%">↓</h6>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+    <div id="pg" class="table-responsive" style="position:fixed;width:40%;height:50%;display: none;margin-left:20%;top:20%;background-color: rgb(236,240,244);border-radius: 3px;box-shadow: #969696 0 10px 10px;padding: 10px">
+    <div>
+        <button type="button" class="close" data-dismiss="collocation" aria-label="Close" onclick='fail_step_hide()'><span aria-hidden="true" style="color: black;float: right">&times;</span></button>
+        <h6 style="padding:10px;float: left">测试进度:</h6>
+    </div>
+     <div style="width: 90%;margin: auto;height: 80%;margin-top: 50px">
+            <div id="progress" style="margin:auto;font-size: 12px">
+                {% for step in ver_step %}
+                    {% if step == ver_step.0 %}
+                        <span id="{{ step }}" style="margin-left: 33%;">{{ step }}</span>
+                    {% else %}
+                        <br><h6 style="margin-left: 38%">↓</h6>
+                        <span id="{{ step }}" style="margin-left: 33%;">{{ step }}</span>
+                    {% endif %}
+                {% endfor %}
             </div>
     </div>
     </div>
@@ -763,6 +488,8 @@
             </div>
         </div>
     </div>
+    </div>
+    </div>
     <script>
     function f1() {
         $.ajax({
@@ -801,14 +528,12 @@
             $("#pg"+'>'+'div'+'>'+'div'+'>'+ '#'+fail_step).prevAll("span").css("background-color", "#c7f1c8");
             $("#pg"+'>'+'div'+'>'+ 'div'+'>'+'#'+fail_step).css('background-color','#ffb4c1');
         }
-        $("#pg").slideToggle();
+        $("#pg").slideDown();
     }
 
-    function fail_step_hide(fail_step) {
-        var fail_t = ''+fail_step
-        $("#pg"+'>'+'div'+'>'+'div'+'>'+ '#'+fail_t).prevAll("span").css("background-color", "white");
-        $("#pg"+'>'+'div'+'>'+ 'div'+'>'+'#'+fail_t).css('background-color','white');
-        $("#pg").hide();
+    function fail_step_hide() {
+        $("#pg").slideUp();
+        $("#progress"+'>'+'span').css('background-color','white');
     }
 
     function ed_collocation() {
@@ -865,62 +590,33 @@
     }
 
     function check_select(type_id) {
-        if (type_id == 1) {
-            $('#camera').css('display', 'block');
-        }
-        if (type_id == 2) {
-            $('#video_camera').css('display', 'block');
-        }
-        if (type_id == 3) {
-            $('#surface').css('display', 'block');
-        }
-        if (type_id == 4) {
-            $('#mobile_phone').css('display', 'block');
-        }
-        if (type_id == 5) {
-            $('#tachograph').css('display', 'block');
-        }
-        if (type_id == 6) {
-            $('#monitor').css('display', 'block');
-        }
-        if (type_id == 7) {
-            $('#uav').css('display', 'block');
-        }
-        if (type_id == 8) {
-            $('#motion_camera').css('display', 'block');
-        }
-        if (type_id == 9) {
-            $('#switch').css('display', 'block');
-        }
-        if (type_id == 10) {
-            $('#doorbell').css('display', 'block');
-        }
         $('#model').slideToggle();
     }
 
     function check_select_hide(id) {
         var fail_pro = '';
-            $(".form-check-input:checked").each(function () {
-                if (fail_pro == '') {
-                    fail_pro = fail_pro + this.id
-                } else {
-                    fail_pro = fail_pro + ',' + this.id
-                }
-            });
-            //测试版本
-            var test_ver1 = $('#test_ver1 option:selected').val();
-            if (test_ver1 == '') {
-                is_test_ver = false;
-            } else {
-                is_test_ver = true;
+        var complete_step = '';
+        var step = '';
+        $(".form-check-input:checked").each(function(){
+            if(fail_pro == ''){
+                fail_pro = fail_pro + this.id;
+            }else{
+                fail_pro = fail_pro + ',' + this.id;
             }
-            if (fail_pro != '' && is_test_ver) {
+            step = this.id + $('#step' + this.id +' option:selected').val();
+            if(complete_step==''){
+                complete_step = complete_step + step;
+            }else {
+                complete_step = complete_step + ',' + step;
+            }
+        });
+            if (fail_pro != '') {
                 $('#model').slideToggle();
                 $.post("/record_result/", {
                     "result": '0',
                     'id': id,
                     'fail': fail_pro,
-                    'fail_step': test_ver1,
+                    'fail_step': complete_step,
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 }, function (data) {
                     location.reload();

@@ -1,0 +1,170 @@
+<style>
+    .select-box{
+        width: 20px;
+    }
+</style>
+<table class="table table-hover" id="table-data">
+    <thead>
+    <tr>
+        <th>
+            平台编号
+        </th>
+        <th>
+            速度模式
+            <select class="choose-btn select-box" name="speed" id="speed" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for speed in options.speed %}
+                    <option value="{{ speed }}">{{ speed }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th>
+            OEM方案商
+            <select class="choose-btn select-box" name="OEM" id="OEM" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for OEM in options.OEM %}
+                    <option value="{{ OEM }}">{{ OEM }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th>
+            ROM类型
+            <select class="choose-btn select-box" name="ROM" id="ROM" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for ROM in options.ROM %}
+                    <option value="{{ ROM }}">{{ ROM }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th>
+            SOC方案商
+            <select class="choose-btn select-box" name="SOC" id="SOC" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for SOC in options.SOC %}
+                    <option value="{{ SOC }}">{{ SOC }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th>
+            SOC型号
+            <select class="choose-btn select-box" name="SOC_spec" id="SOC_spec" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for SOC_spec in options.SOC_spec %}
+                    <option value="{{ SOC_spec }}">{{ SOC_spec }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th>
+            样机类型
+            <select class="choose-btn select-box" name="sample" id="sample" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for sample in options.sample %}
+                    <option value="{{ sample }}">{{ sample }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th>
+            操作系统
+            <select class="choose-btn select-box" name="system" id="system" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for sys in options.system %}
+                    <option value="{{ sys }}">{{ sys }}</option>
+                {% endfor %}
+            </select>
+        </th>
+        <th>
+            总数量
+            <select class="choose-btn select-box" name="num" id="num" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                <option value="升序">升序</option>
+                <option value="降序">降序</option>
+            </select>
+        </th>
+{#                <th>#}
+{#                    可用数量#}
+{#                    <select class="choose-btn select-box" name="spec" id="spec" onchange="filt_data(this.id)">#}
+{#                        <option value="none"></option>#}
+{#                        {% for spec in options.spec %}#}
+{#                            <option value="{{ spec }}">{{ spec }}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
+{#                </th>#}
+        <th>
+            状态
+            <select class="choose-btn select-box" name="state" id="state" onchange="filt_data(this.id)">
+                <option value="none"></option>
+                {% for state in options.state %}
+                    <option value="{{ state }}">{{ state }}</option>
+                {% endfor %}
+            </select>
+        </th>
+    </tr>
+    </thead>
+    {% for platform, devices in devices.items %}
+    <tr id="{{ platform }}" onclick="action(this.id)">
+        <td>{{ platform }}</td>
+        <td>{{ devices.0.speed }}</td>
+        <td>{{ devices.0.OEM }}</td>
+        <td>{{ devices.0.ROM }}</td>
+        <td>{{ devices.0.SOC }}</td>
+        <td>{{ devices.0.SOC_spec }}</td>
+        <td>{{ devices.0.sample_type }}</td>
+        <td>{{ devices.0.system }}</td>
+        <td>{{ devices|length }}</td>
+        <td id="{{ platform }}-state">点击展开>></td>
+    </tr>
+        {% for d in devices %}
+        <tr class="{{ platform }} d-none table-secondary" style="padding: 0 5px">
+            <td>{{ d.platform }}_{{ d.num }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>测试次数</td>
+            <td><a href="#">历史测试</a></td>
+            {% if devices.0.state.state == '可使用' %}
+                <td><label class="badge badge-success">{{ devices.0.state.state }}</label></td>
+            {% else %}
+                <td><label class="badge badge-dark">{{ devices.0.state.state }}</label></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    {% endfor %}
+</table>
+<script>
+function action(class_name){
+    var data = $("."+class_name);
+    if (data.eq(0).hasClass('d-none')){
+        for (i=0; i<data.length; i++ ){
+            data.eq(i).removeClass('d-none');
+        }
+        $("#"+class_name+'-state').text('点击关闭<<')
+    }else{
+        for (i=0; i<data.length; i++ ){
+            data.eq(i).addClass('d-none');
+        }
+        $("#"+class_name+'-state').text('点击展开>>')
+    }
+}
+function filt_data(id){
+    var value = $("#"+id).val();
+    $.ajax({
+        url: '{% url 'index_flush' %}',
+        type: 'post',
+        data: {
+            'way': id,
+            'value': value,
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        success: function (res) {
+            var data = eval(res);
+            $("#table_data").html(data.data);
+        },
+        error: function () {
+            alert('发生未知错误，请刷新试试~');
+        }
+    })
+ }
+</script>

@@ -10,12 +10,13 @@ urlpatterns = [
     url(r'^$', views_base.index, name='index'),                                  # 主页-选择设备类型
     url(r'^device/$', views_base.index_show, name='index_device'),               # 主页-展示设备
     url(r'^check_staff/$', views_base.check_staff),                              # 校验工号
-    url(r'^test_history/$', views_admin.test_history, name='test_history'),            # 测试记录
+    url(r'^test_history/$', views_admin.test_history, name='test_history'),      # 测试记录
     url(r'^history_detail/id/(\d+)/page/(\d+)$', views_admin.history_detail, name='history_detail'),
     url(r'^personal_home/$', views_base.personal_home, name='personal_home'),    # 用户个人中心
     url(r'^check_oldpwd/$', views_base.check_oldpwd, name='check_oldpwd'),
-    url(r'^parts$', views_base.show_parts, name='parts'),  # 查看配件
-    url(r'^about$', views_base.about, name='about'),  # 关于页面
+    url(r'^parts$', views_base.show_parts, name='parts'),                        # 查看配件
+    url(r'^about$', views_base.about, name='about'),                             # 关于页面
+    url(r'^index2$', views_base.index_flush, name='index_flush'),                # 嵌入式主页
 
     # views_admin
     url(r'^user_list/$', views_admin.user_list, name='user_list'),                # 人员管理
@@ -38,6 +39,8 @@ urlpatterns = [
     url(r'^modify_parts/$', views_admin.modify_parts, name='modify_parts'),       # 修改配件
     url(r'^choose_result/id/(\d+)$', views_admin.choose_result, name='choose_result'),
     url(r'^export_record/id/(\d+)$', views_admin.export_record, name='export_record'),
+    url(r'^choose_match/$', views_admin.choose_match, name='choose_match'),
+
 
     # tester
     url(r'^manage_demand/$', views_admin.manage_demand, name='manage_demand'),     # 需求（任务）管理
@@ -52,7 +55,7 @@ urlpatterns = [
     url(r'^release/task/$', views_demander.release_task, name='release_task'),               # 保存到数据库
     url(r'^sample/info/$', views_demander.sample_info, name='sample_info'),                  # 样品数据
     url(r'^demand/recoder/$', views_demander.demand_recoder, name='demand_recoder'),         # 需求记录
-    url(r'^detail/$', views_demander.demand_recoder_detail, name='demand_recoder_detail'),   # 记录详情
+    url(r'^demand/recoder/detail/$', views_demander.demand_recoder_detail, name='demand_recoder_detail'),   # 记录详情
     url(r'^device/search/$', views_demander.Device_search.as_view(), name='device_search'),  # 搜索设备
     url(r'^reset_match/$', views_demander.reset_match, name='reset_match'),                  # 修改搭配
     url(r'^reset_ver/$', views_demander.reset_ver, name='reset_ver'),                        # 修改版本

@@ -474,6 +474,7 @@ def allot_demand(request):
             tester = request.POST.get('user')
             devices = [Device.objects.get(id=d.split('-')[1]) for d in devices]
             user = User.objects.get(id=tester)
+            state_testing = State.objects.get(id=9)
             for d in devices:
                 # 写入给个人任务表
                 person = PersonalTask()
@@ -499,6 +500,8 @@ def allot_demand(request):
                     allot.username = user.name
                     allot.test_device = allot.test_device + f'{d.id}/'
                     allot.save()
+                d.device_state = state_testing
+                d.save()
             # 给测试员发送邮件
             name = user.name
             to_email = []
@@ -1011,18 +1014,29 @@ def choose_result(request, index):
 def test_history(request):
     is_admin = request.session.get('is_admin')
     name = request.session.get('name')
+    master_control = Collocation.objects.filter(category=0)
+    flash = Collocation.objects.filter(category=1)
+    # flash简称有相同的,去重显示
+    flash_ls = list(set([ f.abbreviation for f in flash ]))
+    die = Collocation.objects.filter(category=2)
+    honeycomb = Collocation.objects.filter(category=3)
+    capacity = Collocation.objects.filter(category=4)
     if request.method == 'GET':
         save_action(request, '查看测试记录')
-        data_ls = []    # [设备总数, 设备对象, 测完设备数]
+        data_ls = []            # [设备总数, 设备对象, 测完设备数]
+        match_ls = []           # 用来存所有的测试搭配
         if is_admin:
             task = TestRequirements.objects.filter(is_finished__isnull=False).order_by('-id')
             for t in task:
+                match_ls.append(t.match)
                 finished_num = PersonalTask.objects.filter(Q(task=t), Q(test_result__isnull=False))
                 data_ls.append([len(t.device.split('/')), t, len(finished_num)])
         else:
             task = AllotTasks.objects.filter(username=name).order_by('-id')
             for t in task:
-                data_ls.append([len(t.test_device.split('/'))-1, t])
+                req = TestRequirements.objects.filter(id=t.task_id)[0]
+                match_ls.append(req.match)
+                data_ls.append([len(t.test_device.split('/'))-1, t,req.match])
         # 记录显示进行分页
         page = request.GET.get('page')
         page_size = 15
@@ -1031,8 +1045,42 @@ def test_history(request):
         txt = {
             'page': page,
             'task': page_data,
+            'match_ls':match_ls,
+            'master_control':master_control,
+            'flash':flash_ls,
+            'die':die,
+            'honeycomb':honeycomb,
+            'capacity':capacity,
         }
         return render(request, 'device_manage/admin/test_history.html', txt)
+
+
+def choose_match(request):
+    is_admin = request.session.get('is_admin')
+    name = request.session.get('name')
+    if request.method == 'POST':
+        key_match = request.POST.get('match')
+        match_ls = []           # 用来存所有的测试搭配
+        data_ls = []            # [设备总数, 设备对象, 测完设备数]
+        if is_admin:
+            task = TestRequirements.objects.filter(is_finished__isnull=False).order_by('-id')
+            for t in task:
+                match_ls.append(t.match)
+                finished_num = PersonalTask.objects.filter(Q(task=t), Q(test_result__isnull=False))
+                if t.match == key_match:
+                    data_ls.append([len(t.device.split('/')), t, len(finished_num)])
+        else:
+            task = AllotTasks.objects.filter(username=name).order_by('-id')
+            for t in task:
+                req = TestRequirements.objects.filter(id=t.task_id)[0]
+                match_ls.append(req.match)
+                if req.match == key_match:
+                    data_ls.append([len(t.test_device.split('/'))-1, t,req.match])
+        txt = {
+            'task': data_ls,
+            'match_ls': match_ls,
+        }
+        return render(request, 'device_manage/admin/choose_match.html', txt)
 
 
 # 测试记录详情
@@ -1051,7 +1099,7 @@ def history_detail(request, index,page):
         device_spec = []
         card_slog = []
         staff_ls = []
-        ver = []
+        ver = ''
         ver_step1 = ''
         for h in history:
             dict = {}
@@ -1082,20 +1130,6 @@ def history_detail(request, index,page):
                 staff_ls.append(staff)
             # 查询整个需求的兼容性测试版本
             ver = h.task.compatible_ver
-            if ver == 'CV1.0.0':
-                ver_step1 = CV100.objects.all()
-            elif ver == 'CV1.1.0':
-                ver_step1 = CV110.objects.all()
-            elif ver == 'DV1.0.0':
-                ver_step1 = DV100.objects.all()
-            elif ver == 'IV1.0.0':
-                ver_step1 = IV100.objects.all()
-            elif ver == 'RV1.0.0':
-                ver_step1 = RV100.objects.all()
-            elif ver == 'MV1.0.0':
-                ver_step1 = MV100.objects.all()
-            elif ver == 'DrV1.0.0':
-                ver_step1 = DrV100.objects.all()
         # 需求表数据：测试版本，搭配等
         requirements = TestRequirements.objects.filter(id=index)[0]
         dev_num = len(requirements.device.split('/'))   # 平台总数
@@ -1108,6 +1142,24 @@ def history_detail(request, index,page):
         honeycomb = Collocation.objects.filter(category=3)
         capacity = Collocation.objects.filter(category=4)
         c_ver = CompatibleVer.objects.values_list('ver', flat=True).distinct()
+        step = CompatibleVer.objects.filter(ver=ver)[0].step.split('/')
+        test_project = []  # 测试项目列表
+        test_step = []  # 测试步骤列表
+        # 将测试项目和测试步骤分开
+        for item in step:
+            if '*' in item:
+                pro = item.split('*')[0]
+                test_project.append(pro)
+                for i in range(1, int(item.split('*')[1]) + 1):
+                    if i == 1:
+                        s = pro
+                    else:
+                        s = pro + str(i)
+                    test_step.append(s)
+            else:
+                test_project.append(item)
+                test_step.append(item)
+        cnt_ls = [x for x in range(1, 11)]  # 记录步骤的重复次数
         # 分页
         page_size = 40
         paginator = Paginator(history_ls, page_size)
@@ -1122,9 +1174,10 @@ def history_detail(request, index,page):
             'device_spec': device_spec,
             'card_slog': card_slog,
             'staff_ls': staff_ls,
-            'fail_ls': ver_step1,
+            'fail_ls': test_project,
             'compatible_ver': ver,
-            'ver_step': ver_step1,
+            'ver_step': test_step,
+            'len_step': len(test_step)-1,
             'sample_info_list': sample_info_list,
             'master_control': master_control,
             'flash': flash,
@@ -1133,6 +1186,6 @@ def history_detail(request, index,page):
             'capacity': capacity,
             'ver': c_ver,
             'index': index,
+            'cnt_ls': cnt_ls,
         }
         return render(request, 'device_manage/admin/history_detail.html', txt)
-

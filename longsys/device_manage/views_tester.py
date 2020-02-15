@@ -39,27 +39,32 @@ def task_detail(request):
     requirements = TestRequirements.objects.filter(id=task_id)[0]
     # 兼容性测试版本
     ver = requirements.compatible_ver
-    ver_step1 = ''
-    if ver == 'CV1.0.0':
-        ver_step1 = CV100.objects.all()
-    elif ver == 'CV1.1.0':
-        ver_step1 = CV110.objects.all()
-    elif ver == 'DV1.0.0':
-        ver_step1 = DV100.objects.all()
-    elif ver == 'IV1.0.0':
-        ver_step1 = IV100.objects.all()
-    elif ver == 'RV1.0.0':
-        ver_step1 = RV100.objects.all()
-    elif ver == 'MV1.0.0':
-        ver_step1 = MV100.objects.all()
-    elif ver == 'DrV1.0.0':
-        ver_step1 = DrV100.objects.all()
+    step = CompatibleVer.objects.filter(ver=ver)[0].step.split('/')
+    test_project = []  # 测试项目列表
+    test_step = []     # 测试步骤列表
+    # 将测试项目和测试步骤分开
+    for item in step:
+        if '*' in item:
+            pro = item.split('*')[0]
+            test_project.append(pro)
+            for i in range(1,int(item.split('*')[1])+1):
+                if i == 1:
+                    s = pro
+                else:
+                    s = pro+str(i)
+                test_step.append(s)
+        else:
+            test_project.append(item)
+            test_step.append(item)
+    cnt_ls = [x for x in range(1,11)]    # 记录步骤的重复次数
     txt = {
         'requirements':requirements,
         'task_ls': task_ls,
         'length': len(p_task),
         'task_id': task_id,
-        'ver_step1':ver_step1,
+        'test_project':test_project,
+        'test_step':test_step,
+        'cnt_ls':cnt_ls,
     }
     return render(request, 'device_manage/tester/task_detail.html', txt)
 
@@ -74,6 +79,7 @@ def record_result(request):
         result = request.POST.get('result')
         id = request.POST.get('id')
         task = PersonalTask.objects.filter(id=id)[0]
+        state_ok = State.objects.get(id=1)
         if result == '1':
             re = 1
             task.test_result = re
@@ -82,6 +88,7 @@ def record_result(request):
             # 取消在设备表中问题设备的标记
             device = Device.objects.filter(id=task.test_device_id)[0]
             device.is_problem = 0
+            device.device_state = state_ok
             device.save()
         elif result == '0':
             re = 0
@@ -91,6 +98,7 @@ def record_result(request):
             # 在设备表中标记为问题设备
             device = Device.objects.filter(id=task.test_device_id)[0]
             device.is_problem = 1
+            device.device_state = state_ok
             device.save()
         else:
             re = None

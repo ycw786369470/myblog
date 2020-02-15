@@ -231,222 +231,33 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color: white">&times;</span></button>
           </div>
           <div class="modal-body text-left" id="modal_content" style="padding: 10px">
-              <div id="camera" style="display: none;font-size: 15px">
-                  <div class="form-check" style="width: 90px; display: inline-block;">
+              {% for pro in test_project %}
+                  <div class="form-check" style="margin-left:10px;width:130px;display: inline-block;">
                     <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="上盘"> 上盘
+                        <input type="checkbox" class="form-check-input" id={{ pro }}> {{ pro }}
                     </label>
-                </div>
-                <div class="form-check" style="width: 90px; display: inline-block;">
-                    <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="拍照"> 拍照
-                    </label>
-                </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                    <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="回放照片"> 回放照片
-                    </label>
-                </div>
-                <div class="form-check" style="width: 90px; display: inline-block;">
-                    <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="删除照片"> 删除照片
-                    </label>
-                </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                    <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="冷启动"> 冷启动
-                    </label>
-                </div>
-                <div class="form-check" style="width: 90px; display: inline-block;">
-                    <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="录像"> 录像
-                    </label>
-                </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                    <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="回放录像"> 回放录像
-                    </label>
-                </div>
-                <div class="form-check" style="width: 90px; display: inline-block;">
-                    <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="休眠唤醒"> 休眠唤醒
-                    </label>
-                </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                    <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="热拔插"> 热拔插
-                    </label>
-                </div>
-                <div class="form-check" style="width: 90px; display: inline-block;">
-                    <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="删除录像"> 删除录像
-                    </label>
-                </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                    <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="上PC拷贝"> 上PC拷贝
-                    </label>
-                </div>
-                <div class="form-check" style="width: 90px; display: inline-block;">
-                    <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input" id="格式化"> 格式化
-                    </label>
-                </div>
-              </div>
-              <div id="video_camera" style="display: none">
-                    {% for i in ver_step1 %}
-                        <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="{{ i.test_step }}"> {{ i.test_step }}
-                        </label>
-                    </div>
-                    {% endfor %}
-
-              </div>
-              <div id="surface" style="display: none">
-                    <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="surface"> surface
-                        </label>
-                    </div>
-              </div>
-              <div id="mobile_phone" style="display: none">
-                    {% for i in ver_step1 %}
-                        <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="{{ i.test_step }}"> {{ i.test_step }}
-                        </label>
-                    </div>
-                    {% endfor %}
-              </div>
-              <div id="tachograph" style="display: none">
-                    {% for i in ver_step1 %}
-                        <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="{{ i.test_step }}"> {{ i.test_step }}
-                        </label>
-                    </div>
-                    {% endfor %}
-
-              </div>
-              <div id="monitor" style="display: none">
-                    <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="监控"> 监控
-                        </label>
-                    </div>
-              </div>
-              <div id="uav" style="display: none">
-                    <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="预置条件"> 预置条件
-                        </label>
-                    </div>
-                    <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="冷启动"> 冷启动
-                        </label>
-                    </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="连接无人机"> 连接无人机
-                        </label>
-                    </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="查看卡片"> 查看卡片
-                        </label>
-                    </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="高拍照清"> 高拍照清
-                        </label>
-                    </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="回放照片"> 回放照片
-                        </label>
-                    </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="删除照片"> 删除照片
-                        </label>
-                    </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="高清录像"> 高清录像
-                        </label>
-                    </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="回放录像"> 回放录像
-                        </label>
-                    </div>
-                    <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="热拔插"> 热拔插
-                        </label>
-                    </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="删除录像"> 删除录像
-                        </label>
-                    </div>
-                    <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="格式化"> 格式化
-                        </label>
-                    </div>
-                    <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="读SMART"> 读SMART
-                        </label>
-                    </div>
-
-
-              </div>
-              <div id="motion_camera" style="display: none">
-                    <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="运动相机"> 运动相机
-                        </label>
-                    </div>
-              </div>
-              <div id="switch" style="display: none">
-                    <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="游戏机"> 游戏机
-                        </label>
-                    </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="游戏机"> 游戏机
-                        </label>
-                    </div>
-                  <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="游戏机"> 游戏机
-                        </label>
-                    </div>
-
-              </div>
-              <div id="doorbell" style="display: none">
-                    <div class="form-check" style="width: 90px; display: inline-block;">
-                        <label class="form-check-label text-muted">
-                            <input type="checkbox" class="form-check-input" id="智能门铃"> 智能门铃
-                        </label>
-                    </div>
-              </div>
+                    <select name='step{{ pro }}' id='step{{ pro }}' style="font-size: 0.875rem;width: 15px;height: 15px;border: 0;">
+                        <option value="" disabled selected hidden></option>
+                        {% for i in cnt_ls %}
+                            {% if i == 1 %}
+                                <option value=''>第{{ i }}次</option>
+                            {% else %}
+                                <option value={{ i }}>第{{ i }}次</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                  </div>
+              {% endfor %}
           </div>
-            <div class="test_ver text-left" style="padding-left: 10px">
-            <span style="font-size: 0.875rem;">失败步骤:</span>
-                <select name="test_ver1" id="test_ver1" style="margin-left: 10px;font-size: 0.875rem;">
-                    <option value="" disabled selected hidden>v1</option>
-                    {% for step in ver_step1 %}
-                        <option value={{ step.test_step }}>{{ forloop.counter }}.{{ step.test_step }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+{#            <div class="test_ver text-left" style="padding-left: 10px">#}
+{#            <span style="font-size: 0.875rem;">失败步骤:</span>#}
+{#                <select name="test_ver1" id="test_ver1" style="margin-left: 10px;font-size: 0.875rem;">#}
+{#                    <option value="" disabled selected hidden></option>#}
+{#                    {% for step in test_step %}#}
+{#                        <option value={{ step }}>{{ forloop.counter }}.{{ step }}</option>#}
+{#                    {% endfor %}#}
+{#                </select>#}
+{#            </div>#}
           <div class="modal-footer" style="height: 45px">
             <button type="button" class="btn btn-primary" data-dismiss="modal" style="height: 20px;line-height: 2px">确定</button>
           </div>
@@ -476,36 +287,7 @@
                 }else {
                     //绑定模态框展示的方法
                     $('#myModal').on('show.bs.modal', function (event) {
-                       if(type_id == 1){
-                           $('#camera').css('display','block');
-                       }
-                       if(type_id == 2){
-                           $('#video_camera').css('display','block');
-                       }
-                       if(type_id == 3){
-                           $('#surface').css('display','block');
-                       }
-                       if(type_id == 4){
-                           $('#mobile_phone').css('display','block');
-                       }
-                       if(type_id == 5){
-                           $('#tachograph').css('display','block');
-                       }
-                       if(type_id == 6){
-                           $('#monitor').css('display','block');
-                       }
-                       if(type_id == 7){
-                           $('#uav').css('display','block');
-                       }
-                       if(type_id == 8){
-                           $('#motion_camera').css('display','block');
-                       }
-                       if(type_id == 9){
-                           $('#switch').css('display','block');
-                       }
-                       if(type_id == 10){
-                           $('#doorbell').css('display','block');
-                       }
+
                     }).modal({
                        backdrop:false,
                        keyboard:false,
@@ -515,23 +297,32 @@
                     //模态框关闭前触发校验
                     $('#myModal').on('hidden.bs.modal',function () {
                         var fail_pro = '';
+                        var complete_step = '';
+                        var step = '';
                         $(".form-check-input:checked").each(function(){
                             if(fail_pro == ''){
-                                fail_pro = fail_pro + this.id
+                                fail_pro = fail_pro + this.id;
                             }else{
-                                fail_pro = fail_pro + ',' + this.id
+                                fail_pro = fail_pro + ',' + this.id;
+                            }
+                            step = this.id + $('#step' + this.id +' option:selected').val();
+                            if(complete_step==''){
+                                complete_step = complete_step + step;
+                            }else {
+                                complete_step = complete_step + ',' + step;
                             }
                         });
+
                         //测试版本
-                        var test_ver1 = $('#test_ver1 option:selected').val();
-                        if (test_ver1 == ''){
-                            is_test_ver = false;
-                        }else{
-                            is_test_ver = true;
-                        }
-                        if (fail_pro != '' && is_test_ver){
+                        //var test_ver1 = $('#test_ver1 option:selected').val();
+                        //if (test_ver1 == ''){
+                        //    is_test_ver = false;
+                        //}else{
+                        //    is_test_ver = true;
+                        //}
+                        if (fail_pro != ''){
                             tr.css('background-color','#ffb4c1');
-                            $.post("/record_result/",{"result":'0','id':id,'fail':fail_pro,'fail_step':test_ver1,csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
+                            $.post("/record_result/",{"result":'0','id':id,'fail':fail_pro,'fail_step':complete_step,csrfmiddlewaretoken:'{{ csrf_token }}'},function (data) {
                                 location.reload();
                                 })
                         }else{

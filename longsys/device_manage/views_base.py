@@ -32,13 +32,19 @@ def login(request):
             u = User.objects.get(email=email)
             u.last_login = datetime.datetime.now()
             u.save()
-            rep = redirect('/')
+            group = u.group.group_name
+            print(group)
+            if group == '嵌入式':
+                rep = redirect('/index2')
+            else:
+                rep = redirect('/')
             request.session['name'] = u.name
             request.session['staff_number'] = u.staff_number
             request.session['job'] = u.job.job_name
             request.session['is_admin'] = u.is_admin
             request.session['is_init'] = u.is_init
             request.session['email'] = u.email
+            request.session['group'] = group
             remember = login_form.get('remember')
             if remember:
                 # 设置cookie，过期时间为一周
@@ -235,7 +241,6 @@ def check_oldpwd(request):
         return JsonResponse({"erro":1})
 
 
-
 # 查看配件
 def show_parts(request):
     if request.method == 'GET':
@@ -298,3 +303,83 @@ def show_parts(request):
 # 关于
 def about(request):
     return HttpResponse('待开发')
+
+
+# 嵌入式主页
+@csrf_exempt
+def index_flush(request):
+    # 获取筛选选项
+    devices = FlushDevice.objects.all().order_by('num')
+    options = {
+        'speed': [],
+        'OEM': [],
+        'ROM': [],
+        'SOC': [],
+        'SOC_spec': [],
+        'sample': [],
+        'system': [],
+        'state': []
+    }
+    for d in devices:
+        if d.speed not in options.get('speed'):
+            options.get('speed').append(d.speed)
+        if d.OEM not in options.get('OEM'):
+            options.get('OEM').append(d.OEM)
+        if d.ROM not in options.get('ROM'):
+            options.get('ROM').append(d.ROM)
+        if d.SOC not in options.get('SOC'):
+            options.get('SOC').append(d.SOC)
+        if d.SOC_spec not in options.get('SOC_spec'):
+            options.get('SOC_spec').append(d.SOC_spec)
+        if d.sample_type not in options.get('sample'):
+            options.get('sample').append(d.sample_type)
+        if d.system not in options.get('system'):
+            options.get('system').append(d.system)
+        if d.state.state not in options.get('state'):
+            options.get('state').append(d.state.state)
+    if request.method == 'GET':
+        # 获取设备分类
+        devices_dict = {}
+        for d in devices:
+            if devices_dict.get(d.platform):
+                devices_dict.get(d.platform).append(d)
+            else:
+                devices_dict[d.platform] = [d]
+        txt = {
+            'devices': devices_dict,
+            'options': options,
+        }
+        return render(request, 'device_manage/base/index_flush.html', txt)
+    else:
+        data = request.POST
+        way = data.get('way')
+        value = data.get('value')
+        if way == 'speed':
+            filter_devices = devices.filter(speed=value)
+        elif way == 'OEM':
+            filter_devices = devices.filter(OEM=value)
+        elif way == 'ROM':
+            filter_devices = devices.filter(ROM=value)
+        elif way == 'SOC':
+            filter_devices = devices.filter(SOC=value)
+        elif way == 'SOC_spec':
+            filter_devices = devices.filter(SOC_spec=value)
+        elif way == 'sample':
+            filter_devices = devices.filter(sample=value)
+        elif way == 'system':
+            filter_devices = devices.filter(system=value)
+        else:
+            filter_devices = []
+        devices_dict = {}
+        print(filter_devices)
+        for d in filter_devices:
+            if devices_dict.get(d.platform):
+                devices_dict.get(d.platform).append(d)
+            else:
+                devices_dict[d.platform] = [d]
+        txt = {
+            "devices": devices_dict,
+            'options': options,
+        }
+        page = render_to_string('device_manage/base/FlushFilter.html', txt)
+        return JsonResponse({'data': page}, safe=False)

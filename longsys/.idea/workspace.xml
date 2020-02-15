@@ -49,14 +49,36 @@
     <favorites_list name="longsys" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.67583895">
+    <splitter split-orientation="horizontal" split-proportion="0.72184986">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="views_admin.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/device_manage/views_admin.py">
+          <file leaf-file-name="index_flush.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/device_manage/base/index_flush.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="259">
-                  <caret line="679" column="68" selection-start-line="679" selection-start-column="68" selection-end-line="679" selection-end-column="68" />
+                <state relative-caret-position="125">
+                  <caret line="285" column="24" lean-forward="true" selection-start-line="285" selection-start-column="24" selection-end-line="285" selection-end-column="24" />
+                  <folding>
+                    <element signature="e#178#198#0#DjangoTemplate" />
+                    <element signature="e#13799#13838#0#DjangoTemplate" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="views_base.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/device_manage/views_base.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="425">
+                  <caret line="41" column="46" selection-start-line="41" selection-start-column="46" selection-end-line="41" selection-end-column="46" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="device_manage_user" pinned="false" current-in-tab="true">
+            <entry file="das://73ddefcc-cca1-4272-a63e-62d10502e597/schema/longsys/table/device_manage_user">
+              <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+                <state>
+                  <filtering enabled="true" />
                 </state>
               </provider>
             </entry>
@@ -65,20 +87,41 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="manage_devices.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/device_manage/admin/manage_devices.html">
+          <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/device_manage/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="180">
-                  <caret line="474" column="28" selection-start-line="474" selection-start-column="28" selection-end-line="482" selection-end-column="25" />
+                <state relative-caret-position="352">
+                  <caret line="305" column="9" lean-forward="true" selection-start-line="305" selection-start-column="9" selection-end-line="305" selection-end-column="9" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="filter_data.html" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/templates/device_manage/admin/filter_data.html">
+          <file leaf-file-name="views_admin.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/device_manage/views_admin.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-331">
-                  <caret line="102" column="23" lean-forward="true" selection-start-line="102" selection-start-column="23" selection-end-line="102" selection-end-column="23" />
+                <state relative-caret-position="402">
+                  <caret line="1092" column="13" lean-forward="true" selection-start-line="1092" selection-start-column="13" selection-end-line="1092" selection-end-column="13" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/device_manage/urls.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="275">
+                  <caret line="41" column="4" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
+                  <folding>
+                    <element signature="e#0#32#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="FlushFilter.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/device_manage/base/FlushFilter.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="252">
+                  <caret line="159" column="10" lean-forward="true" selection-start-line="159" selection-start-column="10" selection-end-line="159" selection-end-column="10" />
                 </state>
               </provider>
             </entry>
@@ -91,37 +134,24 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
-        <option value="Python Script" />
         <option value="CSS File" />
+        <option value="Python Script" />
         <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>init_tim</find>
-      <find>testr</find>
-      <find>init_time</find>
-      <find>release</find>
-      <find>onchange</find>
-      <find>设备编号</find>
-      <find>设备型号</find>
-      <find>char</find>
-      <find>manage_de</find>
-      <find>manage_device</find>
       <find>数量</find>
       <find>device</find>
       <find>a</find>
       <find>test_history</find>
-      <find>his</find>
       <find>supp</find>
       <find>固件</find>
-      <find>index</find>
       <find>manage_d</find>
       <find>设备种类</find>
       <find>状态</find>
       <find>filt</find>
-      <find>manage_dev</find>
       <find>options</find>
       <find>{%cs</find>
       <find>style</find>
@@ -129,6 +159,19 @@
       <find>filter_</find>
       <find>search</find>
       <find>ajax</find>
+      <find>allot_</find>
+      <find>index``</find>
+      <find>index</find>
+      <find>manage_devic</find>
+      <find>SD</find>
+      <find>add_p</find>
+      <find>up</find>
+      <find>manage_dev</find>
+      <find>table_data</find>
+      <find>test_h</find>
+      <find>choose_mat</find>
+      <find>his</find>
+      <find>login</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -138,12 +181,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/templates/device_manage/parts_inner/show_parts.html" />
-        <option value="$PROJECT_DIR$/templates/device_manage/admin/add_device.html" />
-        <option value="$PROJECT_DIR$/templates/device_manage/admin/add_parts.html" />
-        <option value="$PROJECT_DIR$/templates/device_manage/admin/check_record.html" />
-        <option value="$PROJECT_DIR$/templates/device_manage/admin/device_record.html" />
-        <option value="$PROJECT_DIR$/templates/device_manage/admin/manage_admin.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/admin/manage_demand.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/admin/personal_home.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/admin/test_history.html" />
@@ -153,11 +190,9 @@
         <option value="$PROJECT_DIR$/templates/device_manage/tester/choose_device.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/tester/personal_task.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/tester/choose_type.html" />
-        <option value="$PROJECT_DIR$/templates/device_manage/admin/many_devices.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/demander/sample_info_1.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/admin/user_list.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/demander/demand_device.html" />
-        <option value="$PROJECT_DIR$/templates/device_manage/demander/demand_recoder.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/demander/demand_recoder_detail.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/demander/sample_info.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/demander/new_built.html" />
@@ -170,7 +205,6 @@
         <option value="$PROJECT_DIR$/templates/device_manage/admin/modify_device.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/base/device_detail.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/base/index_show.html" />
-        <option value="$PROJECT_DIR$/device_manage/init_start.py" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/73ddefcc-cca1-4272-a63e-62d10502e597/console.sql" />
         <option value="$PROJECT_DIR$/templates/device_manage/admin/allot_demand.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/tester/task_detail.html" />
@@ -179,16 +213,25 @@
         <option value="$PROJECT_DIR$/templates/device_manage/base/base.html" />
         <option value="$PROJECT_DIR$/static/device_manage/js/misc.js" />
         <option value="$PROJECT_DIR$/templates/device_manage/admin/choose_result.html" />
-        <option value="$PROJECT_DIR$/device_manage/models.py" />
         <option value="$PROJECT_DIR$/device_manage/views.py" />
-        <option value="$PROJECT_DIR$/device_manage/views_demander.py" />
-        <option value="$PROJECT_DIR$/device_manage/views_base.py" />
-        <option value="$PROJECT_DIR$/device_manage/urls.py" />
         <option value="$PROJECT_DIR$/templates/device_manage/admin/history_detail.html" />
-        <option value="$PROJECT_DIR$/device_manage/views_tester.py" />
         <option value="$PROJECT_DIR$/templates/device_manage/admin/manage_devices.html" />
         <option value="$PROJECT_DIR$/templates/device_manage/admin/filter_data.html" />
+        <option value="$PROJECT_DIR$/device_manage/views_demander.py" />
+        <option value="$PROJECT_DIR$/templates/device_manage/demander/demand_recoder.html" />
+        <option value="$PROJECT_DIR$/static/device_manage/css/parts.css" />
+        <option value="$PROJECT_DIR$/templates/device_manage/admin/many_devices.html" />
+        <option value="$PROJECT_DIR$/device_manage/init_start.py" />
+        <option value="$PROJECT_DIR$/templates/device_manage/base/Flush_filter.html" />
+        <option value="$PROJECT_DIR$/templates/device_manage/base/index_flush.html" />
+        <option value="$PROJECT_DIR$/templates/device_manage/base/FlushFilter.html" />
+        <option value="$PROJECT_DIR$/device_manage/urls.py" />
+        <option value="$PROJECT_DIR$/device_manage/views_tester.py" />
+        <option value="$PROJECT_DIR$/../修改/views_admin.py" />
         <option value="$PROJECT_DIR$/device_manage/views_admin.py" />
+        <option value="$USER_HOME$/Documents/Tencent Files/786369470/FileRecv/models(1).py" />
+        <option value="$PROJECT_DIR$/device_manage/models.py" />
+        <option value="$PROJECT_DIR$/device_manage/views_base.py" />
       </list>
     </option>
   </component>
@@ -203,10 +246,11 @@
       <path value="$PROJECT_DIR$/static/device_manage/jquery-table2excel-master/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="-9" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="-50" />
+    <option name="y" value="45" />
     <option name="width" value="1935" />
-    <option name="height" value="1038" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectId" id="1UsqdgSRO0qc8mRIbw5KT20ZsCn" />
   <component name="ProjectView">
@@ -225,6 +269,12 @@
               <item name="longsys" type="b2602c69:ProjectViewProjectNode" />
               <item name="longsys" type="462c0819:PsiDirectoryNode" />
               <item name="device_manage" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="longsys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="longsys" type="462c0819:PsiDirectoryNode" />
+              <item name="device_manage" type="462c0819:PsiDirectoryNode" />
+              <item name="migrations" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="longsys" type="b2602c69:ProjectViewProjectNode" />
@@ -256,6 +306,27 @@
               <item name="longsys" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
               <item name="device_manage" type="462c0819:PsiDirectoryNode" />
+              <item name="demander" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="longsys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="longsys" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="device_manage" type="462c0819:PsiDirectoryNode" />
+              <item name="parts_inner" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="longsys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="longsys" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="device_manage" type="462c0819:PsiDirectoryNode" />
+              <item name="samples" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="longsys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="longsys" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="device_manage" type="462c0819:PsiDirectoryNode" />
               <item name="tester" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -278,19 +349,19 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\DELL\Desktop\longsys\device_manage" />
-      <recent name="C:\Users\Administrator\Desktop\manage_device\new_longsys\longsys\templates\device_manage\admin" />
-      <recent name="C:\Users\Administrator\Desktop\manage_device\new_longsys\longsys\templates\device_manage\tester" />
-      <recent name="C:\Users\Administrator\Desktop\manage_device\new_longsys\longsys\static\media\excel_data" />
-      <recent name="C:\Users\Administrator\Desktop\manage_device\new_longsys\longsys\templates\device_manage" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\DELL\Desktop\longsys\templates\device_manage\tester" />
       <recent name="C:\Users\DELL\Desktop\longsys\templates\device_manage\admin" />
       <recent name="C:\Users\Administrator\Desktop\manage_device\new_longsys\longsys\templates\device_manage\admin" />
       <recent name="C:\Users\Administrator\Desktop\manage_device\new_longsys\longsys\templates\device_manage\demander" />
       <recent name="C:\Users\Administrator\Desktop\manage_device\new_longsys\longsys\static\device_manage" />
-      <recent name="C:\Users\Administrator\Desktop\manage_device\new_longsys\longsys\templates\device_manage\base" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\DELL\Desktop\longsys\templates\device_manage\admin" />
+      <recent name="C:\Users\DELL\Desktop\longsys\device_manage" />
+      <recent name="C:\Users\Administrator\Desktop\manage_device\new_longsys\longsys\templates\device_manage\admin" />
+      <recent name="C:\Users\Administrator\Desktop\manage_device\new_longsys\longsys\templates\device_manage\tester" />
+      <recent name="C:\Users\Administrator\Desktop\manage_device\new_longsys\longsys\static\media\excel_data" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -565,61 +636,61 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1548" height="830" extended-state="0" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32936078" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32936078" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50067025" side_tool="true" weight="0.32905984" />
       <window_info anchor="bottom" id="Database Changes" order="13" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="9" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="5" weight="0.28818443" />
+      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.49932975" weight="0.35897437" />
       <window_info anchor="bottom" id="Terminal" order="14" weight="0.23931624" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.22013423" />
+      <window_info anchor="bottom" id="Database Console" order="15" weight="0.32936078" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.22252011" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
-      <window_info anchor="right" id="Database" order="5" weight="0.29155496" />
-      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="5" weight="0.66957104" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32905984" />
+      <window_info anchor="right" id="SciView" order="4" weight="0.3297587" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" weight="0.32995737" />
       <window_info anchor="bottom" id="Debug" order="2" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="调试" order="7" weight="0.32936078" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="运行" order="12" weight="0.2112676" />
-      <window_info anchor="right" id="Data View" order="4" weight="0.32995737" />
+      <window_info anchor="right" id="Data View" order="3" weight="0.32995737" />
       <window_info anchor="bottom" id="查找" order="16" weight="0.32936078" />
-      <window_info anchor="bottom" id="Database Console" order="15" weight="0.32936078" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
-      <window_info anchor="bottom" id="调试" order="7" weight="0.32936078" />
-      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
     <layout-to-restore>
-      <window_info anchor="bottom" id="调试" order="7" weight="0.32936078" />
-      <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22013423" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="查找" order="16" weight="0.32936078" />
-      <window_info anchor="right" id="SciView" order="3" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22252011" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32936078" />
       <window_info anchor="bottom" id="Database Changes" order="13" />
-      <window_info anchor="bottom" id="Run" order="5" weight="0.28818443" />
+      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.49932975" weight="0.35897437" />
       <window_info anchor="bottom" id="运行" order="12" weight="0.2112676" />
-      <window_info anchor="right" id="Data View" order="4" weight="0.32995737" />
+      <window_info anchor="right" id="Data View" order="3" weight="0.32995737" />
       <window_info anchor="bottom" id="Python Console" order="9" weight="0.32936078" />
-      <window_info anchor="bottom" id="Debug" order="2" weight="0.4" />
-      <window_info anchor="right" id="Database" order="5" weight="0.29155496" />
-      <window_info anchor="bottom" id="Terminal" order="14" weight="0.23931624" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32905984" />
       <window_info anchor="bottom" id="Database Console" order="15" weight="0.32936078" />
+      <window_info anchor="right" id="Database" order="5" weight="0.66957104" />
+      <window_info anchor="bottom" id="Terminal" order="14" weight="0.23931624" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50067025" side_tool="true" weight="0.32905984" />
+      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
+      <window_info anchor="right" id="SciView" order="4" weight="0.3297587" />
+      <window_info anchor="bottom" id="Debug" order="2" weight="0.4" />
+      <window_info anchor="bottom" id="调试" order="7" weight="0.32936078" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info id="Favorites" order="2" side_tool="true" weight="0.32995737" />
     </layout-to-restore>
@@ -632,113 +703,10 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="11" />
+      <option name="time" value="13" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/demander/demand_type.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="531">
-          <caret line="150" column="15" selection-start-line="150" selection-start-column="15" selection-end-line="150" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/demander/new_demand.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-996" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/demander/recoder_inner.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="22" column="13" lean-forward="true" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/demander/new_built.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="133" column="39" selection-start-line="133" selection-start-column="39" selection-end-line="133" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/base/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="137" column="4" lean-forward="true" selection-start-line="137" selection-start-column="4" selection-end-line="157" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/demander/demand_recoder.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="142" column="38" lean-forward="true" selection-start-line="142" selection-start-column="38" selection-end-line="142" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/device_manage/context_processors.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="dbDummy://dbtable:/64c35bb3/73ddefcc-cca1-4272-a63e-62d10502e597/longsys.device_manage_excelrecord" />
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/admin/user_list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="193" column="26" lean-forward="true" selection-start-line="193" selection-start-column="26" selection-end-line="193" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/samples/error-403.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="33" column="75" selection-start-line="33" selection-start-column="62" selection-end-line="33" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/device_manage/img64.py" />
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/samples/error-file.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="27" column="37" lean-forward="true" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/base/device_detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" column="7" lean-forward="true" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="dbDummy://dbtable:/64c35bb3/73ddefcc-cca1-4272-a63e-62d10502e597/longsys.device_manage_useractionrecord" />
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/base/device_detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3841">
-          <caret line="167" column="44" selection-start-line="167" selection-start-column="44" selection-end-line="167" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/admin/modify_device.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3519">
-          <caret line="153" column="11" selection-start-line="153" selection-start-column="11" selection-end-line="153" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/demander/demand_device.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3427">
-          <caret line="149" column="9" selection-start-line="149" selection-start-column="9" selection-end-line="149" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="dbDummy://dbtable:/64c35bb3/73ddefcc-cca1-4272-a63e-62d10502e597/longsys.device_manage_device" />
-    <entry file="file://$PROJECT_DIR$/device_manage/init_start.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="635">
-          <caret line="410" column="31" selection-start-line="410" selection-start-column="31" selection-end-line="410" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/longsys/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="552">
@@ -772,13 +740,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/demander/demand_recoder_detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-67">
-          <caret line="151" column="14" lean-forward="true" selection-start-line="151" selection-start-column="14" selection-end-line="151" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/device_manage/vendors/js/vendor.bundle.base.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2806">
@@ -807,34 +768,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/base/parts.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="31" column="16" selection-start-line="31" selection-start-column="16" selection-end-line="31" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://73ddefcc-cca1-4272-a63e-62d10502e597/schema/longsys/table/device_manage_user">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://73ddefcc-cca1-4272-a63e-62d10502e597/schema/longsys/table/test_requirements">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://73ddefcc-cca1-4272-a63e-62d10502e597/schema/longsys/table/device_manage_state">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://73ddefcc-cca1-4272-a63e-62d10502e597/schema/longsys/table/test_requirements" />
+    <entry file="das://73ddefcc-cca1-4272-a63e-62d10502e597/schema/longsys/table/device_manage_state" />
     <entry file="file://$PROJECT_DIR$/device_manage/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="148">
@@ -849,44 +784,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="25">
           <caret line="25" column="15" lean-forward="true" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/device_manage/views_demander.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/base/index_show.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="212" column="39" lean-forward="true" selection-start-line="212" selection-start-column="39" selection-end-line="212" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/device_manage/views_base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="154" selection-start-line="154" selection-end-line="154" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/device_manage/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1000">
-          <caret line="41" column="80" selection-start-line="41" selection-start-column="80" selection-end-line="41" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/device_manage/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="22" column="64" lean-forward="true" selection-start-line="22" selection-start-column="64" selection-end-line="22" selection-end-column="64" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -911,31 +808,217 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/device_manage/views_tester.py">
+    <entry file="das://73ddefcc-cca1-4272-a63e-62d10502e597/schema/longsys/table/device_manage_device">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/device_manage/context_processors.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="120" column="19" selection-start-line="120" selection-start-column="19" selection-end-line="120" selection-end-column="19" />
+        <state relative-caret-position="250">
+          <caret line="10" column="18" lean-forward="true" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/device_manage/views_demander.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5400">
+          <caret line="216" column="12" selection-start-line="216" selection-start-column="12" selection-end-line="216" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/device_manage/demander/demand_recoder.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="230" column="29" lean-forward="true" selection-start-line="230" selection-start-column="29" selection-end-line="230" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://73ddefcc-cca1-4272-a63e-62d10502e597/schema/longsys/table/device_manage_state">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/device_manage/base/parts.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="273" column="44" selection-end-line="328" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://73ddefcc-cca1-4272-a63e-62d10502e597/schema/longsys/table/device_manage_embedtestrecord">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/device_manage/base/device_load_list.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/device_manage/demander/demand_recoder_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4550">
+          <caret line="151" column="14" lean-forward="true" selection-start-line="151" selection-start-column="14" selection-end-line="151" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/device_manage/css/parts.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="850">
+          <caret line="52" column="17" selection-start-line="52" selection-start-column="17" selection-end-line="52" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/device_manage/base/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="193" column="3" selection-start-line="193" selection-start-column="3" selection-end-line="193" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/device_manage/base/index_show.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1024">
+          <caret line="212" column="39" lean-forward="true" selection-start-line="212" selection-start-column="39" selection-end-line="212" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/device_manage/admin/many_devices.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="184" column="43" selection-start-line="184" selection-start-column="43" selection-end-line="184" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://73ddefcc-cca1-4272-a63e-62d10502e597/schema/longsys/table/device_manage_flushdevice">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/device_manage/init_start.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="378" column="41" lean-forward="true" selection-start-line="378" selection-start-column="41" selection-end-line="378" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/device_manage/base/base64.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3825" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/device_manage/admin/filter_data.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/device_manage/admin/manage_devices.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="474" column="28" selection-start-line="474" selection-start-column="28" selection-end-line="482" selection-end-column="25" />
+        <state relative-caret-position="432">
+          <caret line="477" column="28" selection-start-line="477" selection-start-column="28" selection-end-line="478" selection-end-column="61" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/device_manage/admin/filter_data.html">
+    <entry file="file://$PROJECT_DIR$/../修改/views_tester.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-331">
-          <caret line="102" column="23" lean-forward="true" selection-start-line="102" selection-start-column="23" selection-end-line="102" selection-end-column="23" />
+        <state relative-caret-position="800">
+          <caret line="32" column="50" selection-start-line="32" selection-start-column="50" selection-end-line="32" selection-end-column="50" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/device_manage/views_tester.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="69" lean-forward="true" selection-start-line="69" selection-end-line="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/device_manage/base/FlushFilter.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="159" column="10" lean-forward="true" selection-start-line="159" selection-start-column="10" selection-end-line="159" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/device_manage/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="41" column="4" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/device_manage/admin/choose_match.html">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/device_manage/views_admin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="679" column="68" selection-start-line="679" selection-start-column="68" selection-end-line="679" selection-end-column="68" />
+        <state relative-caret-position="402">
+          <caret line="1092" column="13" lean-forward="true" selection-start-line="1092" selection-start-column="13" selection-end-line="1092" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../修改/views_admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="1081" column="28" selection-start-line="1081" selection-start-column="28" selection-end-line="1081" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/Tencent Files/786369470/FileRecv/models(1).py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-37">
+          <caret line="289" column="35" lean-forward="true" selection-start-line="289" selection-start-column="35" selection-end-line="289" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/device_manage/base/index_flush.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="285" column="24" lean-forward="true" selection-start-line="285" selection-start-column="24" selection-end-line="285" selection-end-column="24" />
+          <folding>
+            <element signature="e#178#198#0#DjangoTemplate" />
+            <element signature="e#13799#13838#0#DjangoTemplate" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/device_manage/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="305" column="9" lean-forward="true" selection-start-line="305" selection-start-column="9" selection-end-line="305" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://73ddefcc-cca1-4272-a63e-62d10502e597/schema/longsys/table/device_manage_group">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/device_manage/views_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="41" column="46" selection-start-line="41" selection-start-column="46" selection-end-line="41" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://73ddefcc-cca1-4272-a63e-62d10502e597/schema/longsys/table/device_manage_user">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>

@@ -24,16 +24,62 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='Borrow',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('out_date', models.DateTimeField()),
+                ('back_date', models.DateTimeField()),
+                ('reason', models.CharField(max_length=50)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Collocation',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('collocation', models.CharField(verbose_name='主控/flash/die', max_length=50)),
                 ('num', models.CharField(verbose_name='编号', max_length=20)),
                 ('abbreviation', models.CharField(verbose_name='简称', max_length=50, blank=True, null=True)),
-                ('category', models.SmallIntegerField(verbose_name='类别', default=0, choices=[(0, '主控'), (1, 'flash'), (2, 'die')])),
+                ('category', models.IntegerField(verbose_name='类别', default=0, choices=[(0, '主控'), (1, 'flash'), (2, 'die')])),
             ],
             options={
                 'db_table': 'task_collocation',
+            },
+        ),
+        migrations.CreateModel(
+            name='CompatibleVer',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('ver', models.CharField(max_length=30)),
+            ],
+            options={
+                'verbose_name_plural': '兼容性测试版本',
+            },
+        ),
+        migrations.CreateModel(
+            name='Control',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('control', models.CharField(verbose_name='主控', max_length=20)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='CV100',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('test_step', models.CharField(max_length=30)),
+            ],
+            options={
+                'verbose_name_plural': '测试版本CV1.0.0',
+            },
+        ),
+        migrations.CreateModel(
+            name='CV110',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('test_step', models.CharField(max_length=30)),
+            ],
+            options={
+                'verbose_name_plural': '测试版本CV1.1.0',
             },
         ),
         migrations.CreateModel(
@@ -89,11 +135,92 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='DrV100',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('test_step', models.CharField(max_length=30)),
+            ],
+            options={
+                'verbose_name_plural': '测试版本DrV1.0.0',
+            },
+        ),
+        migrations.CreateModel(
+            name='DV100',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('test_step', models.CharField(max_length=30)),
+            ],
+            options={
+                'verbose_name_plural': '测试版本DV1.0.0',
+            },
+        ),
+        migrations.CreateModel(
+            name='EmbedTestRecord',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('system_burning', models.CharField(max_length=20, blank=True, default='')),
+                ('reset', models.CharField(max_length=20, blank=True, default='')),
+                ('cold_boot', models.CharField(max_length=20, blank=True, default='')),
+                ('hot_boot', models.CharField(max_length=20, blank=True, default='')),
+                ('dormancy', models.CharField(max_length=20, blank=True, default='')),
+                ('start_cw', models.CharField(max_length=20, blank=True, default='')),
+                ('rw_cw', models.CharField(max_length=20, blank=True, default='')),
+                ('rw_ageing', models.CharField(max_length=20, blank=True, default='')),
+                ('video_ageing', models.CharField(max_length=20, blank=True, default='')),
+                ('filetest', models.CharField(max_length=20, blank=True, default='')),
+                ('monkeyTest', models.CharField(max_length=20, blank=True, default='')),
+                ('apk_upgrade', models.CharField(max_length=20, blank=True, default='')),
+                ('exe_upgrade', models.CharField(max_length=20, blank=True, default='')),
+                ('device', models.ForeignKey(to='device_manage.Device')),
+            ],
+        ),
+        migrations.CreateModel(
             name='ExcelRecord',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('time', models.DateTimeField(auto_created=True)),
                 ('filename', models.CharField(max_length=50)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Flash',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('flash', models.CharField(verbose_name='flash', max_length=20)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='FlushDemand',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('recipient', models.CharField(verbose_name='需求接收人', max_length=20)),
+                ('capacity', models.CharField(verbose_name='容量', max_length=20)),
+                ('start_date', models.DateTimeField()),
+                ('end_date', models.DateTimeField()),
+                ('remark', models.CharField(max_length=50, blank=True, null=True)),
+                ('test_project', models.CharField(max_length=50)),
+                ('control', models.ForeignKey(to='device_manage.Control')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='FlushDevice',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('platform', models.CharField(verbose_name='平台编号', max_length=30)),
+                ('speed', models.CharField(verbose_name='速度模式', max_length=20)),
+                ('OEM', models.CharField(verbose_name='OEM品牌', max_length=20)),
+                ('ROM', models.CharField(verbose_name='ROM类型', max_length=20)),
+                ('SOC', models.CharField(verbose_name='SOC方案商', max_length=20)),
+                ('SOC_spec', models.CharField(verbose_name='SOC型号', max_length=20)),
+                ('sample_type', models.CharField(verbose_name='样机类型', max_length=20)),
+                ('system', models.CharField(verbose_name='操作系统', max_length=30)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='FW',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('fw', models.CharField(verbose_name='fw版本', max_length=20)),
             ],
         ),
         migrations.CreateModel(
@@ -107,6 +234,16 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='IV100',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('test_step', models.CharField(max_length=30)),
+            ],
+            options={
+                'verbose_name_plural': '测试版本IV1.0.0',
+            },
+        ),
+        migrations.CreateModel(
             name='Job',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
@@ -114,6 +251,16 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name_plural': '岗位',
+            },
+        ),
+        migrations.CreateModel(
+            name='MV100',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('test_step', models.CharField(max_length=30)),
+            ],
+            options={
+                'verbose_name_plural': '测试版本MV1.0.0',
             },
         ),
         migrations.CreateModel(
@@ -137,6 +284,7 @@ class Migration(migrations.Migration):
                 ('finish_time', models.DateTimeField(null=True, auto_now=True)),
                 ('fail_project', models.CharField(max_length=100, blank=True, default='')),
                 ('fail_step', models.CharField(max_length=100, blank=True, default='')),
+                ('is_NA', models.BooleanField(default=False)),
             ],
             options={
                 'db_table': 'personal_task',
@@ -149,6 +297,33 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='RV100',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('test_step', models.CharField(max_length=30)),
+            ],
+            options={
+                'verbose_name_plural': '测试版本RV1.0.0',
+            },
+        ),
+        migrations.CreateModel(
+            name='ScrapDevices',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('scrap_date', models.DateTimeField(auto_now_add=True)),
+                ('reason', models.CharField(max_length=100)),
+                ('device', models.ForeignKey(to='device_manage.FlushDevice')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Send2Test',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('remark', models.CharField(verbose_name='备注', max_length=50)),
+                ('device', models.ForeignKey(to='device_manage.FlushDevice')),
+            ],
+        ),
+        migrations.CreateModel(
             name='State',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
@@ -158,6 +333,14 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': '设备状态',
             },
+        ),
+        migrations.CreateModel(
+            name='TestProject',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('test_item_id', models.CharField(max_length=30)),
+                ('test_item', models.CharField(max_length=30)),
+            ],
         ),
         migrations.CreateModel(
             name='TestRecord',
@@ -175,6 +358,7 @@ class Migration(migrations.Migration):
                 ('record', models.CharField(max_length=200, default='暂未填写')),
                 ('JIRA', models.CharField(max_length=100, default='暂未填写')),
                 ('finish', models.DateTimeField(null=True, auto_now=True)),
+                ('is_NA', models.BooleanField(default=False)),
                 ('device', models.ForeignKey(to='device_manage.Device')),
             ],
         ),
@@ -188,18 +372,18 @@ class Migration(migrations.Migration):
                 ('match', models.CharField(max_length=50, default='暂未填写')),
                 ('P_N', models.CharField(max_length=30, default='暂未填写')),
                 ('device', models.CharField(verbose_name='测试设备', max_length=500, blank=True, null=True)),
-                ('start_time', models.DateTimeField(verbose_name='开始时间', blank=True, null=True)),
-                ('end_time', models.DateTimeField(verbose_name='结束时间', blank=True, null=True)),
                 ('sample_quantity', models.IntegerField(verbose_name='样品数量', default=0)),
                 ('reorder', models.SmallIntegerField(verbose_name='排序', default=0, help_text='数字越大，越靠前')),
                 ('compatible_ver', models.CharField(max_length=20, default='暂未填写')),
                 ('remark', models.CharField(max_length=200, blank=True, null=True, default='暂无')),
                 ('is_finished', models.NullBooleanField()),
-                ('finish_time', models.DateTimeField(null=True, auto_now=True)),
                 ('file_path', models.CharField(verbose_name='上传fw包的路径', max_length=100, blank=True, null=True)),
                 ('is_rejected', models.BooleanField(default=False)),
                 ('reject_reason', models.CharField(max_length=100, blank=True, null=True)),
                 ('rejecter', models.CharField(max_length=50, blank=True, null=True)),
+                ('end_time', models.DateTimeField(verbose_name='结束时间', blank=True, null=True)),
+                ('start_time', models.DateTimeField(verbose_name='开始时间', blank=True, null=True)),
+                ('finish_time', models.DateTimeField(null=True, auto_now=True)),
             ],
             options={
                 'db_table': 'test_requirements',
@@ -207,14 +391,11 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='TestVer1',
+            name='TestType',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
-                ('test_step', models.CharField(max_length=30)),
+                ('test_type', models.CharField(max_length=10)),
             ],
-            options={
-                'verbose_name_plural': '测试版本1',
-            },
         ),
         migrations.CreateModel(
             name='User',
@@ -299,9 +480,44 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(to='device_manage.User'),
         ),
         migrations.AddField(
+            model_name='flushdevice',
+            name='state',
+            field=models.ForeignKey(to='device_manage.State'),
+        ),
+        migrations.AddField(
+            model_name='flushdemand',
+            name='device',
+            field=models.ForeignKey(to='device_manage.FlushDevice'),
+        ),
+        migrations.AddField(
+            model_name='flushdemand',
+            name='flash',
+            field=models.ForeignKey(to='device_manage.Flash'),
+        ),
+        migrations.AddField(
+            model_name='flushdemand',
+            name='fw',
+            field=models.ForeignKey(to='device_manage.FW'),
+        ),
+        migrations.AddField(
+            model_name='flushdemand',
+            name='initiator',
+            field=models.ForeignKey(to='device_manage.User'),
+        ),
+        migrations.AddField(
+            model_name='flushdemand',
+            name='test_type',
+            field=models.ForeignKey(to='device_manage.TestType'),
+        ),
+        migrations.AddField(
             model_name='excelrecord',
             name='user',
             field=models.ForeignKey(to='device_manage.User'),
+        ),
+        migrations.AddField(
+            model_name='embedtestrecord',
+            name='task',
+            field=models.ForeignKey(to='device_manage.FlushDevice'),
         ),
         migrations.AddField(
             model_name='device',
@@ -312,6 +528,16 @@ class Migration(migrations.Migration):
             model_name='device',
             name='device_type',
             field=models.ForeignKey(to='device_manage.DeviceType'),
+        ),
+        migrations.AddField(
+            model_name='borrow',
+            name='device',
+            field=models.ForeignKey(to='device_manage.FlushDevice'),
+        ),
+        migrations.AddField(
+            model_name='borrow',
+            name='user',
+            field=models.ForeignKey(to='device_manage.User'),
         ),
         migrations.AddField(
             model_name='allottasks',

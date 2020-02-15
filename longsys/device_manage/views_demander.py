@@ -214,6 +214,7 @@ def demand_recoder_detail(request):
     if is_admin is None:
         return render(request, 'device_manage/samples/error-403.html')
     pk = request.GET.get('id')
+    print(pk)
     demand = TestRequirements.objects.get(pk=pk)
     demand_num = len(demand.device.split('/')) if len(demand.device) != 0 else 0
     ver = demand.compatible_ver                             # 获取兼容行测试版本

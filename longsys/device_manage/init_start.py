@@ -363,6 +363,28 @@ def many_device(path, types):
             device.device_video_format = data_ls[15]
             device.device_video_speed = data_ls[16] if data_ls[16] else 0
             device.save()
+    elif types == '嵌入式设备':
+        start_row = 2
+        data = xlrd.open_workbook(file_path)
+        os.remove(path)
+        sheet1 = data.sheets()[0]
+        nrows = sheet1.nrows
+        for i in range(start_row, nrows):
+            data_ls = sheet1.row_values(i)
+            print(data_ls)
+            for j in range(1, int(data_ls[8]) + 1):
+                device = FlushDevice()
+                device.platform = data_ls[0].replace('(', '（').replace(')', '）')
+                device.num = j
+                device.speed = data_ls[1]
+                device.OEM = data_ls[2]
+                device.ROM = data_ls[3]
+                device.SOC = data_ls[4]
+                device.SOC_spec = data_ls[5]
+                device.sample_type = data_ls[6]
+                device.system = data_ls[7]
+                device.state = State.objects.get(state='可使用')
+                device.save()
     elif types == '测试记录':
         start_table = 6
         data = xlrd.open_workbook(file_path)
